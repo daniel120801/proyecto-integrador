@@ -1,0 +1,7 @@
+
+inicio
+menu
+reseñas 
+registrar productos
+
+adiosito
