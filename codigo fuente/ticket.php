@@ -34,7 +34,7 @@ require "PHP/Utils.php";
                     <a href="index.html" class="nav-item nav-link">Home</a>
                     <a href="about.html" class="nav-item nav-link">About</a>
                     <a href="service.html" class="nav-item nav-link">Service</a>
-                    <a href="menu.html" class="nav-item nav-link active">Menu</a>
+                    <a href="menu.html" class="nav-item nav-link ">Menu</a>
                 </div>
         </nav>
 
@@ -109,12 +109,9 @@ require "PHP/Utils.php";
 
                     </div>
                     <!--tabla de productos-->
-
                     <?php
                     echo $utils->CrearTabla();
                     ?>
-
-
                 </div>
 
             </div>
@@ -124,9 +121,6 @@ require "PHP/Utils.php";
 
             </div>
         </div>
-
-
-
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
             <div class="container py-5">
