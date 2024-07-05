@@ -1,3 +1,7 @@
+<?php
+require "PHP/ticketUtils.php";
+require "PHP/Utils.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,34 +9,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ticket</title>
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&family=Pacifico&display=swap"
-        rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <?php echo printLinks(); ?>
 </head>
 
 <body>
+    <?php
 
+    $utils = new ticketUtils();
+
+    ?>
     <!-- Navbar & Hero Start -->
     <div class="container-xxl position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
@@ -68,6 +54,7 @@
             <div class="tab-pane active">
                 <div class="container " style="  width: 80%; ">
 
+                    <!--informacion del cliente-->
                     <h3 class="section-title mt-5">Información de cliente</h3>
                     <div class="container mt-3" style="width: 50%;">
                         <div class="row">
@@ -119,56 +106,14 @@
                         <div class="mt-5"></div>
 
 
+
                     </div>
                     <!--tabla de productos-->
-                    <table class="table table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Cantidad</th>
-                                <th scope="col" colspan="2"> Producto </th>
-                                <th scope="col">Precio</th>
-                                <th scope="col">eliminar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>5</td>
-                                <td colspan="2">Comida 1</td>
-                                <td>$250</td>
-                                <td>
-                                    <button class="btn btn-primary" style="width: 30px; height:30px;">-</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>1</td>
-                                <td colspan="2">Comida 45</td>
-                                <td>$100</td>
-                                <td>
-                                    <button class="btn btn-primary" style="width: 30px; height:30px;">-</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>6</td>
-                                <td colspan="2">papas</td>
-                                <td>$350</td>
-                                <td>
-                                    <button class="btn btn-primary" style="width: 30px; height:30px;">-</button>
-                                </td>
-                            </tr>
 
-                        </tbody>
-                        <tfoot>
-                            <th>Total</th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>$255</td>
-                        </tfoot>
-                    </table>
+                    <?php
+                    echo $utils->CrearTabla();
+                    ?>
+
 
                 </div>
 
