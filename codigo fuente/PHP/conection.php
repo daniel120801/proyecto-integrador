@@ -6,14 +6,14 @@ class BD_PDO
     {
         $host = 'localhost';
         $usr = 'root';
-        $pwd = 'Zorrilla21';
+        $pwd = '';
         $db = 'db_sushi';
 
         try {
             $conexion = new PDO("mysql:host=$host;dbname=$db;", $usr, $pwd);
 
         } catch (PDOException $e) {
-            echo 'Failed to get DB handle: '.$e->getMessage();
+            echo 'Failed to get DB handle: ' . $e->getMessage();
             exit;
         }
 
@@ -22,7 +22,7 @@ class BD_PDO
         $result = null;
         $query = $conexion->prepare($instruction);
         if (!$query) {
-           echo'Error al mostrar';
+            echo 'Error al mostrar';
         } else {
             $query->execute();
             while ($r = $query->fetch()) {
