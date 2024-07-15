@@ -64,7 +64,7 @@
 <body>
     <?php
     //error_reporting(1);
-    require 'bd/bdsushi.php';
+    require 'PHP/conection.php';
     $bd = new BD_PDO();
 
     function ImprimirProductoTabla($img, $nombre, $descripcion, $id, $precio): string
@@ -88,19 +88,19 @@
             </div>';
     }
     if (isset($_GET['insertar_id'])) {
-        $bd->Ejecutar_Instruccion("CALL agregar_producto(" . $_GET['insertar_id'] . ",1)");
+        $bd->exec_instruction("CALL agregar_producto(" . $_GET['insertar_id'] . ",1)");
     } else if (isset($_GET['modificar'])) {
-        $bd->Ejecutar_Instruccion("CALL Actualizar_pedido(" . $_GET['idPedido'] . ",
+        $bd->exec_instruction("CALL Actualizar_pedido(" . $_GET['idPedido'] . ",
                                     " . $_GET['idProducto'] . ",'" . $_GET['nombre'] . "'," . $_GET['cantidad'] . "," . $_GET['precio'] . ")");
     } else if (isset($_GET['eliminar'])) {
-        $bd->Ejecutar_Instruccion("DELETE FROM detalle_pedido   WHERE PK_detpedido = " . $_GET['eliminar'] . "");
+        $bd->exec_instruction("DELETE FROM detalle_pedido   WHERE PK_detpedido = " . $_GET['eliminar'] . "");
     }
 
     if (isset($_GET['txtbuscarque'])) {
         $textobuscar = $_GET['txtbuscarque'];
     }
     if (isset($_GET['idpremodificar'])) {
-        $modificar = $bd->Ejecutar_Instruccion("SELECT dp.*, producto.nombre AS nombre 
+        $modificar = $bd->exec_instruction("SELECT dp.*, producto.nombre AS nombre 
             FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto 
              WHERE PK_detpedido = " . $_GET['idpremodificar'] . " ");
     }
@@ -179,8 +179,9 @@
                 </ul>
                 <!-- Ícono de carrito -->
                 <div class="position-absolute" style="right: 0; top: 40%; transform: translateY(-100%);">
-                    <a class="d-flex align-items-center">
+                    <a href="ticket.php" class="d-flex align-items-center">
                         <i class="fa fa-shopping-cart fa-2x text-primary"></i>
+                        
                     </a>
                 </div>
             </div>
@@ -197,7 +198,7 @@
                     if (!empty($textobuscar)) {
                         $sql .= " AND nombre LIKE '%" . $textobuscar . "%'";
                     }
-                    $result = $bd->ejecutar_instruccion($sql);
+                    $result = $bd->exec_instruction($sql);
                     foreach ($result as $row) {
                         echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]);
                     }
@@ -213,7 +214,7 @@
                     if (!empty($textobuscar)) {
                         $sql .= " AND nombre LIKE '%" . $textobuscar . "%'";
                     }
-                    $result = $bd->ejecutar_instruccion($sql);
+                    $result = $bd->exec_instruction($sql);
 
                     foreach ($result as $row) {
                         echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]);
@@ -230,7 +231,7 @@
                     if (!empty($textobuscar)) {
                         $sql .= " AND nombre LIKE '%" . $textobuscar . "%'";
                     }
-                    $result = $bd->ejecutar_instruccion($sql);
+                    $result = $bd->exec_instruction($sql);
 
                     foreach ($result as $row) {
                         echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]);
@@ -288,42 +289,7 @@
             </Form>
         <?php } ?>
 
-        <!-- Productos Agregados -->
-        <div class="container my-5">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = 1 "; // Ajusta la consulta según tu lógica
-                        
-                        $result = $bd->ejecutar_instruccion($sql);
-                        foreach ($result as $row) { ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($row[3]); ?></td>
-                                <td><?php echo htmlspecialchars($row[4]); ?></td>
-                                <td>
-                                    <a href="menu.php?idpremodificar=<?php echo htmlspecialchars($row[0]); ?>"
-                                        class="btn btn-primary me-3 ">Modificar</a>
-
-                                    <a href="menu.php?eliminar=<?php echo htmlspecialchars($row[0]); ?>"
-                                        class="btn btn-danger">Eliminar</a>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- Productos Agregados End -->
+ 
 
 
         <!-- Footer Start -->
