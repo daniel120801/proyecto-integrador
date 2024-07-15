@@ -11,12 +11,14 @@ class BD_PDO
 
         try {
             $conexion = new PDO("mysql:host=$host;dbname=$db;", $usr, $pwd);
+
         } catch (PDOException $e) {
             echo 'Failed to get DB handle: '.$e->getMessage();
             exit;
         }
 
         // Asignando una instruccion sql
+
         $result = null;
         $query = $conexion->prepare($instruction);
         if (!$query) {
