@@ -10,12 +10,71 @@ class ticketUtils
 
         $bd = new BD_PDO();
 
-        $this->pedido = $bd->exec_instruction("SELECT * FROM pedido WHERE PK_pedido =" . $this->idPedido . " ");
+        $this->pedido = $bd->exec_instruction("SELECT 
+        CONCAT(usuarios.nombre, ' ', usuarios.apellido) nombre,pedido.fecha,pedido.direccion,pedido.metodo_pago,pedido.tipo_pedido 
+        FROM pedido INNER JOIN usuarios ON pedido.FK_usuario = usuarios.PK_id WHERE pedido.PK_pedido = " . $this->idPedido . ";");
 
 
 
     }
+    function imprimirDatosUsuario()
+    {
 
+        echo '
+          <div class="container mt-3" style="width: 50%;">
+                        <div class="row">
+                            <div class="col text-start">
+                                <label for="">Nombre de Cliente: </label>
+
+                            </div>
+
+                            <div class="col text-start">
+                                <label for="">' . $this->pedido[0]['nombre'] . '</label>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+                        <div class="row">
+                            <div class="col text-start">
+                                <label for="">forma de pago:</label>
+
+                            </div>
+                            <div class="col text-start">
+                                <label for="">' . $this->pedido[0]['metodo_pago'] . '</label>
+
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+                        <div class="row">
+                            <div class="col text-start">
+                                <label for="">direccion de pedido:</label>
+
+                            </div>
+                            <div class="col text-start">
+                                <label for="">' . $this->pedido[0]['direccion'] . '</label>
+                            </div>
+
+
+                        </div>
+                        <div class="mt-2"></div>
+                        <div class="row">
+                            <div class="col text-start">
+                                <label for="">tipo de pedido:</label>
+
+                            </div>
+                            <div class="col text-start">
+                                <label for="">' . $this->pedido[0]['tipo_pedido'] . '</label>
+                            </div>
+
+
+                        </div>
+
+                        <div class="mt-5"></div>
+
+
+
+                    </div>
+        ';
+    }
     function CrearTabla(
     ): string {
         $bd = new BD_PDO();
