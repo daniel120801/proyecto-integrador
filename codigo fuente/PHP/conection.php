@@ -20,7 +20,7 @@ class BD_PDO
 
         // Asignando una instruccion sql
 
-        $result = null;
+        $result = [];
         $query = $conexion->prepare($instruction);
         if (!$query) {
            echo'Error al mostrar';
