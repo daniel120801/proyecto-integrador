@@ -39,8 +39,8 @@ require "PHP/Utils.php";
             </div>
         </div>
     </div>
-
     <!-- Navbar & Hero End -->
+
     <div class="container">
         <div class=" tab-content text-center wow fadeInUp"
             style=" border: 4px solid rgb(254, 175, 57); border-radius: 20px;    box-shadow: 0 0 45px rgba(0, 0, 0, .3);">
