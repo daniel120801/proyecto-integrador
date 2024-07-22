@@ -4,6 +4,7 @@ class BD_PDO
 {
     public function exec_instruction($instruction)
     {
+
         $host = 'localhost';
         $usr = 'root';
         $pwd = '';
@@ -11,6 +12,7 @@ class BD_PDO
 
         try {
             $conexion = new PDO("mysql:host=$host;dbname=$db;", $usr, $pwd);
+            // $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         } catch (PDOException $e) {
             echo 'Failed to get DB handle: ' . $e->getMessage();
