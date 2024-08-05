@@ -76,13 +76,23 @@
     VALUES ('$nombre', '$PKcategoria', '$estado', '$descripcion', '$precio')");
         } 
         
-        elseif (isset($_GET['idmodificar'])) {
+        if (isset($_POST['btnactualizar'])) {
+            $id = $_POST['id_producto'];
+            $nombre = $_POST['txtnombre'];
+            $PKcategoria = $_POST['txtPKcategoria'];
+            $estado = $_POST['txtestado'];
+            $descripcion = $_POST['txtdescripcion'];
+            $precio = $_POST['txtprecio'];
+        
+            $obj->exec_instruction("UPDATE producto SET Nombre = '$nombre', FK_categoria = '$PKcategoria', Estado = '$estado', Descripcion = '$descripcion', Precio = '$precio' WHERE PK_producto = '$id'");
+        }
+         elseif (isset($_GET['idmodificar'])) {
             $id = $_GET['idmodificar'];
             $datos_modificar = $obj->exec_instruction("Select * from producto where PK_producto = '$id'");
             $categoria = $obj->ListarCategorias("Select * from categoria", $datos_modificar[0][5]);
+        } else {
+            $categoria = $obj->ListarCategorias("Select * from categoria", -1);
         }
-        else{
-             $categoria = $obj->ListarCategorias("Select * from categoria", -1);}
 
         $textobuscar = $_POST['txtbuscarque'];
         $result = $obj->exec_instruction("Select * from producto where Nombre like '%$textobuscar%'");
@@ -92,19 +102,19 @@
         <!-- Product Registration Start -->
         <div class="container-xxl py-5">
             <div class="container">
-                <div class="row g-5 ">
+                <div class="row g-5">
                     <div class="col-lg-8">
                         <h5 class="section-title ff-secondary text-start text-primary fw-normal">Registro de Productos
                         </h5>
                         <h1 class="mb-4">Registrar un nuevo producto</h1>
                         <div class="mb-3">
                             <div class="container-xxl py-5">
-
                                 <form id="productForm" action="Registro.php" method="post">
                                     <div class="mb-3">
                                         <label for="txtnombre" class="form-label">Nombre del Producto</label>
                                         <input type="text" id="txtnombre" name="txtnombre" class="form-control"
-                                            placeholder="Nombre">
+                                            placeholder="Nombre"
+                                            value="<?php echo isset($datos_modificar[0]['nombre']) ? $datos_modificar[0]['nombre'] : ''; ?>">
                                     </div>
                                     <div class="mb-3">
                                         <label for="txtPKcategoria" class="form-label">Categoria</label>
@@ -116,22 +126,25 @@
                                     <div class="mb-3">
                                         <label for="txtestado" class="form-label">Estado</label>
                                         <select class="form-select" name="txtestado" id="txtestado">
-                                            <option selected value="1">--- vacio ---</option>
-                                            <option value="2">Disponible
+                                            <option value="1" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == '1' ? 'selected' : ''; ?>>--- vacio ---
                                             </option>
-                                            <option value="3">Agotado
+                                            <option value="2" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == '2' ? 'selected' : ''; ?>>Disponible
+                                            </option>
+                                            <option value="3" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == '3' ? 'selected' : ''; ?>>Agotado
                                             </option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="txtdescripcion" class="form-label">Descripción</label>
                                         <textarea class="form-control" id="txtdescripcion" name="txtdescripcion"
-                                            placeholder="Descripcion" rows="3"></textarea>
+                                            placeholder="Descripcion"
+                                            rows="3"><?php echo isset($datos_modificar[0]['descripcion']) ? $datos_modificar[0]['descripcion'] : ''; ?></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label for="txtprecio" class="form-label">Precio</label>
                                         <input type="number" class="form-control" id="txtprecio" name="txtprecio"
-                                            placeholder="Precio">
+                                            placeholder="Precio"
+                                            value="<?php echo isset($datos_modificar[0]['precio']) ? $datos_modificar[0]['precio'] : ''; ?>">
                                     </div>
                                     <div class="mb-3">
                                         <label for="txtimagen" class="form-label">Imagen del Producto</label>
@@ -139,18 +152,14 @@
                                             placeholder="Imagen" accept="image/*">
                                     </div>
                                     <?php
-                                    if (isset($_GET['idmodificar'])) {
-                                        echo '<div>
-                                        <input type="submit" id="btnactualizar" name="btnactualizar" value="Actualizar" >
-                                        </div>';
+                                    if (isset($datos_modificar)) {
+                                        echo '<input type="hidden" name="id_producto" value="' . $datos_modificar[0]['PK_producto'] . '">';
+                                        echo '<div><input type="submit" id="btnactualizar" name="btnactualizar" value="Actualizar"></div>';
                                     } else {
-                                        echo '<div>
-                                        <input type="submit" id="btnregistrar" name="btnregistrar" value="Registrar" >
-                                        </div>';
+                                        echo '<div><input type="submit" id="btnregistrar" name="btnregistrar" value="Registrar"></div>';
                                     }
                                     ?>
                                 </form>
-
 
                                 <div class="card mb-4">
                                     <div class="card-header">
@@ -159,8 +168,7 @@
                                     <div class="card-body">
                                         <form action="Registro.php" method="post">
                                             <div class="mb-3">
-                                                <label for="txtbuscarque" class="form-label">Buscar por
-                                                    Nombre</label>
+                                                <label for="txtbuscarque" class="form-label">Buscar por Nombre</label>
                                                 <input type="text" id="txtbuscarque" name="txtbuscarque"
                                                     class="form-control" placeholder="Ingrese el nombre a buscar">
                                             </div>
@@ -172,37 +180,36 @@
                                     </div>
                                 </div>
 
-                                <!--tabla de productos -->
-
+                                <!-- Tabla de productos -->
                                 <div class="col-lg-6">
-                                    <h5 class="section-title ff-secondary text-start text-primary fw-normal">
-                                        Productos Registrados</h5>
+                                    <h5 class="section-title ff-secondary text-start text-primary fw-normal">Productos
+                                        Registrados</h5>
                                     <h1 class="mb-4">Lista de productos</h1>
                                     <div id="productList" class="product-list">
                                         <?php
                                         foreach ($result as $producto) {
-                                            //var_dump($producto);
                                             echo '<div class="d-flex align-items-center mb-4">
-                                            <img class="flex-shrink-0 img-fluid rounded" src="' . $producto['direccion_imagen'] . '" alt="" style="width: 80px;">
-                                            <div class="w-100 d-flex flex-column text-start ps-4">
-                                            <h5 class="d-flex justify-content-between border-bottom pb-2">
-                                            <span>' . $producto['nombre'] . '</span>
-                                            <span class="text-primary">$' . $producto['precio'] . '</span>
-                                            </h5>
-                                            <small class="fst-italic">' . $producto['descripcion'] . '</small>
-                                            </div>
-                                            <form method="POST" style="display: inline;">
-                                            <input type="hidden" name="id_producto" value="' . $producto['PK_producto'] . '">
-                                            <button type="submit" name="idmodificar" class="btn btn-primary m-2">Editar</button>
-                                            </form>
-                                            </div>';
-                                            } ?>
-                                        </div>
+                                    <img class="flex-shrink-0 img-fluid rounded" src="' . $producto['direccion_imagen'] . '" alt="" style="width: 80px;">
+                                    <div class="w-100 d-flex flex-column text-start ps-4">
+                                    <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                    <span>' . $producto['nombre'] . '</span>
+                                    <span class="text-primary">$' . $producto['precio'] . '</span>
+                                    </h5>
+                                    <small class="fst-italic">' . $producto['descripcion'] . '</small>
+                                    </div>
+                                    <form method="GET" action="Registro.php" style="display: inline;">
+                                    <input type="hidden" name="idmodificar" value="' . $producto['PK_producto'] . '">
+                                    <button type="submit" class="btn btn-primary m-2">Editar</button>
+                                    </form>
+                                    </div>';
+                                        }
+                                        ?>
                                     </div>
                                 </div>
-                            </div></div>
-            
-            <!-- Product Registration End -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Registration End -->
 
                     <!-- Footer Start -->
                     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn " data-wow-delay="0.1s ">
