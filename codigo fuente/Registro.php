@@ -32,6 +32,10 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+
+
+
 </head>
 
 <body>
@@ -65,17 +69,31 @@
         $obj = new BD_PDO();
 
         if (isset($_POST['btnregistrar'])) {
+            var_dump($_FILES);
             $nombre = $_POST['txtnombre'];
             $PKcategoria = $_POST['txtPKcategoria'];
             $estado = $_POST['txtestado'];
             $descripcion = $_POST['txtdescripcion'];
             $precio = $_POST['txtprecio'];
 
+            if(isset($_FILES['file']) && $_FILES['file']['error'] == 0){
+                $ruta_destino = 'img/'; // Carpeta donde se guardará la imagen
+                $nombre_imagen = basename($_FILES['file']['name']);
+                $ruta_completa = $ruta_destino . $nombre_imagen;
+                
+                // Mover la imagen a la carpeta
+                if(move_uploaded_file($_FILES['file']['tmp_name'], $ruta_completa)){
+                    // Guardar la ruta en la base de datos
+                    $obj->exec_instruction("INSERT INTO producto (Nombre, direccion_imagen, FK_categoria, Estado, Descripcion, Precio)
+                    VALUES ('$nombre', '$ruta_completa', '$PKcategoria', '$estado', '$descripcion', '$precio')");
+                } else {
+                    echo "Error al mover la imagen.";
+                }
+            } else {
+                echo "Error al subir la imagen.";
+            }
+        }
 
-            $obj->exec_instruction("INSERT INTO producto (Nombre, FK_categoria, Estado, Descripcion, Precio)
-    VALUES ('$nombre', '$PKcategoria', '$estado', '$descripcion', '$precio')");
-        } 
-        
         if (isset($_POST['btnactualizar'])) {
             $id = $_POST['id_producto'];
             $nombre = $_POST['txtnombre'];
@@ -83,10 +101,25 @@
             $estado = $_POST['txtestado'];
             $descripcion = $_POST['txtdescripcion'];
             $precio = $_POST['txtprecio'];
+
+            $update_query = "UPDATE producto SET Nombre = '$nombre', FK_categoria = '$PKcategoria', Estado = '$estado', Descripcion = '$descripcion', Precio = '$precio'";
+
+            if(isset($_FILES['file']) && $_FILES['file']['error'] == 0){
+                $ruta_destino = 'img/';
+                $nombre_imagen = basename($_FILES['file']['name']);
+                $ruta_completa = $ruta_destino . $nombre_imagen;
+                if(move_uploaded_file($_FILES['file']['tmp_name'], $ruta_completa)){
+                    $update_query .= ", direccion_imagen = '$ruta_completa'";
+                } else {
+                    echo "Error al mover la imagen.";
+                }
+            }
+            
+            $update_query .= " WHERE PK_producto = '$id'";
+            $obj->exec_instruction($update_query);
+          } 
         
-            $obj->exec_instruction("UPDATE producto SET Nombre = '$nombre', FK_categoria = '$PKcategoria', Estado = '$estado', Descripcion = '$descripcion', Precio = '$precio' WHERE PK_producto = '$id'");
-        }
-         elseif (isset($_GET['idmodificar'])) {
+        elseif (isset($_GET['idmodificar'])) {
             $id = $_GET['idmodificar'];
             $datos_modificar = $obj->exec_instruction("Select * from producto where PK_producto = '$id'");
             $categoria = $obj->ListarCategorias("Select * from categoria", $datos_modificar[0][5]);
@@ -109,7 +142,7 @@
                         <h1 class="mb-4">Registrar un nuevo producto</h1>
                         <div class="mb-3">
                             <div class="container-xxl py-5">
-                                <form id="productForm" action="Registro.php" method="post">
+                                <form id="productForm" action="Registro.php" method="post" enctype="multipart/form-data">
                                     <div class="mb-3">
                                         <label for="txtnombre" class="form-label">Nombre del Producto</label>
                                         <input type="text" id="txtnombre" name="txtnombre" class="form-control"
@@ -146,10 +179,9 @@
                                             placeholder="Precio"
                                             value="<?php echo isset($datos_modificar[0]['precio']) ? $datos_modificar[0]['precio'] : ''; ?>">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="txtimagen" class="form-label">Imagen del Producto</label>
-                                        <input type="file" class="form-control" id="txtimagen" name="txtimagen"
-                                            placeholder="Imagen" accept="image/*">
+                                    <div>
+                                        <label for="file">Selecciona una imagen:</label>
+                                        <input type="file"  class="btn" name="file" id="file">
                                     </div>
                                     <?php
                                     if (isset($datos_modificar)) {
