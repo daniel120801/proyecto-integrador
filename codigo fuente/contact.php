@@ -1,3 +1,58 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "reseñas";
+
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar conexión
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Recibir datos del formulario
+$usuario = $_POST['usuario'];
+$calificacion = $_POST['calificacion'];
+$comentario = $_POST['comentario'];
+$fecha = $_POST['fecha'];
+
+// Obtener el ID del usuario (suponiendo que ya existe el usuario en la tabla `usuarios`)
+$result = $conn->query("SELECT PK_usuarios FROM usuarios WHERE nombre = '$usuario'");
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $FK_usuarios = $row['PK_usuarios'];
+} else {
+    die("Error: Usuario no encontrado.");
+}
+
+// Insertar datos en la tabla `resenas`
+$sql = "INSERT INTO resenas (FK_usuarios, calificacion, comentario, fecha) VALUES ('$FK_usuarios', '$calificacion', '$comentario', '$fecha')";
+
+if ($conn->query($sql) === TRUE) {
+    // Obtener todas las reseñas después de la inserción
+    $result = $conn->query("
+        SELECT resenas.calificacion, resenas.comentario, resenas.fecha, usuarios.nombre AS usuario
+        FROM resenas
+        JOIN usuarios ON resenas.FK_usuarios = usuarios.PK_usuarios
+        ORDER BY resenas.fecha DESC
+    ");
+    $reviews = array();
+
+    while($row = $result->fetch_assoc()) {
+        $reviews[] = $row;
+    }
+
+    echo json_encode($reviews);
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+$conn->close();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -313,6 +368,61 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script>
+    document.getElementById('reviewForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        const usuario = document.getElementById('name').textContent;
+        const calificacion = document.querySelector('input[name="rating"]:checked').value;
+        const comentario = document.getElementById('subject').value;
+
+        const formData = new FormData();
+        formData.append('usuario', usuario);
+        formData.append('calificacion', calificacion);
+        formData.append('comentario', comentario);
+        formData.append('fecha', formattedDate);
+
+        fetch('submit_review.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            updateReviews(data);
+            document.getElementById('reviewForm').reset();
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    function updateReviews(reviews) {
+        const commentsSection = document.querySelector('.contact-form-wrapper .col-12:last-child');
+        commentsSection.innerHTML = '<h3 class="mb-5">Comentarios que has hecho.</h3>';
+        
+        reviews.forEach(review => {
+            const reviewHtml = `
+                <div class="fb-comment">
+                    <div class="fb-comment-header">
+                        <div class="fb-comment-info">
+                            <h6>${review.usuario}</h6>
+                            <span>${review.fecha}</span>
+                        </div>
+                    </div>
+                    <div class="fb-comment-body">
+                        <p class="mb-0">${review.comentario}</p>
+                    </div>
+                </div>
+            `;
+            commentsSection.innerHTML += reviewHtml;
+        });
+    }
+</script>
+
 </body>
 
 </html>
