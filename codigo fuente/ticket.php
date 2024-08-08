@@ -39,8 +39,8 @@ require "PHP/Utils.php";
             </div>
         </div>
     </div>
-
     <!-- Navbar & Hero End -->
+
     <div class="container">
         <div class=" tab-content text-center wow fadeInUp"
             style=" border: 4px solid rgb(254, 175, 57); border-radius: 20px;    box-shadow: 0 0 45px rgba(0, 0, 0, .3);">
@@ -61,6 +61,7 @@ require "PHP/Utils.php";
             </div>
             <div class="text-center wow fadeInUp mt-5 mb-4">
 
+                <a id="confirmar" href="" class="btn btn-primary rounded-3 py-sm-2 px-sm-2">Confirmar</a>
                 <a id="confirmar" href="" class="btn btn-primary rounded-3 py-sm-2 px-sm-2">Confirmar</a>
 
             </div>

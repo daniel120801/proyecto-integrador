@@ -6,6 +6,8 @@
 -- Tiempo de generación: 15-07-2024 a las 20:55:20
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
+CREATE DATABASE db_sushi;
+use db_sushi;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -25,7 +27,7 @@ DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE  IF NOT EXISTS `Actualizar_pedido` (IN `idDetpedido` INT, IN `idProducto` INT, IN `nombreproducto` VARCHAR(255), IN `cantidad` INT, IN `precio` FLOAT)   BEGIN
+CREATE  PROCEDURE  IF NOT EXISTS `Actualizar_pedido` (IN `idDetpedido` INT, IN `idProducto` INT, IN `nombreproducto` VARCHAR(255), IN `cantidad` INT, IN `precio` FLOAT)   BEGIN
 		UPDATE producto
         SET nombre = nombreproducto
         WHERE PK_producto = idProducto;
@@ -75,11 +77,10 @@ DELIMITER ;
 --
 -- Estructura de tabla para la tabla `categoria`
 --
-
 CREATE TABLE IF NOT EXISTS `categoria` (
   `PK_categoria` int(11) NOT NULL,
   `nombre_categoria` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+);
 
 --
 -- Volcado de datos para la tabla `categoria`
