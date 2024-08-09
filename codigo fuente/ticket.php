@@ -13,7 +13,9 @@ require "PHP/Utils.php";
     <?php
 
     $utils = new ticketUtils();
-    $utils->getUser();
+    $r = $utils->getUser();
+
+
     ?>
     <!-- Navbar & Hero Start -->
     <div class="container-xxl position-relative p-0">
@@ -40,7 +42,13 @@ require "PHP/Utils.php";
         </div>
     </div>
     <!-- Navbar & Hero End -->
+    <?php if ($r == "error") {
+        header("location: menu.php");
 
+        exit();
+    }
+
+    ?>
     <div class="container">
         <div class=" tab-content text-center wow fadeInUp"
             style=" border: 4px solid rgb(254, 175, 57); border-radius: 20px;    box-shadow: 0 0 45px rgba(0, 0, 0, .3);">
@@ -59,12 +67,12 @@ require "PHP/Utils.php";
                 </div>
 
             </div>
-            <div class="text-center wow fadeInUp mt-5 mb-4">
+            <form class="text-center wow fadeInUp mt-5 mb-4">
 
-                <a id="confirm" href="" class="btn btn-primary rounded-3 py-sm-2 px-sm-2">Confirmar</a>
-                <a id="delete" href="" class="btn btn-primary rounded-3 py-sm-2 px-sm-2">Cancelar</a>
+                <a id="confirm" href="menu.php?" class="btn btn-primary rounded-3 py-sm-2 px-sm-2">Confirmar</a>
+                <a id="delete" href="menu.php" class="btn btn-primary rounded-3 py-sm-2 px-sm-2">Cancelar</a>
 
-            </div>
+            </form>
         </div>
         <!-- Footer Start -->
         <?php echo getFooter(); ?>

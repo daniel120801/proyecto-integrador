@@ -149,271 +149,275 @@
 
 
 
-        </div>
-        <br>
-        <!-- Categorias Start -->
-        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
-            <div class="position-relative d-inline-block w-100">
-                <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5 position-relative">
-                    <li class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill"
-                            href="#tab-1">
-                            <i class="fa fa-coffee fa-2x text-primary"></i>
-                            <div class="ps-3">
-                                <h6 class="mt-n1 mb-0">Entradas</h6>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
-                            <i class="fa fa-hamburger fa-2x text-primary"></i>
-                            <div class="ps-3">
-                                <h6 class="mt-n1 mb-0">Rollos Naturales</h6>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill"
-                            href="#tab-3">
-                            <i class="fa fa-utensils fa-2x text-primary"></i>
-                            <div class="ps-3">
-                                <h6 class="mt-n1 mb-0">Kombos y Postres</h6>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <!-- Ícono de carrito separado -->
-                <ul class="nav nav-pills d-inline-flex justify-content-center mt-3 position-relative">
-                    <li class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-4">
-                            <i class="fa fa-shopping-cart fa-2x text-primary"></i>
-                            <div class="ps-3">
-                                <h6 class="mt-n1 mb-0">Carrito</h6>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
             </div>
-        </div>
-        <!-- Categorias End -->
-
-
-        <!-- Tab Content Start -->
-        <div class="tab-content">
-            <!-- Entradas -->
-            <div id="tab-1" class="tab-pane fade show active ">
-                <div class="row g-4">
-                    <?php
-                    $sql = "SELECT * FROM producto WHERE FK_categoria = 14 AND estado = 'disponible'";
-
-                    $result = $bd->exec_instruction($sql);
-                    foreach ($result as $row) {
-                        echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]);
-                    }
-                    ?>
+            <br>
+            <!-- Categorias Start -->
+            <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
+                <div class="position-relative d-inline-block w-100">
+                    <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5 position-relative">
+                        <li class="nav-item">
+                            <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill"
+                                href="#tab-1">
+                                <i class="fa fa-coffee fa-2x text-primary"></i>
+                                <div class="ps-3">
+                                    <h6 class="mt-n1 mb-0">Entradas</h6>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill"
+                                href="#tab-2">
+                                <i class="fa fa-hamburger fa-2x text-primary"></i>
+                                <div class="ps-3">
+                                    <h6 class="mt-n1 mb-0">Rollos Naturales</h6>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill"
+                                href="#tab-3">
+                                <i class="fa fa-utensils fa-2x text-primary"></i>
+                                <div class="ps-3">
+                                    <h6 class="mt-n1 mb-0">Kombos y Postres</h6>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- Ícono de carrito separado -->
+                    <ul class="nav nav-pills d-inline-flex justify-content-center mt-3 position-relative">
+                        <li class="nav-item">
+                            <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill"
+                                href="#tab-4">
+                                <i class="fa fa-shopping-cart fa-2x text-primary"></i>
+                                <div class="ps-3">
+                                    <h6 class="mt-n1 mb-0">Carrito</h6>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
+            <!-- Categorias End -->
 
-            <!-- Rollos Naturales -->
-            <div id="tab-2" class="tab-pane fade ">
-                <div class="row g-4">
-                    <?php
-                    $sql = "SELECT * FROM producto WHERE FK_categoria = 15 AND estado = 'disponible'";
 
-                    $result = $bd->exec_instruction($sql);
+            <!-- Tab Content Start -->
+            <div class="tab-content">
+                <!-- Entradas -->
+                <div id="tab-1" class="tab-pane fade show active ">
+                    <div class="row g-4">
+                        <?php
+                        $sql = "SELECT * FROM producto WHERE FK_categoria = 14 AND estado = 'disponible'";
 
-                    foreach ($result as $row) {
-                        echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]);
-                    }
-                    ?>
+                        $result = $bd->exec_instruction($sql);
+                        foreach ($result as $row) {
+                            echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]);
+                        }
+                        ?>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Kombos y Postres -->
-            <div id="tab-3" class="tab-pane fade ">
-                <div class="row g-4">
-                    <?php
-                    $sql = "SELECT * FROM producto WHERE FK_categoria = 16 AND estado = 'disponible'";
+                <!-- Rollos Naturales -->
+                <div id="tab-2" class="tab-pane fade ">
+                    <div class="row g-4">
+                        <?php
+                        $sql = "SELECT * FROM producto WHERE FK_categoria = 15 AND estado = 'disponible'";
 
-                    $result = $bd->exec_instruction($sql);
+                        $result = $bd->exec_instruction($sql);
 
-                    foreach ($result as $row) {
-                        echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]);
-                    }
-                    ?>
+                        foreach ($result as $row) {
+                            echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]);
+                        }
+                        ?>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Carrito -->
-            <div id="tab-4" class="tab-pane fade">
-                <!-- Productos Agregados -->
-                <div class="container my-5">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Cantidad</th>
-                                    <th scope="col">Precio</th>
-                                    <th scope="col">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = 1 "; // Ajusta la consulta según tu lógica
-                                
-                                $result = $bd->exec_instruction($sql);
-                                foreach ($result as $row) { ?>
+                <!-- Kombos y Postres -->
+                <div id="tab-3" class="tab-pane fade ">
+                    <div class="row g-4">
+                        <?php
+                        $sql = "SELECT * FROM producto WHERE FK_categoria = 16 AND estado = 'disponible'";
+
+                        $result = $bd->exec_instruction($sql);
+
+                        foreach ($result as $row) {
+                            echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]);
+                        }
+                        ?>
+                    </div>
+                </div>
+
+                <!-- Carrito -->
+                <div id="tab-4" class="tab-pane fade">
+                    <!-- Productos Agregados -->
+                    <div class="container my-5">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-dark">
                                     <tr>
-                                        <td><?php echo htmlspecialchars($row['nombre']); ?></td>
-                                        <td><?php echo htmlspecialchars($row[3]); ?></td>
-                                        <td><?php echo htmlspecialchars($row[4]); ?></td>
-                                        <td>
-                                            <a href="menu.php?idpremodificar=<?php echo htmlspecialchars($row[0]); ?>"
-                                                class="btn btn-primary me-3 ">Modificar</a>
-
-                                            <a href="menu.php?eliminar=<?php echo htmlspecialchars($row[0]); ?>"
-                                                class="btn btn-danger">Eliminar</a>
-                                        </td>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Acciones</th>
                                     </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- Productos Agregados End -->
-            </div>
-        </div>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = 1 "; // Ajusta la consulta según tu lógica
+                                    
+                                    $result = $bd->exec_instruction($sql);
+                                    foreach ($result as $row) { ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($row['nombre']); ?></td>
+                                            <td><?php echo htmlspecialchars($row[3]); ?></td>
+                                            <td><?php echo htmlspecialchars($row[4]); ?></td>
+                                            <td>
+                                                <a href="menu.php?idpremodificar=<?php echo htmlspecialchars($row[0]); ?>"
+                                                    class="btn btn-primary me-3 ">Modificar</a>
 
-        <!-- Tab Content End -->
-        <?php
-        if (isset($modificar)) {
-
-
-            ?>
-            <Form action="menu.php" method="get" class="container mt-3"
-                onsubmit="CrearURLModificar(event,<?php echo $modificar[0]['PK_detpedido']; ?>,<?php echo $modificar[0]['FK_producto']; ?>)">
-                <h5></h5>
-                <div class="row">
-                    <div class="col text-start">
-                        <label>Nombre</label>
-
-                    </div>
-                    <div class="col text-start">
-                        <input class="form-control" type="text" id="nombre" name="nombre"
-                            value="<?php echo $modificar[0]['nombre']; ?>"></input>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col text-start">
-                        <label>Cantidad</label>
-
-                    </div>
-                    <div class="col text-start">
-                        <input class="form-control" type="number" id="cantidad" name="cantidad"
-                            value="<?php echo $modificar[0]['cantidad']; ?>"></input>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col text-start">
-                        <label>Precio</label>
-
-                    </div>
-                    <div class="col text-start">
-                        <input class="form-control" type="number" id="precio" name="precio"
-                            value="<?php echo $modificar[0]['precio']; ?>"></input>
-                    </div>
-                </div>
-                <button type="submit" id="modificar" name="modificar" class="btn btn-primary">Modificar</button>
-
-
-            </Form>
-        <?php } ?>
-
-
-        <!-- Footer Start -->
-        <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-            <div class="container py-5">
-                <div class="row g-5">
-                    <div class="col-lg-3 col-md-6">
-                        <h4 class="text-white mb-3">Company</h4>
-                        <a class="btn btn-link" href="">About Us</a>
-                        <a class="btn btn-link" href="">Contact Us</a>
-                        <a class="btn btn-link" href="">Reservation</a>
-                        <a class="btn btn-link" href="">Privacy Policy</a>
-                        <a class="btn btn-link" href="">Terms & Condition</a>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h4 class="text-white mb-3">Contact</h4>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                        <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                                                <a href="menu.php?eliminar=<?php echo htmlspecialchars($row[0]); ?>"
+                                                    class="btn btn-danger">Eliminar</a>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h4 class="text-white mb-3">Opening</h4>
-                        <h5 class="text-light fw-normal">Monday - Saturday</h5>
-                        <p>09AM - 09PM</p>
-                        <h5 class="text-light fw-normal">Sunday</h5>
-                        <p>10AM - 08PM</p>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h4 class="text-white mb-3">Newsletter</h4>
-                        <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                        <div class="position-relative mx-auto" style="max-width: 400px;">
-                            <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text"
-                                placeholder="Your email">
-                            <button type="button"
-                                class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                        </div>
-                    </div>
+                    <!-- Productos Agregados End -->
                 </div>
             </div>
-            <div class="container">
-                <div class="copyright">
+
+            <!-- Tab Content End -->
+            <?php
+            if (isset($modificar)) {
+
+
+                ?>
+                <Form action="menu.php" method="get" class="container mt-3"
+                    onsubmit="CrearURLModificar(event,<?php echo $modificar[0]['PK_detpedido']; ?>,<?php echo $modificar[0]['FK_producto']; ?>)">
+                    <h5></h5>
                     <div class="row">
-                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
+                        <div class="col text-start">
+                            <label>Nombre</label>
 
-                            Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
                         </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            <div class="footer-menu">
-                                <a href="">Inicio</a>
-                                <a href="">Cookies</a>
-                                <a href="">Help</a>
-                                <a href="">FQAs</a>
+                        <div class="col text-start">
+                            <input class="form-control" type="text" id="nombre" name="nombre"
+                                value="<?php echo $modificar[0]['nombre']; ?>"></input>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col text-start">
+                            <label>Cantidad</label>
+
+                        </div>
+                        <div class="col text-start">
+                            <input class="form-control" type="number" id="cantidad" name="cantidad"
+                                value="<?php echo $modificar[0]['cantidad']; ?>"></input>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col text-start">
+                            <label>Precio</label>
+
+                        </div>
+                        <div class="col text-start">
+                            <input class="form-control" type="number" id="precio" name="precio"
+                                value="<?php echo $modificar[0]['precio']; ?>"></input>
+                        </div>
+                    </div>
+                    <button type="submit" id="modificar" name="modificar" class="btn btn-primary">Modificar</button>
+
+
+                </Form>
+            <?php } ?>
+
+
+            <!-- Footer Start -->
+            <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+                <div class="container py-5">
+                    <div class="row g-5">
+                        <div class="col-lg-3 col-md-6">
+                            <h4 class="text-white mb-3">Company</h4>
+                            <a class="btn btn-link" href="">About Us</a>
+                            <a class="btn btn-link" href="">Contact Us</a>
+                            <a class="btn btn-link" href="">Reservation</a>
+                            <a class="btn btn-link" href="">Privacy Policy</a>
+                            <a class="btn btn-link" href="">Terms & Condition</a>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <h4 class="text-white mb-3">Contact</h4>
+                            <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
+                            <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+                            <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                            <div class="d-flex pt-2">
+                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-outline-light btn-social" href=""><i
+                                        class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                                <a class="btn btn-outline-light btn-social" href=""><i
+                                        class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <h4 class="text-white mb-3">Opening</h4>
+                            <h5 class="text-light fw-normal">Monday - Saturday</h5>
+                            <p>09AM - 09PM</p>
+                            <h5 class="text-light fw-normal">Sunday</h5>
+                            <p>10AM - 08PM</p>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <h4 class="text-white mb-3">Newsletter</h4>
+                            <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                            <div class="position-relative mx-auto" style="max-width: 400px;">
+                                <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text"
+                                    placeholder="Your email">
+                                <button type="button"
+                                    class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="copyright">
+                        <div class="row">
+                            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                                &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
+
+                                Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                            </div>
+                            <div class="col-md-6 text-center text-md-end">
+                                <div class="footer-menu">
+                                    <a href="">Inicio</a>
+                                    <a href="">Cookies</a>
+                                    <a href="">Help</a>
+                                    <a href="">FQAs</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Footer End -->
         </div>
-        <!-- Footer End -->
-    </div>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/wow/wow.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="lib/tempusdominus/js/moment.min.js"></script>
+        <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+        <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+        <!-- Template Javascript -->
+        <script src="js/main.js"></script>
 </body>
 
 </html>

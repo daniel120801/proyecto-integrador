@@ -3,17 +3,23 @@
 require 'conection.php';
 class ticketUtils
 {
-    public $idPedido = 1;
+    public $idPedido = -1;
     public $pedido;
     public function getUser()
     {
+
+        if (!isset($_POST['id_pedido'])) {
+
+            return "error";
+        }
+        $this->idPedido = $_POST['id_pedido'];
 
         $bd = new BD_PDO();
 
         $this->pedido = $bd->exec_instruction("SELECT 
         CONCAT(usuarios.nombre, ' ', usuarios.apellido) nombre,pedido.fecha,pedido.direccion,pedido.metodo_pago,pedido.tipo_pedido 
         FROM pedido INNER JOIN usuarios ON pedido.FK_usuario = usuarios.PK_id WHERE pedido.PK_pedido = " . $this->idPedido . ";");
-
+        return "success";
 
 
     }
@@ -88,7 +94,6 @@ class ticketUtils
                                 <th scope="col">Cantidad</th>
 
                                 <th scope="col">Precio</th>
-                                <th scope="col">acciones</th>
                             </tr>
                         </thead> <tbody>';
         $total = 0;
@@ -102,9 +107,7 @@ class ticketUtils
                                 <td>' . $renglon['cantidad'] . '</td>
 
                                 <td>$' . $renglon['precio'] . '</td>
-                                <td>
-                                    <button class="btn btn-primary" style="width: 30px; height:30px;">-</button>
-                                </td>
+                             
                             </tr>';
                 $total += $renglon['cantidad'] * $renglon['precio'];
             }
