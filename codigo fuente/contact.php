@@ -1,58 +1,35 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "reseñas";
+// Conexion a la base de datos
+require "PHP/conection.php";
+$bd = new BD_PDO();
+// Verificar la conexión
 
-// Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar conexión
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['submitComment'])) {
+        // Insertar el comentario en la base de datos
+        $comentario = $_POST['comment'];
+        $calificacion = $_POST['rating'];
+        $fecha = date("Y-m-d");
 
-// Recibir datos del formulario
-$usuario = $_POST['usuario'];
-$calificacion = $_POST['calificacion'];
-$comentario = $_POST['comentario'];
-$fecha = $_POST['fecha'];
+        $sql = "INSERT INTO resenas (FK_usuarios, calificacion, comentario, fecha) VALUES (?, $comentario, $calificacion, $fecha)";
+        $bd->exec_instruction($sql);
+        
 
-// Obtener el ID del usuario (suponiendo que ya existe el usuario en la tabla `usuarios`)
-$result = $conn->query("SELECT PK_usuarios FROM usuarios WHERE nombre = '$usuario'");
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $FK_usuarios = $row['PK_usuarios'];
-} else {
-    die("Error: Usuario no encontrado.");
-}
-
-// Insertar datos en la tabla `resenas`
-$sql = "INSERT INTO resenas (FK_usuarios, calificacion, comentario, fecha) VALUES ('$FK_usuarios', '$calificacion', '$comentario', '$fecha')";
-
-if ($conn->query($sql) === TRUE) {
-    // Obtener todas las reseñas después de la inserción
-    $result = $conn->query("
-        SELECT resenas.calificacion, resenas.comentario, resenas.fecha, usuarios.nombre AS usuario
-        FROM resenas
-        JOIN usuarios ON resenas.FK_usuarios = usuarios.PK_usuarios
-        ORDER BY resenas.fecha DESC
-    ");
-    $reviews = array();
-
-    while($row = $result->fetch_assoc()) {
-        $reviews[] = $row;
+    } elseif (isset($_POST['deleteComment'])) {
+        // Eliminar comentario
+        $resenaId = $_POST['resenaId'];
+        $sql = "DELETE FROM resenas WHERE PK_resenas = $resenaId";
+        $bd->exec_instruction($sql);
     }
 
-    echo json_encode($reviews);
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
 }
 
-$conn->close();
+
+// Mostrar los comentarios
+$sql = "SELECT PK_resenas, calificacion, comentario, fecha FROM resenas ORDER BY fecha DESC";
+$resultado = $bd->exec_instruction($sql);
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,33 +39,19 @@ $conn->close();
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
-    <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&family=Pacifico&display=swap"
         rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
     <style>
+        /* Estilos personalizados */
         .contact-form-wrapper {
             display: flex;
             justify-content: center;
@@ -98,331 +61,179 @@ $conn->close();
             max-width: 600px;
             width: 100%;
         }
-    </style>
 
-    <style>
-        .rating {
-            display: flex;
-            justify-content: space-between;
-            width: 150px;
+        .comment-form-container {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
         }
 
-        .rating input {
+        .comment-row {
+            margin-bottom: 15px;
+        }
+
+        .comment-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .comment-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .posted-by {
+            font-weight: bold;
+        }
+
+        .star-rating-display {
+            margin-bottom: 10px;
+            color: #f2b01e;
+        }
+
+        .comment-text {
+            margin-bottom: 10px;
+        }
+
+        .outer-comment {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .outer-comment>li {
+            margin-bottom: 15px;
+        }
+
+        .dropdown-menu {
             display: none;
         }
 
-        .rating label {
-            font-size: 30px;
-            color: #ccc;
-            cursor: pointer;
-        }
-
-        .rating input:checked~label,
-        .rating label:hover,
-        .rating label:hover~label {
-            color: #ffdd00;
+        .dropdown:hover .dropdown-menu {
+            display: block;
         }
     </style>
-
 </head>
 
 <body>
     <div class="container-xxl bg-white p-0">
-        <!-- Spinner Start -->
-        <div id="spinner"
-            class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-        <!-- Spinner End -->
-
         <!-- Navbar & Hero Start -->
         <div class="container-xxl position-relative p-0">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
-                <a href="" class="navbar-brand p-0">
-                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Restoran</h1>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto py-0 pe-4">
-                        <a href="index.html" class="nav-item nav-link">Home</a>
-                        <a href="about.html" class="nav-item nav-link">About</a>
-                        <a href="service.html" class="nav-item nav-link">Service</a>
-                        <a href="menu.html" class="nav-item nav-link">Menu</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                            <div class="dropdown-menu m-0">
-                                <a href="booking.html" class="dropdown-item">Booking</a>
-                                <a href="team.html" class="dropdown-item">Our Team</a>
-                                <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            </div>
-                        </div>
-                        <a href="contact.html" class="nav-item nav-link active">Contact</a>
-                    </div>
-                    <a href="" class="btn btn-primary py-2 px-4">Book A Table</a>
-                </div>
-            </nav>
-
-            <div class="container-xxl py-5 bg-dark hero-header mb-5">
-                <div class="container text-center my-5 pt-5 pb-4">
-                    <h1 class="display-3 text-white mb-3 animated slideInDown">Valóranos</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center text-uppercase">
-
-                        </ol>
-                    </nav>
-                </div>
-            </div>
+            <!-- Código del navbar omitido para brevedad -->
         </div>
         <!-- Navbar & Hero End -->
 
         <!-- Contact Start -->
-        <div class="container-xxl py-5">
+        < class="container-xxl py-5">
             <div class="container">
                 <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                    <h5 class="section-title ff-secondary text-center text-primary fw-normal">Dinos, tu eexperencia.
+                    <h5 class="section-title ff-secondary text-center text-primary fw-normal">Dinos, tu experiencia.
                     </h5>
-                    <h1 class="mb-5">Envíanos tu reseña</h1>
-                    <h5 id="name">NombreDeUsuario</h5>
+                    <h1 class="mb-5">Envíanos tu comentario</h1>
                 </div>
+
                 <div class="row g-4 contact-form-wrapper">
                     <div class="col-12 contact-form">
                         <div class="wow fadeInUp" data-wow-delay="0.2s">
-                            <form>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="rating">Valoración</label>
-                            <div class="form-floating">
-                                <div class="rating">
-                                    <input type="radio" id="star1" name="rating" value="1">
-                                    <label for="star1 ">&#9733;</label>
-                                    <input type="radio" id="star2" name="rating" value="2">
-                                    <label for="star2">&#9733;</label>
-                                    <input type="radio" id="star3" name="rating" value="3">
-                                    <label for="star3">&#9733;</label>
-                                    <input type="radio" id="star4" name="rating" value="4">
-                                    <label for="star4">&#9733;</label>
-                                    <input type="radio" id="star5" name="rating" value="5">
-                                    <label for="star5">&#9733;</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="subject" placeholder="Subject">
-                                <label for="subject">Déjanos un comentario.</label>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <button class="btn btn-primary w-100 py-3" type="submit">Enviar Reseña</button>
-                        </div>
-                    </div>
-                    </form>
-                    <div class="row g-4 contact-form-wrapper">
-                        <div class="col-12 contact-form">
-                            <div class="wow fadeInUp" data-wow-delay="0.2s">
-                                <h3 class="mb-5">Comentarios que has hecho.</h3>
-                                <div class="fb-comment">
-                                    <div class="fb-comment-header">
-                                        <div class="fb-comment-info">
-                                            <h6>Nombre de Usuario.</h6>
-                                            <span>Fecha de Publicación.</span>
+                            <div class="comment-form-container">
+                                <form action="" method="POST">
+                                    <div class="input-row">
+                                        <input type="hidden" name="comment_id" id="commentId" value="0" />
+                                        <input class="form-control" type="text" name="name" id="name"
+                                            placeholder="Nombres" required />
+                                    </div>
+                                    <div class="input-row">
+                                        <textarea class="input-field form-control" name="comment" id="comment"
+                                            placeholder="Agrega tu mensaje" required></textarea>
+                                    </div>
+                                    <div class="input-row">
+                                        <label for="rating">Calificación:</label>
+                                        <div class="star-rating">
+                                            <input type="radio" id="star5" name="rating" value="5" required /><label
+                                                for="star5" title="5 estrellas">5 estrellas</label>
+                                            <input type="radio" id="star4" name="rating" value="4" required /><label
+                                                for="star4" title="4 estrellas">4 estrellas</label>
+                                            <input type="radio" id="star3" name="rating" value="3" required /><label
+                                                for="star3" title="3 estrellas">3 estrellas</label>
+                                            <input type="radio" id="star2" name="rating" value="2" required /><label
+                                                for="star2" title="2 estrellas">2 estrellas</label>
+                                            <input type="radio" id="star1" name="rating" value="1" required /><label
+                                                for="star1" title="1 estrella">1 estrella</label>
                                         </div>
                                     </div>
-                                    <div class="fb-comment-body">
-                                        <p class="mb-0">Comentario del usuario aquí...</p>
+                                    <div>
+                                        <input type="submit" class="btn btn-primary" name="submitComment"
+                                            value="Agregar Comentario" />
                                     </div>
-                                </div>
-                                <!-- Repite esta estructura para cada comentario -->
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <script>
-                    document.getElementById('reviewForm').addEventListener('submit', function (event) {
-                        event.preventDefault();
+                <!-- Comentarios existentes -->
+                
+                <div class="mt-4">
+                    <ul class="outer-comment">
+                        <?php
+                        if (count($resultado) > 0) {
 
-                        // Obtén la fecha de hoy
-                        const today = new Date();
-                        const year = today.getFullYear();
-                        const month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
-                        const day = String(today.getDate()).padStart(2, '0');
-                        const formattedDate = `${year}-${month}-${day}`;
+                            foreach ($resultado as $fila) {
 
-                        // Recopila los datos del formulario
-                        const user = document.getElementById('name').textContent;
-                        const rating = document.querySelector('input[name="rating"]:checked').value;
-                        const subject = document.getElementById('subject').value;
 
-                        // Envia los datos del formulario, incluyendo la fecha
-                        console.log('Usuario:', user);
-                        console.log('Valoración:', rating);
-                        console.log('Comentario:', subject);
-                        console.log('Fecha:', formattedDate);
 
-                        // Aquí puedes añadir la lógica para enviar los datos al servidor
 
-                        // Limpia el formulario después de enviarlo
-                        document.getElementById('reviewForm').reset();
-                    });
-                </script>
+                                ?>
+                                <li>
+                                    <div class="comment-row">
+                                        <div class="comment-info">
+                                            <span class="star-rating-display">
+                                                <?php for ($i = 0; $i < $fila['calificacion']; $i++)
+                                                    echo "&#9733;"; ?>
+                                            </span>
+                                            <span class="posted-by"><?php echo "Usuario ID: " . $fila['PK_resenas']; ?></span>
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary btn-sm dropdown-toggle"
+                                                    type="button">...</button>
+                                                <div class="dropdown-menu">
+                                                    <form action="" method="POST">
+                                                        <input type="hidden" name="resenaId"
+                                                            value="<?php echo $fila['PK_resenas']; ?>">
+                                                        <input type="submit" name="deleteComment" value="Eliminar"
+                                                            class="dropdown-item">
+                                                    </form>
+                                                    <form action="" method="POST">
+                                                        <input type="hidden" name="resenaId"
+                                                            value="<?php echo $fila['PK_resenas']; ?>">
 
-                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-                </form>
+                                                
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="comment-text"><?php echo $fila['comentario']; ?></div>
+                                    </div>
+                                </li>
+                                <?php
+                            }
+                        } else {
+                            echo "No hay comentarios todavía.";
+                        }
+                        ?>
+                    </ul>
+                </div>
+
             </div>
         </div>
-    </div>
-    </div>
-    </div>
-    <!-- Contact End -->
-
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Compañia</h4>
-                    <a class="btn btn-link" href="">Nosotros</a>
-                    <a class="btn btn-link" href="">Contactanos</a>
-                    <a class="btn btn-link" href="">Reservation</a>
-                    <a class="btn btn-link" href="">Politica de privacidad</a>
-                    <a class="btn btn-link" href="">Terminos y condiciones</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Contacto</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Av.16 de septiembre, Piedras Negras,MX</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>878 123 9277</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@ejemplo.com</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Horario</h4>
-                    <h5 class="text-light fw-normal">Lunes - Domingo</h5>
-                    <p>09AM - 09PM</p>
-                    <h5 class="text-light fw-normal">Domingo</h5>
-                    <p>10AM - 08PM</p>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Promociones</h4>
-                    <p>Para cupones,descuentos,ofertas y de mas REGISTRATE!</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control border-primary w-100 py-3 ps-4 pe-5" type="text"
-                            placeholder="Tu correo">
-                        <button type="button"
-                            class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Registrate</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Nuestro Equipo</a>, Todos los derechos reservados.
-
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Diseñado por <a class="border-bottom" href="https://htmlcodex.com">nosotros</a><br><br>
-                        Distribuido <a class="border-bottom" href="https://themewagon.com" target="_blank">por
-                            Nosotros</a>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <div class="footer-menu">
-                            <a href="">Home</a>
-                            <a href="">Cookies</a>
-                            <a href="">Help</a>
-                            <a href="">FQAs</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/counterup/counterup.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
-    <script>
-    document.getElementById('reviewForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        const formattedDate = `${year}-${month}-${day}`;
-
-        const usuario = document.getElementById('name').textContent;
-        const calificacion = document.querySelector('input[name="rating"]:checked').value;
-        const comentario = document.getElementById('subject').value;
-
-        const formData = new FormData();
-        formData.append('usuario', usuario);
-        formData.append('calificacion', calificacion);
-        formData.append('comentario', comentario);
-        formData.append('fecha', formattedDate);
-
-        fetch('submit_review.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            updateReviews(data);
-            document.getElementById('reviewForm').reset();
-        })
-        .catch(error => console.error('Error:', error));
-    });
-
-    function updateReviews(reviews) {
-        const commentsSection = document.querySelector('.contact-form-wrapper .col-12:last-child');
-        commentsSection.innerHTML = '<h3 class="mb-5">Comentarios que has hecho.</h3>';
         
-        reviews.forEach(review => {
-            const reviewHtml = `
-                <div class="fb-comment">
-                    <div class="fb-comment-header">
-                        <div class="fb-comment-info">
-                            <h6>${review.usuario}</h6>
-                            <span>${review.fecha}</span>
-                        </div>
-                    </div>
-                    <div class="fb-comment-body">
-                        <p class="mb-0">${review.comentario}</p>
-                    </div>
-                </div>
-            `;
-            commentsSection.innerHTML += reviewHtml;
-        });
-    }
-</script>
+        <!-- Contact End -->
 
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
+                class="bi bi-arrow-up"></i></a>
+    </div>
 </body>
 
 </html>
+
