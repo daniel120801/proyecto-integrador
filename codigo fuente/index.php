@@ -62,7 +62,7 @@ session_start();
                         <a href="registro.php" class="nav-item nav-link">Servicios</a>
                         <a href="menu.php" class="nav-item nav-link">Menú</a>
                         <div>
-                            <a href="contact.html" class="nav-item nav-link">Contacto</a>
+                            <a href="contact.php" class="nav-item nav-link">Contacto</a>
                         </div>
             </nav>
 
