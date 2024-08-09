@@ -2,7 +2,6 @@
 require "PHP/SessionVars.php";
 
 session_start();
-var_dump($_SESSION);
 
 if (!isset($_SESSION[$StipoUsr]) || !$_SESSION[$StipoUsr] === "admin") {
     header("location: session.php?route=registro");
@@ -56,7 +55,6 @@ require 'PHP/conection.php';
 $obj = new BD_PDO();
 
 if (isset($_POST['btnregistrar'])) {
-    var_dump($_FILES);
     $nombre = $_POST['txtnombre'];
     $PKcategoria = $_POST['txtPKcategoria'];
     $estado = $_POST['txtestado'];
