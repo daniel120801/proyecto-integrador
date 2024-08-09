@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Restoran - Bootstrap Restaurant Template</title>
+    <title>Sushi-to - Bootstrap Restaurant Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -112,7 +112,7 @@
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
-                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Restoran</h1>
+                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sushi-to</h1>
                     <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -120,11 +120,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
-                        <a href="index.html" class="nav-item nav-link">Inicio</a>
+                        <a href="index.php" class="nav-item nav-link">Inicio</a>
                         <a href="about.html" class="nav-item nav-link">Nosotros</a>
-                        <a href="service.html" class="nav-item nav-link">Servicios</a>
-                        <a href="menu.html" class="nav-item nav-link active">Menú</a>
-                        <a href="contact.html" class="nav-item nav-link">Contacto</a>
+                        <a href="registro.php" class="nav-item nav-link">Servicios</a>
+                        <a href="menu.php" class="nav-item nav-link active">Menú</a>
+                        <a href="contact.php" class="nav-item nav-link">Contacto</a>
                     </div>
                 </div>
             </nav>
@@ -146,47 +146,50 @@
             </form>
         </div>
 
-        <!-- Categorias Start -->
-        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
-            <div class="position-relative d-inline-block w-100">
-                <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5 position-relative">
-                    <li class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill"
-                            href="#tab-1">
-                            <i class="fa fa-coffee fa-2x text-primary"></i>
-                            <div class="ps-3">
-                                <h6 class="mt-n1 mb-0">Entradas</h6>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
-                            <i class="fa fa-hamburger fa-2x text-primary"></i>
-                            <div class="ps-3">
-                                <h6 class="mt-n1 mb-0">Rollos Naturales</h6>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill"
-                            href="#tab-3">
-                            <i class="fa fa-utensils fa-2x text-primary"></i>
-                            <div class="ps-3">
-                                <h6 class="mt-n1 mb-0">Kombos y Postres</h6>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <!-- Ícono de carrito -->
-                <div class="position-absolute" style="right: 0; top: 40%; transform: translateY(-100%);">
-                    <a href="ticket.php" class="d-flex align-items-center">
-                        <i class="fa fa-shopping-cart fa-2x text-primary"></i>
-                        
-                    </a>
-                </div>
-            </div>
-        </div>
-        <!-- Categorias End -->
+<!-- Categorias Start -->
+<div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
+    <div class="position-relative d-inline-block w-100">
+        <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5 position-relative">
+            <li class="nav-item">
+                <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill" href="#tab-1">
+                    <i class="fa fa-coffee fa-2x text-primary"></i>
+                    <div class="ps-3">
+                        <h6 class="mt-n1 mb-0">Entradas</h6>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
+                    <i class="fa fa-hamburger fa-2x text-primary"></i>
+                    <div class="ps-3">
+                        <h6 class="mt-n1 mb-0">Rollos Naturales</h6>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-3">
+                    <i class="fa fa-utensils fa-2x text-primary"></i>
+                    <div class="ps-3">
+                        <h6 class="mt-n1 mb-0">Kombos y Postres</h6>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <!-- Ícono de carrito separado -->
+        <ul class="nav nav-pills d-inline-flex justify-content-center mt-3 position-relative">
+            <li class="nav-item">
+                <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-4">
+                    <i class="fa fa-shopping-cart fa-2x text-primary"></i>
+                    <div class="ps-3">
+                        <h6 class="mt-n1 mb-0">Carrito</h6>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- Categorias End -->
+
 
         <!-- Tab Content Start -->
         <div class="tab-content">
@@ -239,7 +242,48 @@
                     ?>
                 </div>
             </div>
+
+            <!-- Carrito -->
+            <div id="tab-4" class="tab-pane fade">
+                        <!-- Productos Agregados -->
+        <div class="container my-5">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = 1 "; // Ajusta la consulta según tu lógica
+                        
+                        $result = $bd->exec_instruction($sql);
+                        foreach ($result as $row) { ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['nombre']); ?></td>
+                                <td><?php echo htmlspecialchars($row[3]); ?></td>
+                                <td><?php echo htmlspecialchars($row[4]); ?></td>
+                                <td>
+                                    <a href="menu.php?idpremodificar=<?php echo htmlspecialchars($row[0]); ?>"
+                                        class="btn btn-primary me-3 ">Modificar</a>
+
+                                    <a href="menu.php?eliminar=<?php echo htmlspecialchars($row[0]); ?>"
+                                        class="btn btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <!-- Productos Agregados End -->
+            </div>
+        </div>
+
         <!-- Tab Content End -->
         <?php
         if (isset($modificar)) {
@@ -287,9 +331,7 @@
 
 
             </Form>
-        <?php } ?>
-
- 
+        <?php } ?>  
 
 
         <!-- Footer Start -->
@@ -345,7 +387,7 @@
                         </div>
                         <div class="col-md-6 text-center text-md-end">
                             <div class="footer-menu">
-                                <a href="">Home</a>
+                                <a href="">Inicio</a>
                                 <a href="">Cookies</a>
                                 <a href="">Help</a>
                                 <a href="">FQAs</a>

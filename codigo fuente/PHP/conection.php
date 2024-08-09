@@ -21,7 +21,7 @@ class BD_PDO
 
         // Asignando una instruccion sql
 
-        $result = null;
+        $result = [];
         $query = $conexion->prepare($instruction);
         if (!$query) {
             echo 'Error al mostrar';
@@ -33,5 +33,24 @@ class BD_PDO
         }
 
         return $result;
+    }
+    function ListarCategorias($instruccion_sql, $llave_foranea)
+    {
+        $datos = $this->exec_instruction($instruccion_sql);
+
+        $cadena = "";
+        foreach ($datos as $renglon) {
+            if (isset($renglon["PK_categoria"]) && isset($renglon["nombre_categoria"])) {
+                $cadena .= '<option value="' . $renglon["PK_categoria"] . '" ';
+
+                if ($llave_foranea == $renglon["PK_categoria"]) {
+                    $cadena .= 'selected';
+                }
+                $cadena .= '>' . $renglon["nombre_categoria"] . '</option>';
+            } else {
+                error_log('Índices no definidos en el array $renglon');
+            }
+        }
+        return $cadena;
     }
 }
