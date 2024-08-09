@@ -1,6 +1,14 @@
 <?php
 // Conexion a la base de datos
 require "PHP/conection.php";
+require "PHP/SessionVars.php";
+session_start();
+if(!isset($_SESSION[$id])){
+    header("location:session.php?route=contact");
+}
+$id = $_SESSION[$id];
+
+
 $bd = new BD_PDO();
 // Verificar la conexión
 
@@ -12,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $calificacion = $_POST['rating'];
         $fecha = date("Y-m-d");
 
-        $sql = "INSERT INTO resenas (FK_usuarios, calificacion, comentario, fecha) VALUES (?, $comentario, $calificacion, $fecha)";
+        $sql = "INSERT INTO resenas (FK_usuarios, calificacion, comentario, fecha) VALUES ($id, $comentario, $calificacion, $fecha)";
         $bd->exec_instruction($sql);
         
 

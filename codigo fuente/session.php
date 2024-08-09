@@ -1,6 +1,6 @@
 <?php
 require "PHP/Utils.php";
-require "PHP/conection.php"
+require "PHP/conection.php";
     ?>
 <!DOCTYPE html>
 <html lang="es">
