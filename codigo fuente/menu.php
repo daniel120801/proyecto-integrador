@@ -163,7 +163,7 @@
                                     <p class="card-text flex-grow-1 mb-1"><?php echo $row['descripcion']; ?></p>
                                     <p class="card-text text-primary mb-1"><strong>$<?php echo $row['precio']; ?></strong></p>
                                 </div>
-                                <div class="card-footer d-flex align-items-center p-2">
+                                <div class="card-footer d-flex align-items-center p-2"> 
                                     <a href="menu.php?id=<?php echo $row['PK_producto']; ?>"
                                         class="btn btn-success btn-sm">Agregar</a>
                                 </div>
@@ -303,7 +303,7 @@
                         </div>
                     </div>
                     <!-- Productos Agregados End -->
-                    <a class="btn btn-primary text-center">Ver Ticket</a>
+                    <a class="d-flex justify-content-center btn btn-primary text-center">Ver Ticket</a>
                 </div>
             </div>
             <!-- Tab Content End -->
