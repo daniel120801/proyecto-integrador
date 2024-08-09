@@ -194,7 +194,7 @@ $resultado = $bd->exec_instruction($sql);
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h5 class="section-title ff-secondary text-center text-primary fw-normal">Dinos, tu experiencia.</h5>
-                <h1 class="mb-5">Hola <?php echo $_SESSION[$Snombre] ?>, Dejanos un comentario.</h1> 
+                <h1 class="mb-5">Hola <?php echo $_SESSION[$Snombre] ?>, Dejanos un comentario.</h1>
             </div>
             <div class="row g-4 contact-form-wrapper">
                 <div class="col-12 contact-form">
@@ -226,47 +226,51 @@ $resultado = $bd->exec_instruction($sql);
                         </div>
 
                         <ul class="outer-comment">
-    <?php
-    if (count($resultado) > 0) {
-        foreach ($resultado as $fila) {
-            $bd = new BD_PDO();
-            $name = $bd->exec_instruction("SELECT usuarios.nombre, usuarios.tipo_Usuario FROM usuarios INNER JOIN resenas ON usuarios.PK_id =" . $fila['FK_usuarios'] . "");
-            ?>
-            <li>
-                <div class="comment-info">
-                    <span class="posted-by ms-2"><?php echo htmlspecialchars($name[0][0]); ?></span>
+                            <?php
+                            if (count($resultado) > 0) {
+                                $bd = new BD_PDO();
+                                $tipouser = $bd->exec_instruction("SELECT usuarios.tipo_Usuario FROM usuarios WHERE PK_id = $id ");
+                                foreach ($resultado as $fila) {
 
-                    <span class="star-rating-display">
-                        <?php for ($i = 0; $i < $fila['calificacion']; $i++) { ?>
-                            <i class="fa fa-star"></i>
-                        <?php } ?>
-                    </span>
+                                    $name = $bd->exec_instruction("SELECT CONCAT(usuarios.nombre, ' ', usuarios.apellido) nombre FROM usuarios WHERE PK_id = " . $fila["FK_usuarios"] . "  ");
 
-                    <!-- Mostrar menú de opciones solo si el usuario es admin o dueño del comentario -->
-                    <?php if ($name[0][1] == 'admin' || $fila['FK_usuarios'] == $id) { ?>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button"
-                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-ellipsis-h"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li>
-                                    <form method="post" action="">
-                                        <input type="hidden" name="resenaId"
-                                            value="<?php echo $fila['PK_resenas']; ?>">
-                                        <button type="submit" name="deleteComment" class="dropdown-item">Eliminar</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                    <?php } ?>
-                </div>
-                <div class="comment-text"><?php echo htmlspecialchars($fila['comentario']); ?></div>
-                <div class="comment-date"><?php echo htmlspecialchars($fila['fecha']); ?></div>
-            </li>
-        <?php }
-    } ?>
-</ul>
+                                    ?>
+                                    <li>
+                                        <div class="comment-info">
+                                            <span class="posted-by ms-2"><?php echo htmlspecialchars($name[0][0]); ?></span>
+
+                                            <span class="star-rating-display">
+                                                <?php for ($i = 0; $i < $fila['calificacion']; $i++) { ?>
+                                                    <i class="fa fa-star"></i>
+                                                <?php } ?>
+                                            </span>
+
+                                            <!-- Mostrar menú de opciones solo si el usuario es admin o dueño del comentario -->
+                                            <?php if ($tipouser[0][0] == 'admin' || $fila['FK_usuarios'] == $id) { ?>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-h"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <li>
+                                                            <form method="post" action="">
+                                                                <input type="hidden" name="resenaId"
+                                                                    value="<?php echo $fila['PK_resenas']; ?>">
+                                                                <button type="submit" name="deleteComment"
+                                                                    class="dropdown-item">Eliminar</button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                        <div class="comment-text"><?php echo htmlspecialchars($fila['comentario']); ?></div>
+                                        <div class="comment-date"><?php echo htmlspecialchars($fila['fecha']); ?></div>
+                                    </li>
+                                <?php }
+                            } ?>
+                        </ul>
 
                     </div>
                 </div>
