@@ -8,6 +8,7 @@ if(!isset($_SESSION[$Sid])){
 }
 $id = $_SESSION[$Sid];
 
+    
 
 $bd = new BD_PDO();
 // Verificar la conexión
@@ -15,12 +16,13 @@ $bd = new BD_PDO();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['submitComment'])) {
+        
         // Insertar el comentario en la base de datos
         $comentario = $_POST['comment'];
         $calificacion = $_POST['rating'];
         $fecha = date("Y-m-d");
 
-        $sql = "INSERT INTO resenas (FK_usuarios, calificacion, comentario, fecha) VALUES ($id, $comentario, $calificacion, $fecha)";
+        $sql = "INSERT INTO resenas (FK_usuarios, calificacion, comentario, fecha) VALUES ('$id', '$calificacion', '$comentario', '$fecha')";
         $bd->exec_instruction($sql);
         
 
@@ -131,7 +133,7 @@ $resultado = $bd->exec_instruction($sql);
         <!-- Navbar & Hero End -->
 
         <!-- Contact Start -->
-        < class="container-xxl py-5">
+        
             <div class="container">
                 <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                     <h5 class="section-title ff-secondary text-center text-primary fw-normal">Dinos, tu experiencia.
@@ -143,7 +145,7 @@ $resultado = $bd->exec_instruction($sql);
                     <div class="col-12 contact-form">
                         <div class="wow fadeInUp" data-wow-delay="0.2s">
                             <div class="comment-form-container">
-                                <form action="" method="POST">
+                                <form action="" method="post">
                                     <div class="input-row">
                                         <input type="hidden" name="comment_id" id="commentId" value="0" />
                                         <input class="form-control" type="text" name="name" id="name"
@@ -169,7 +171,7 @@ $resultado = $bd->exec_instruction($sql);
                                         </div>
                                     </div>
                                     <div>
-                                        <input type="submit" class="btn btn-primary" name="submitComment"
+                                        <input type="submit" class="btn btn-primary" name="submitComment"id="submitComment"
                                             value="Agregar Comentario" />
                                     </div>
                                 </form>
