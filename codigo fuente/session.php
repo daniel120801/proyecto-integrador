@@ -1,7 +1,8 @@
 <?php
 require "PHP/Utils.php";
-require "PHP/conection.php"
-    ?>
+require "PHP/conection.php";
+require "PHP/SessionVars.php";
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -25,8 +26,10 @@ if (isset($_POST['login'])) {
         $_SESSION[$Sid] = $r[0]['PK_id'];
         $_SESSION[$Snombre] = $r[0]['nombre'] . " " . $r[0]['apellido'];
         $_SESSION[$StipoUsr] = $r[0]['tipo_Usuario'];
+
+
         if (isset($_GET["route"])) {
-            header("location:" . $_GET["route"] . "php");
+            header("location: " . $_GET["route"] . ".php");
 
         } else {
             header("location: index.php");
@@ -53,7 +56,7 @@ if (isset($_POST['login'])) {
         $_SESSION[$StipoUsr] = "visitante";
 
         if (isset($_GET["route"])) {
-            header("location:" . $_GET["route"] . "php");
+            header("location: " . $_GET["route"] . ".php");
 
         } else {
             header("location: index.php");
