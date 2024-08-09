@@ -1,7 +1,10 @@
 <?php 
-session_start();
-if (isset($_SESSION['correo'])) {
+require "PHP/SessionVars.php";
 
+session_start();
+if (isset($_SESSION[$StipoUsr])) {
+    header("Location: session.php");
+}
  ?>
 
 <!DOCTYPE html>
@@ -350,8 +353,3 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
 
 </html>
 
-<?php
-} else {
-    header("Location: iniciosesion.php");
-}
-?>
