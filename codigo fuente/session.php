@@ -25,7 +25,13 @@ if (isset($_POST['login'])) {
         $_SESSION[$Sid] = $r[0]['PK_id'];
         $_SESSION[$Snombre] = $r[0]['nombre'] . " " . $r[0]['apellido'];
         $_SESSION[$StipoUsr] = $r[0]['tipo_Usuario'];
-        header("location: index.php");
+        if (isset($_GET["route"])) {
+            header("location:" . $_GET["route"] . "php");
+
+        } else {
+            header("location: index.php");
+
+        }
 
     }
 
@@ -46,7 +52,14 @@ if (isset($_POST['login'])) {
         $_SESSION[$Snombre] = $nombre . " " . $apellido;
         $_SESSION[$StipoUsr] = "visitante";
 
-        header("location: index.php");
+        if (isset($_GET["route"])) {
+            header("location:" . $_GET["route"] . "php");
+
+        } else {
+            header("location: index.php");
+
+        }
+
     }
 
 
