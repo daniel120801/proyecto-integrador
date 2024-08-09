@@ -131,6 +131,13 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
                 </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0 pe-4">                    
+                    <a href="registro.php" class="nav-item nav-link">Service</a>
+                    <a href="menu.php" class="nav-item nav-link ">Menu</a>
+                    <a href="contact.html" class="nav-item nav-link">Contacto</a>
+
+                </div>
             </nav>
 
             <div class="container-xxl py-5 bg-dark hero-header mb-5">
