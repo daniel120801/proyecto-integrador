@@ -1,7 +1,8 @@
 <?php
 require "PHP/Utils.php";
 require "PHP/conection.php";
-    ?>
+require "PHP/SessionVars.php";
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -25,7 +26,15 @@ if (isset($_POST['login'])) {
         $_SESSION[$Sid] = $r[0]['PK_id'];
         $_SESSION[$Snombre] = $r[0]['nombre'] . " " . $r[0]['apellido'];
         $_SESSION[$StipoUsr] = $r[0]['tipo_Usuario'];
-        header("location: index.php");
+
+
+        if (isset($_GET["route"])) {
+            header("location: " . $_GET["route"] . ".php");
+
+        } else {
+            header("location: index.php");
+
+        }
 
     }
 
@@ -46,7 +55,14 @@ if (isset($_POST['login'])) {
         $_SESSION[$Snombre] = $nombre . " " . $apellido;
         $_SESSION[$StipoUsr] = "visitante";
 
-        header("location: index.php");
+        if (isset($_GET["route"])) {
+            header("location: " . $_GET["route"] . ".php");
+
+        } else {
+            header("location: index.php");
+
+        }
+
     }
 
 
@@ -65,20 +81,12 @@ if (isset($_POST['login'])) {
     <div class="container-xxl position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
             <a href="" class="navbar-brand p-0">
-                <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Restoran</h1>
+                <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sushi-to</h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
 
                 <span class="fa fa-bars"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto py-0 pe-4">
-                    <a href="index.php" class="nav-item nav-link">Home</a>
-                    <a href="about.html" class="nav-item nav-link">About</a>
-                    <a href="service.html" class="nav-item nav-link">Service</a>
-                    <a href="menu.php" class="nav-item nav-link">Menu</a>
-                </div>
-            </div>
         </nav>
 
         <div class="container-xxl py-5 bg-dark hero-header mb-5">
