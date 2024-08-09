@@ -3,4 +3,4 @@ $Scorreo = "correo";
 $Spwd = "pwd";
 $Snombre = "nombre";
 $Sid = "id";
-$StipoUsr = "tipo_usuario";
+$StipoUsr = "tipo_Usuario";

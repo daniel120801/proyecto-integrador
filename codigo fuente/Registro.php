@@ -2,8 +2,12 @@
 require "PHP/SessionVars.php";
 
 session_start();
-if (!isset($_SESSION[$StipoUsr]) && !$_SESSION[$StipoUsr] == "admin") {
+var_dump($_SESSION);
+
+if (!isset($_SESSION[$StipoUsr]) || !$_SESSION[$StipoUsr] === "admin") {
     header("location: session.php?route=registro");
+
+    exit();
 }
 ?>
 
@@ -12,7 +16,7 @@ if (!isset($_SESSION[$StipoUsr]) && !$_SESSION[$StipoUsr] == "admin") {
 
 <head>
     <meta charset="utf-8">
-    <title>Restoran - Bootstrap Restaurant Template</title>
+    <title>Sushi-to - Bootstrap Restaurant Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -121,7 +125,7 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
-                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Restoran</h1>
+                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sushi-to</h1>
                     <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
