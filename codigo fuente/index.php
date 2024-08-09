@@ -58,11 +58,12 @@ session_start();
                     <div class="navbar-nav ms-auto py-0 pe-4">
 
                         <a href="index.php" class="nav-item nav-link active">Inicio</a>
-                        <a href="about.html" class="nav-item nav-link">Nosotros</a>
+                        
                         <a href="registro.php" class="nav-item nav-link">Servicios</a>
+
                         <a href="menu.php" class="nav-item nav-link">Menú</a>
                         <div>
-                            <a href="contact.php" class="nav-item nav-link">Contacto</a>
+                            <a href="contact.php" class="nav-item nav-link">Comentarios</a>
                         </div>
             </nav>
 
