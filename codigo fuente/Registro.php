@@ -50,7 +50,7 @@ if (!isset($_SESSION[$StipoUsr]) || !$_SESSION[$StipoUsr] === "admin") {
 
 </head>
 <?php
-//error_reporting(1);
+error_reporting(1);
 require 'PHP/conection.php';
 $obj = new BD_PDO();
 
