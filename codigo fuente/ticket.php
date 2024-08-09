@@ -26,10 +26,10 @@ require "PHP/Utils.php";
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0 pe-4">
-                    <a href="index.html" class="nav-item nav-link">Home</a>
+                    <a href="index.php" class="nav-item nav-link">Home</a>
                     <a href="about.html" class="nav-item nav-link">About</a>
                     <a href="service.html" class="nav-item nav-link">Service</a>
-                    <a href="menu.html" class="nav-item nav-link ">Menu</a>
+                    <a href="menu.php" class="nav-item nav-link ">Menu</a>
                 </div>
         </nav>
 
@@ -47,7 +47,7 @@ require "PHP/Utils.php";
 
             <!--  ticket-->
             <div class="tab-pane active">
-                <div class="container " style="  width: 80%; ">
+                <div class="container w-75">
 
                     <!--informacion del cliente-->
                     <h3 class="section-title mt-5">Información de cliente</h3>
@@ -71,6 +71,21 @@ require "PHP/Utils.php";
         <!-- Footer End -->
 
     </div>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
 </body>
 
 </html>
