@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Sushi-to - Bootstrap Restaurant Template</title>
+    <title>Restoran - Bootstrap Restaurant Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -32,6 +32,7 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/tabla.css">
 
     <script>
         function CrearURLModificar(event, idDetPedido, idProducto) {
@@ -88,9 +89,6 @@
     }
     if (isset($_GET['insertar_id'])) {
         $bd->exec_instruction("CALL agregar_producto(" . $_GET['insertar_id'] . ",1)");
-    } else if (isset($_GET['modificar'])) {
-        $bd->exec_instruction("CALL Actualizar_pedido(" . $_GET['idPedido'] . ",
-                                    " . $_GET['idProducto'] . ",'" . $_GET['nombre'] . "'," . $_GET['cantidad'] . "," . $_GET['precio'] . ")");
     } else if (isset($_GET['eliminar'])) {
         $bd->exec_instruction("DELETE FROM detalle_pedido   WHERE PK_detpedido = " . $_GET['eliminar'] . "");
     }
@@ -111,7 +109,7 @@
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
-                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sushi-to</h1>
+                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Restoran</h1>
                     <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -119,11 +117,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
-                        <a href="index.php" class="nav-item nav-link">Inicio</a>
+                        <a href="index.html" class="nav-item nav-link">Inicio</a>
                         <a href="about.html" class="nav-item nav-link">Nosotros</a>
-                        <a href="registro.php" class="nav-item nav-link">Servicios</a>
-                        <a href="menu.php" class="nav-item nav-link active">Menú</a>
-                        <a href="contact.php" class="nav-item nav-link">Contacto</a>
+                        <a href="service.html" class="nav-item nav-link">Servicios</a>
+                        <a href="menu.html" class="nav-item nav-link active">Menú</a>
+                        <a href="contact.html" class="nav-item nav-link">Contacto</a>
                     </div>
                 </div>
             </nav>
@@ -137,20 +135,47 @@
         <!-- Navbar & Hero End -->
 
         <div>
-            <form action="menu.php" method="get">
+            <form class="d-flex justify-content-center" action="menu.php" method="get">
                 <input type="text" id="txtbuscarque" name="txtbuscarque" placeholder="Buscar"
                     value="<?php echo isset($textobuscar) ? htmlspecialchars($textobuscar) : ''; ?>"
-                    class="form-control mb-3 w-25">
+                    class="form-control me-3 mb-0 w-50">
                 <input class="btn btn-primary" type="submit" id="btnbuscar" name="btnbuscar" value="Buscar">
             </form>
             <br>
             <div class="row">
-
-
-
-
+                <?php
+                if (!empty($textobuscar)) {
+                    $sql = "SELECT * FROM producto WHERE nombre LIKE '%" . $textobuscar . "%' AND estado = 'disponible'";
+                    $result = $bd->exec_instruction($sql);
+                    ?>
+                    <div class="col-12 mb-3">
+                        <h2>Resultados relacionados</h2>
+                    </div>
+                    <?php
+                    foreach ($result as $row) {
+                        ?>
+                        <div class="col-12 mb-3">
+                            <div class="card flex-row h-100 shadow-sm p-2" style="height: 120px;">
+                                <img src="<?php echo $row['direccion_imagen']; ?>" class="card-img-left"
+                                    style="width: 100px; height: 100px; object-fit: cover;" alt="<?php echo $row['nombre']; ?>">
+                                <div class="card-body d-flex flex-column p-2" style="font-size: 0.9rem;">
+                                    <h6 class="card-title mb-1"><?php echo $row['nombre']; ?></h6>
+                                    <p class="card-text flex-grow-1 mb-1"><?php echo $row['descripcion']; ?></p>
+                                    <p class="card-text text-primary mb-1"><strong>$<?php echo $row['precio']; ?></strong></p>
+                                </div>
+                                <div class="card-footer d-flex align-items-center p-2">
+                                    <a href="menu.php?id=<?php echo $row['PK_producto']; ?>"
+                                        class="btn btn-success btn-sm">Agregar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                }
+                ?>
             </div>
             <br>
+
             <!-- Categorias Start -->
             <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
                 <div class="position-relative d-inline-block w-100">
@@ -203,11 +228,10 @@
             <!-- Tab Content Start -->
             <div class="tab-content">
                 <!-- Entradas -->
-                <div id="tab-1" class="tab-pane fade show active ">
+                <div id="tab-1" class="tab-pane fade show active">
                     <div class="row g-4">
                         <?php
                         $sql = "SELECT * FROM producto WHERE FK_categoria = 14 AND estado = 'disponible'";
-
                         $result = $bd->exec_instruction($sql);
                         foreach ($result as $row) {
                             echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]);
@@ -217,11 +241,10 @@
                 </div>
 
                 <!-- Rollos Naturales -->
-                <div id="tab-2" class="tab-pane fade ">
+                <div id="tab-2" class="tab-pane fade">
                     <div class="row g-4">
                         <?php
                         $sql = "SELECT * FROM producto WHERE FK_categoria = 15 AND estado = 'disponible'";
-
                         $result = $bd->exec_instruction($sql);
 
                         foreach ($result as $row) {
@@ -232,11 +255,10 @@
                 </div>
 
                 <!-- Kombos y Postres -->
-                <div id="tab-3" class="tab-pane fade ">
+                <div id="tab-3" class="tab-pane fade">
                     <div class="row g-4">
                         <?php
                         $sql = "SELECT * FROM producto WHERE FK_categoria = 16 AND estado = 'disponible'";
-
                         $result = $bd->exec_instruction($sql);
 
                         foreach ($result as $row) {
@@ -262,8 +284,8 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = 1 "; // Ajusta la consulta según tu lógica
-                                    
+                                    $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = 1 ";
+
                                     $result = $bd->exec_instruction($sql);
                                     foreach ($result as $row) { ?>
                                         <tr>
@@ -271,9 +293,6 @@
                                             <td><?php echo htmlspecialchars($row[3]); ?></td>
                                             <td><?php echo htmlspecialchars($row[4]); ?></td>
                                             <td>
-                                                <a href="menu.php?idpremodificar=<?php echo htmlspecialchars($row[0]); ?>"
-                                                    class="btn btn-primary me-3 ">Modificar</a>
-
                                                 <a href="menu.php?eliminar=<?php echo htmlspecialchars($row[0]); ?>"
                                                     class="btn btn-danger">Eliminar</a>
                                             </td>
@@ -284,57 +303,10 @@
                         </div>
                     </div>
                     <!-- Productos Agregados End -->
+                    <a class="btn btn-primary text-center">Ver Ticket</a>
                 </div>
             </div>
-
             <!-- Tab Content End -->
-            <?php
-            if (isset($modificar)) {
-
-
-                ?>
-                <Form action="menu.php" method="get" class="container mt-3"
-                    onsubmit="CrearURLModificar(event,<?php echo $modificar[0]['PK_detpedido']; ?>,<?php echo $modificar[0]['FK_producto']; ?>)">
-                    <h5></h5>
-                    <div class="row">
-                        <div class="col text-start">
-                            <label>Nombre</label>
-
-                        </div>
-                        <div class="col text-start">
-                            <input class="form-control" type="text" id="nombre" name="nombre"
-                                value="<?php echo $modificar[0]['nombre']; ?>"></input>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col text-start">
-                            <label>Cantidad</label>
-
-                        </div>
-                        <div class="col text-start">
-                            <input class="form-control" type="number" id="cantidad" name="cantidad"
-                                value="<?php echo $modificar[0]['cantidad']; ?>"></input>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col text-start">
-                            <label>Precio</label>
-
-                        </div>
-                        <div class="col text-start">
-                            <input class="form-control" type="number" id="precio" name="precio"
-                                value="<?php echo $modificar[0]['precio']; ?>"></input>
-                        </div>
-                    </div>
-                    <button type="submit" id="modificar" name="modificar" class="btn btn-primary">Modificar</button>
-
-
-                </Form>
-            <?php } ?>
 
 
             <!-- Footer Start -->
@@ -392,7 +364,7 @@
                             </div>
                             <div class="col-md-6 text-center text-md-end">
                                 <div class="footer-menu">
-                                    <a href="">Inicio</a>
+                                    <a href="">Home</a>
                                     <a href="">Cookies</a>
                                     <a href="">Help</a>
                                     <a href="">FQAs</a>
