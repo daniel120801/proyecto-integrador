@@ -26,7 +26,7 @@ require "PHP/Utils.php";
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0 pe-4">
-                    <a href="index.php" class="nav-item nav-link">Home</a>
+                    <a href="index.php" class="nav-item nav-link">Inicio</a>
                     <a href="about.html" class="nav-item nav-link">About</a>
                     <a href="registro.php" class="nav-item nav-link">Service</a>
                     <a href="menu.php" class="nav-item nav-link ">Menu</a>
@@ -61,8 +61,8 @@ require "PHP/Utils.php";
             </div>
             <div class="text-center wow fadeInUp mt-5 mb-4">
 
-                <a id="confirmar" href="" class="btn btn-primary rounded-3 py-sm-2 px-sm-2">Confirmar</a>
-                <a id="confirmar" href="" class="btn btn-primary rounded-3 py-sm-2 px-sm-2">Confirmar</a>
+                <a id="confirm" href="" class="btn btn-primary rounded-3 py-sm-2 px-sm-2">Confirmar</a>
+                <a id="delete" href="" class="btn btn-primary rounded-3 py-sm-2 px-sm-2">Cancelar</a>
 
             </div>
         </div>
