@@ -1,6 +1,6 @@
 -agregar estado a la tabla de producto. parametros: agotado,existente,no se vende)
 - agregar pedido de direccion en la tabla de usuarios y vista de registro.
--agregar boton de ordenar en el menu a agregar en el home
+-agregar boton de ordenar en el menu a agregar en el Inicio
 
 ----------------------------------- 
 --vistas faltantes--

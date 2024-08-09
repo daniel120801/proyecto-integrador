@@ -1,5 +1,5 @@
 <?php
-function printHead($titlePage): string
+function printHead($titlePage)
 {
     return '
       <meta charset="UTF-8">
@@ -31,7 +31,7 @@ function printHead($titlePage): string
     <link href="css/style.css" rel="stylesheet">
     ';
 }
-function getFooter(): string
+function getFooter()
 {
     return '
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
@@ -87,7 +87,7 @@ function getFooter(): string
                         </div>
                         <div class="col-md-6 text-center text-md-end">
                             <div class="footer-menu">
-                                <a href="">Home</a>
+                                <a href="">Inicio</a>
                                 <a href="">Cookies</a>
                                 <a href="">Help</a>
                                 <a href="">FQAs</a>

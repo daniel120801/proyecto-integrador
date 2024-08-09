@@ -1,3 +1,4 @@
+-- Active: 1720804620613@@127.0.0.1@3306@db_sushi
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -6,6 +7,8 @@
 -- Tiempo de generación: 15-07-2024 a las 20:55:20
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
+CREATE DATABASE db_sushi;
+use db_sushi;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -25,7 +28,7 @@ DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Actualizar_pedido` (IN `idDetpedido` INT, IN `idProducto` INT, IN `nombreproducto` VARCHAR(255), IN `cantidad` INT, IN `precio` FLOAT)   BEGIN
+CREATE  PROCEDURE  IF NOT EXISTS `Actualizar_pedido` (IN `idDetpedido` INT, IN `idProducto` INT, IN `nombreproducto` VARCHAR(255), IN `cantidad` INT, IN `precio` FLOAT)   BEGIN
 		UPDATE producto
         SET nombre = nombreproducto
         WHERE PK_producto = idProducto;
@@ -34,7 +37,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `Actualizar_pedido` (IN `idDetpedido
         SET detalle_pedido.cantidad = cantidad, precio = precio WHERE PK_detpedido =IdDetpedido;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `agregar_producto` (IN `id_producto` INT, IN `id_pedido` INT)   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE IF NOT EXISTS `agregar_producto` (IN `id_producto` INT, IN `id_pedido` INT)   BEGIN
     DECLARE id_ INT;
     DECLARE precio_ INT;
 
@@ -75,11 +78,10 @@ DELIMITER ;
 --
 -- Estructura de tabla para la tabla `categoria`
 --
-
-CREATE TABLE `categoria` (
+CREATE TABLE IF NOT EXISTS `categoria` (
   `PK_categoria` int(11) NOT NULL,
   `nombre_categoria` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+);
 
 --
 -- Volcado de datos para la tabla `categoria`
@@ -96,7 +98,7 @@ INSERT INTO `categoria` (`PK_categoria`, `nombre_categoria`) VALUES
 -- Estructura de tabla para la tabla `detalle_pedido`
 --
 
-CREATE TABLE `detalle_pedido` (
+CREATE TABLE  IF NOT EXISTS `detalle_pedido` (
   `PK_detpedido` int(11) NOT NULL,
   `FK_pedido` int(11) NOT NULL,
   `FK_producto` int(11) NOT NULL,
@@ -120,7 +122,7 @@ INSERT INTO `detalle_pedido` (`PK_detpedido`, `FK_pedido`, `FK_producto`, `canti
 -- Estructura de tabla para la tabla `pedido`
 --
 
-CREATE TABLE `pedido` (
+CREATE TABLE IF NOT EXISTS `pedido` (
   `PK_pedido` int(11) NOT NULL,
   `FK_usuario` int(11) NOT NULL,
   `fecha` date NOT NULL,
@@ -150,7 +152,7 @@ INSERT INTO `pedido` (`PK_pedido`, `FK_usuario`, `fecha`, `tipo_pedido`, `direcc
 -- Estructura de tabla para la tabla `producto`
 --
 
-CREATE TABLE `producto` (
+CREATE TABLE  IF NOT EXISTS `producto` (
   `PK_producto` int(11) NOT NULL,
   `nombre` varchar(255) DEFAULT NULL,
   `direccion_imagen` text NOT NULL,
@@ -196,7 +198,7 @@ INSERT INTO `producto` (`PK_producto`, `nombre`, `direccion_imagen`, `precio`, `
 -- Estructura de tabla para la tabla `resenas`
 --
 
-CREATE TABLE `resenas` (
+CREATE TABLE IF NOT EXISTS `resenas` (
   `PK_resenas` int(11) NOT NULL,
   `FK_usuarios` int(11) NOT NULL,
   `calificacion` int(11) NOT NULL,
@@ -226,7 +228,7 @@ INSERT INTO `resenas` (`PK_resenas`, `FK_usuarios`, `calificacion`, `comentario`
 -- Estructura de tabla para la tabla `usuarios`
 --
 
-CREATE TABLE `usuarios` (
+CREATE TABLE IF NOT EXISTS `usuarios` (
   `PK_id` int(11) NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `apellido` varchar(45) NOT NULL,
