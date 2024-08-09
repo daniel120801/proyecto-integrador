@@ -50,7 +50,7 @@ if (!isset($_SESSION[$StipoUsr]) || !$_SESSION[$StipoUsr] === "admin") {
 
 </head>
 <?php
-error_reporting(1);
+//error_reporting(1);
 require 'PHP/conection.php';
 $obj = new BD_PDO();
 
@@ -102,11 +102,13 @@ if (isset($_POST['btnactualizar'])) {
 
     $update_query .= " WHERE PK_producto = '$id'";
     $obj->exec_instruction($update_query);
-} elseif (isset($_GET['idmodificar'])) {
+} 
+elseif (isset($_GET['idmodificar'])) {
     $id = $_GET['idmodificar'];
     $datos_modificar = $obj->exec_instruction("Select * from producto where PK_producto = '$id'");
     $categoria = $obj->ListarCategorias("Select * from categoria", $datos_modificar[0][5]);
-} else {
+} 
+else {
     $categoria = $obj->ListarCategorias("Select * from categoria", -1);
 }
 
@@ -174,11 +176,11 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
                                 <div class="mb-3">
                                     <label for="txtestado" class="form-label">Estado</label>
                                     <select class="form-select" name="txtestado" id="txtestado">
-                                        <option value="1" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == '1' ? 'selected' : ''; ?>>--- vacio ---
+                                        <option value="1">--- vacio ---
                                         </option>
-                                        <option value="2" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == '2' ? 'selected' : ''; ?>>Disponible
+                                        <option value="disponible" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == 'disponible' ? 'selected' : ''; ?>>Disponible
                                         </option>
-                                        <option value="3" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == '3' ? 'selected' : ''; ?>>No disponible
+                                        <option value="No disponible" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == 'No disponible' ? 'selected' : ''; ?>>No disponible
                                         </option>
                                     </select>
                                 </div>
