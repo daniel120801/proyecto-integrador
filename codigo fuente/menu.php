@@ -32,7 +32,6 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/tabla.css">
 
     <script>
         function CrearURLModificar(event, idDetPedido, idProducto) {
@@ -144,63 +143,69 @@
                     class="form-control mb-3 w-25">
                 <input class="btn btn-primary" type="submit" id="btnbuscar" name="btnbuscar" value="Buscar">
             </form>
-        </div>
+            <br>
+            <div class="row">
 
-<!-- Categorias Start -->
-<div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
-    <div class="position-relative d-inline-block w-100">
-        <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5 position-relative">
-            <li class="nav-item">
-                <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill" href="#tab-1">
-                    <i class="fa fa-coffee fa-2x text-primary"></i>
-                    <div class="ps-3">
-                        <h6 class="mt-n1 mb-0">Entradas</h6>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
-                    <i class="fa fa-hamburger fa-2x text-primary"></i>
-                    <div class="ps-3">
-                        <h6 class="mt-n1 mb-0">Rollos Naturales</h6>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-3">
-                    <i class="fa fa-utensils fa-2x text-primary"></i>
-                    <div class="ps-3">
-                        <h6 class="mt-n1 mb-0">Kombos y Postres</h6>
-                    </div>
-                </a>
-            </li>
-        </ul>
-        <!-- Ícono de carrito separado -->
-        <ul class="nav nav-pills d-inline-flex justify-content-center mt-3 position-relative">
-            <li class="nav-item">
-                <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-4">
-                    <i class="fa fa-shopping-cart fa-2x text-primary"></i>
-                    <div class="ps-3">
-                        <h6 class="mt-n1 mb-0">Carrito</h6>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
-<!-- Categorias End -->
+
+
+
+        </div>
+        <br>
+        <!-- Categorias Start -->
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
+            <div class="position-relative d-inline-block w-100">
+                <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5 position-relative">
+                    <li class="nav-item">
+                        <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill"
+                            href="#tab-1">
+                            <i class="fa fa-coffee fa-2x text-primary"></i>
+                            <div class="ps-3">
+                                <h6 class="mt-n1 mb-0">Entradas</h6>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
+                            <i class="fa fa-hamburger fa-2x text-primary"></i>
+                            <div class="ps-3">
+                                <h6 class="mt-n1 mb-0">Rollos Naturales</h6>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill"
+                            href="#tab-3">
+                            <i class="fa fa-utensils fa-2x text-primary"></i>
+                            <div class="ps-3">
+                                <h6 class="mt-n1 mb-0">Kombos y Postres</h6>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <!-- Ícono de carrito separado -->
+                <ul class="nav nav-pills d-inline-flex justify-content-center mt-3 position-relative">
+                    <li class="nav-item">
+                        <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-4">
+                            <i class="fa fa-shopping-cart fa-2x text-primary"></i>
+                            <div class="ps-3">
+                                <h6 class="mt-n1 mb-0">Carrito</h6>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Categorias End -->
 
 
         <!-- Tab Content Start -->
         <div class="tab-content">
             <!-- Entradas -->
-            <div id="tab-1" class="tab-pane fade show active">
+            <div id="tab-1" class="tab-pane fade show active ">
                 <div class="row g-4">
                     <?php
                     $sql = "SELECT * FROM producto WHERE FK_categoria = 14 AND estado = 'disponible'";
-                    if (!empty($textobuscar)) {
-                        $sql .= " AND nombre LIKE '%" . $textobuscar . "%'";
-                    }
+
                     $result = $bd->exec_instruction($sql);
                     foreach ($result as $row) {
                         echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]);
@@ -210,13 +215,11 @@
             </div>
 
             <!-- Rollos Naturales -->
-            <div id="tab-2" class="tab-pane fade">
+            <div id="tab-2" class="tab-pane fade ">
                 <div class="row g-4">
                     <?php
                     $sql = "SELECT * FROM producto WHERE FK_categoria = 15 AND estado = 'disponible'";
-                    if (!empty($textobuscar)) {
-                        $sql .= " AND nombre LIKE '%" . $textobuscar . "%'";
-                    }
+
                     $result = $bd->exec_instruction($sql);
 
                     foreach ($result as $row) {
@@ -227,13 +230,11 @@
             </div>
 
             <!-- Kombos y Postres -->
-            <div id="tab-3" class="tab-pane fade">
+            <div id="tab-3" class="tab-pane fade ">
                 <div class="row g-4">
                     <?php
                     $sql = "SELECT * FROM producto WHERE FK_categoria = 16 AND estado = 'disponible'";
-                    if (!empty($textobuscar)) {
-                        $sql .= " AND nombre LIKE '%" . $textobuscar . "%'";
-                    }
+
                     $result = $bd->exec_instruction($sql);
 
                     foreach ($result as $row) {
@@ -245,42 +246,42 @@
 
             <!-- Carrito -->
             <div id="tab-4" class="tab-pane fade">
-                        <!-- Productos Agregados -->
-        <div class="container my-5">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = 1 "; // Ajusta la consulta según tu lógica
-                        
-                        $result = $bd->exec_instruction($sql);
-                        foreach ($result as $row) { ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($row[3]); ?></td>
-                                <td><?php echo htmlspecialchars($row[4]); ?></td>
-                                <td>
-                                    <a href="menu.php?idpremodificar=<?php echo htmlspecialchars($row[0]); ?>"
-                                        class="btn btn-primary me-3 ">Modificar</a>
+                <!-- Productos Agregados -->
+                <div class="container my-5">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = 1 "; // Ajusta la consulta según tu lógica
+                                
+                                $result = $bd->exec_instruction($sql);
+                                foreach ($result as $row) { ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($row['nombre']); ?></td>
+                                        <td><?php echo htmlspecialchars($row[3]); ?></td>
+                                        <td><?php echo htmlspecialchars($row[4]); ?></td>
+                                        <td>
+                                            <a href="menu.php?idpremodificar=<?php echo htmlspecialchars($row[0]); ?>"
+                                                class="btn btn-primary me-3 ">Modificar</a>
 
-                                    <a href="menu.php?eliminar=<?php echo htmlspecialchars($row[0]); ?>"
-                                        class="btn btn-danger">Eliminar</a>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- Productos Agregados End -->
+                                            <a href="menu.php?eliminar=<?php echo htmlspecialchars($row[0]); ?>"
+                                                class="btn btn-danger">Eliminar</a>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Productos Agregados End -->
             </div>
         </div>
 
@@ -331,7 +332,7 @@
 
 
             </Form>
-        <?php } ?>  
+        <?php } ?>
 
 
         <!-- Footer Start -->
