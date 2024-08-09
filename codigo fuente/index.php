@@ -59,7 +59,7 @@ session_start();
 
                         <a href="index.php" class="nav-item nav-link active">Inicio</a>
                         <a href="about.html" class="nav-item nav-link">Nosotros</a>
-                        <a href="service.html" class="nav-item nav-link">Servicios</a>
+                        <a href="registro.php" class="nav-item nav-link">Servicios</a>
                         <a href="menu.php" class="nav-item nav-link">Menú</a>
                         <div>
                             <a href="contact.html" class="nav-item nav-link">Contacto</a>

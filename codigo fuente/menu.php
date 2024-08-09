@@ -122,7 +122,7 @@
                     <div class="navbar-nav ms-auto py-0 pe-4">
                         <a href="index.php" class="nav-item nav-link">Inicio</a>
                         <a href="about.html" class="nav-item nav-link">Nosotros</a>
-                        <a href="service.html" class="nav-item nav-link">Servicios</a>
+                        <a href="registro.php" class="nav-item nav-link">Servicios</a>
                         <a href="menu.php" class="nav-item nav-link active">Menú</a>
                         <a href="contact.html" class="nav-item nav-link">Contacto</a>
                     </div>

@@ -28,7 +28,7 @@ require "PHP/Utils.php";
                 <div class="navbar-nav ms-auto py-0 pe-4">
                     <a href="index.php" class="nav-item nav-link">Home</a>
                     <a href="about.html" class="nav-item nav-link">About</a>
-                    <a href="service.html" class="nav-item nav-link">Service</a>
+                    <a href="registro.php" class="nav-item nav-link">Service</a>
                     <a href="menu.php" class="nav-item nav-link ">Menu</a>
                 </div>
         </nav>
