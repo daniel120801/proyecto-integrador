@@ -3,10 +3,10 @@
 require "PHP/conection.php";
 require "PHP/SessionVars.php";
 session_start();
-if(!isset($_SESSION[$id])){
+if(!isset($_SESSION[$Sid])){
     header("location:session.php?route=contact");
 }
-$id = $_SESSION[$id];
+$id = $_SESSION[$Sid];
 
 
 $bd = new BD_PDO();
@@ -42,15 +42,13 @@ $resultado = $bd->exec_instruction($sql);
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+<meta charset="utf-8">
     <title>Restoran - Bootstrap Restaurant Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
     <link href="img/favicon.ico" rel="icon">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&family=Pacifico&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="lib/animate/animate.min.css" rel="stylesheet">
@@ -110,7 +108,7 @@ $resultado = $bd->exec_instruction($sql);
             padding-left: 0;
         }
 
-        .outer-comment>li {
+        .outer-comment > li {
             margin-bottom: 15px;
         }
 

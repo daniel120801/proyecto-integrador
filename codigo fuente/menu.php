@@ -124,7 +124,7 @@
                         <a href="about.html" class="nav-item nav-link">Nosotros</a>
                         <a href="service.html" class="nav-item nav-link">Servicios</a>
                         <a href="menu.php" class="nav-item nav-link active">Menú</a>
-                        <a href="contact.html" class="nav-item nav-link">Contacto</a>
+                        <a href="contact.php" class="nav-item nav-link">Contacto</a>
                     </div>
                 </div>
             </nav>
