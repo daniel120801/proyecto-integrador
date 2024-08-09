@@ -2,7 +2,7 @@
 require "PHP/SessionVars.php";
 
 session_start();
-if (isset($_SESSION[$StipoUsr])) {
+if (isset($_SESSION[$StipoUsr])&& $_SESSION[$StipoUsr]=="admin") {
     header("Location: session.php");
 }
  ?>
