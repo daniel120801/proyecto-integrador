@@ -1,12 +1,3 @@
-<?
-require "PHP/SessionVars.php";
-session_start();
-if (!isset($_SESSION[$Sid])) {
-    header("location:session.php?route=menu");
-}
-$id = $_SESSION[$Sid];
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,39 +34,19 @@ $id = $_SESSION[$Sid];
     <link href="css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="css/tabla.css">
 
-    <script>
-        function CrearURLModificar(event, idDetPedido, idProducto) {
-
-            event.preventDefault();
-
-            var form = event.target;
-            var formData = new FormData(form);
-            var params = new URLSearchParams();
-
-            for (var pair of formData.entries()) {
-                params.append(pair[0], pair[1]);
-            }
-
-            params.append("idPedido", idDetPedido);
-            params.append("idProducto", idProducto);
-            params.append("modificar", '');
-
-            var url = 'menu.php?' + params.toString();
-
-
-            // Redirigir a la URL modificada
-            window.location.href = url;
-        }
-    </script>
-
 </head>
 
 <body>
     <?php
-    //error_reporting(1);
+    require "PHP/SessionUtils.php";
     require 'PHP/conection.php';
-    require 'PHP/SessionUtils.php';
+
     session_start();
+    if (!isset($_SESSION[$Sid])) {
+        redirectLogin("menu.php");
+    }
+    $id = $_SESSION[$Sid];
+    //error_reporting(1);
     $bd = new BD_PDO();
 
     function ImprimirProductoTabla($img, $nombre, $descripcion, $id, $precio): string
@@ -98,8 +69,46 @@ $id = $_SESSION[$Sid];
                 </div>
             </div>';
     }
+
     if (isset($_GET['insertar_id'])) {
-        $bd->exec_instruction("CALL agregar_producto(" . $_GET['insertar_id'] . ",1)");
+
+
+        if (!isset($_SESSION[$Sid_pedido])) {
+
+            $bd->exec_instruction("Insert into pedido(FK_usuario,fecha) values('$id',Now())");
+
+            $ultima_compra = $bd->exec_instruction("SELECT PK_pedido FROM pedido where FK_usuario = '$id' ORDER by PK_pedido DESC");
+
+            $_SESSION[$Sid_pedido] = $ultima_compra[0][0];
+        }
+
+
+
+        //obj->Ejecutar_Instruccion("Insert into detalle_venta(Id_venta,Id_producto,Cantidad,Precio) values('$idventa','$idproducto','$cantidad','$precio')");
+    
+
+
+
+
+
+        $bd->exec_instruction("CALL agregar_producto(" . $_GET['insertar_id'] . "," . $_SESSION[$Sid_pedido] . ")");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     } else if (isset($_GET['eliminar'])) {
         $bd->exec_instruction("DELETE FROM detalle_pedido   WHERE PK_detpedido = " . $_GET['eliminar'] . "");
@@ -292,41 +301,63 @@ $id = $_SESSION[$Sid];
                 <!-- Carrito -->
                 <div id="tab-4" class="tab-pane fade">
                     <!-- Productos Agregados -->
-                    <div class="container my-5">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th scope="col">Nombre</th>
-                                        <th scope="col">Cantidad</th>
-                                        <th scope="col">Precio</th>
-                                        <th scope="col">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
+                    <?php
 
-                                    $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = 1 ";
+                    $result = [];
+                    if (isset($_SESSION[$Sid_pedido])) {
+                        $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = " . $_SESSION[$Sid_pedido] . " ";
 
 
-                                    $result = $bd->exec_instruction($sql);
-                                    foreach ($result as $row) { ?>
+                        $result = $bd->exec_instruction($sql);
+                    }
+                    if (count($result) > 0) {
+
+
+                        ?>
+                        <div class="container my-5">
+
+                            <div class="table-responsive">
+
+                                <table class="table table-bordered table-hover">
+                                    <thead class="table-dark">
                                         <tr>
-                                            <td><?php echo htmlspecialchars($row['nombre']); ?></td>
-                                            <td><?php echo htmlspecialchars($row[3]); ?></td>
-                                            <td><?php echo htmlspecialchars($row[4]); ?></td>
-                                            <td>
-                                                <a href="menu.php?eliminar=<?php echo htmlspecialchars($row[0]); ?>"
-                                                    class="btn btn-danger">Eliminar</a>
-                                            </td>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Cantidad</th>
+                                            <th scope="col">Precio</th>
+                                            <th scope="col">Acciones</th>
                                         </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+
+
+                                        foreach ($result as $row) { ?>
+                                            <tr>
+                                                <td><?php echo htmlspecialchars($row['nombre']); ?></td>
+                                                <td><?php echo htmlspecialchars($row[3]); ?></td>
+                                                <td><?php echo htmlspecialchars($row[4]); ?></td>
+                                                <td>
+                                                    <a href="menu.php?eliminar=<?php echo htmlspecialchars($row[0]); ?>"
+                                                        class="btn btn-danger">Eliminar</a>
+                                                </td>
+                                            </tr>
+
+                                        <?php }
+                                        ?>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <form action="ticket.php" method="post">
+                                <input type="submit" value="Ver Ticket">
+                            </form>
+
                         </div>
-                    </div>
-                    <!-- Productos Agregados End -->
-                    <a class="d-flex justify-content-center btn btn-primary text-center">Ver Ticket</a>
+                        <!-- Productos Agregados End -->
+                    <?php } else { ?>
+                        <h4 class="text-center">Vacio</h4>
+                    <?php } ?>
                 </div>
             </div>
             <!-- Tab Content End -->
