@@ -1,7 +1,7 @@
 <?php
 require "PHP/ticketUtils.php";
 require "PHP/Utils.php";
-require "PHP/SessionVars.php";
+require "PHP/SessionUtils.php";
 
 session_start();
 ?>

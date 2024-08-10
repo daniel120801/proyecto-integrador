@@ -1,6 +1,7 @@
 <?php
+require 'PHP/SessionUtils.php';
 session_start();
-//var_dump($_SESSION);
+
 
 ?>
 <!DOCTYPE html>
@@ -47,24 +48,29 @@ session_start();
         <!-- Navbar & Hero Start -->
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
-                <a href="" class="navbar-brand p-0">
+                <a href="index.php" class="navbar-brand p-0">
                     <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sushi-to</h1>
                     <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto py-0 pe-4">
+                <div class="collapse navbar-collapse " id="navbarCollapse">
+                    <div class="navbar-nav ms-auto py-0 ">
 
-                        <a href="index.php" class="nav-item nav-link active">Inicio</a>
-                        
+                        <a href="index.php" class="nav-item nav-link active ">Inicio</a>
+
                         <a href="registro.php" class="nav-item nav-link">Servicios</a>
 
                         <a href="menu.php" class="nav-item nav-link">Menú</a>
-                        <div>
-                            <a href="contact.php" class="nav-item nav-link">Comentarios</a>
+
+                        <a href="contact.php" class="nav-item nav-link">Comentarios</a>
+
+                        <div class="nav-item nav-link">
+                            <a href="session.php"
+                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] : "Iniciar sesión") ?></a>
                         </div>
+                    </div>
             </nav>
 
             <div class="container-xxl py-5 bg-dark mb-5">
@@ -304,28 +310,7 @@ session_start();
                     </div>
                 </div>
             </div>
-            <div class="container">
-                <div class="copyright">
-                    <div class="row">
-                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
 
-                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a><br><br>
-                            Distributed By <a class="border-bottom" href="https://themewagon.com"
-                                target="_blank">ThemeWagon</a>
-                        </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            <div class="footer-menu">
-                                <a href="">Home</a>
-                                <a href="">Cookies</a>
-                                <a href="">Help</a>
-                                <a href="">FQAs</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <!-- Footer End -->
 

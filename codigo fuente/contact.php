@@ -1,10 +1,10 @@
 <?php
 // Conexion a la base de datos
 require "PHP/conection.php";
-require "PHP/SessionVars.php";
+require "PHP/SessionUtils.php";
 session_start();
 if (!isset($_SESSION[$Sid])) {
-    header("location:session.php?route=contact");
+    redirectLogin('contact.php');
 }
 $id = $_SESSION[$Sid];
 $bd = new BD_PDO();

@@ -65,7 +65,7 @@
     <?php
     //error_reporting(1);
     require 'PHP/conection.php';
-    require 'PHP/SessionVars.php';
+    require 'PHP/SessionUtils.php';
     session_start();
     $bd = new BD_PDO();
 
