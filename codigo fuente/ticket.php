@@ -1,6 +1,9 @@
 <?php
 require "PHP/ticketUtils.php";
 require "PHP/Utils.php";
+require "PHP/SessionVars.php";
+
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -14,7 +17,10 @@ require "PHP/Utils.php";
 
     $utils = new ticketUtils();
     $r = $utils->getUser();
-
+    if ($r == "error") {
+        header("location: menu.php");
+        exit();
+    }
 
     ?>
     <!-- Navbar & Hero Start -->
@@ -27,12 +33,22 @@ require "PHP/Utils.php";
                 <span class="fa fa-bars"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto py-0 pe-4">
-                    <a href="index.php" class="nav-item nav-link">Inicio</a>
-                    <a href="about.html" class="nav-item nav-link">About</a>
-                    <a href="registro.php" class="nav-item nav-link">Service</a>
-                    <a href="menu.php" class="nav-item nav-link ">Menu</a>
+                <div class="navbar-nav ms-auto py-0 ">
+
+                    <a href="index.php" class="nav-item nav-link active ">Inicio</a>
+
+                    <a href="registro.php" class="nav-item nav-link">Servicios</a>
+
+                    <a href="menu.php" class="nav-item nav-link">Menú</a>
+
+                    <a href="contact.php" class="nav-item nav-link">Comentarios</a>
+
+                    <div class="nav-item nav-link">
+                        <a href="session.php"
+                            class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] : "Iniciar sesión") ?></a>
+                    </div>
                 </div>
+            </div>
         </nav>
 
         <div class="container-xxl py-5 bg-dark hero-header mb-5">
@@ -42,11 +58,15 @@ require "PHP/Utils.php";
         </div>
     </div>
     <!-- Navbar & Hero End -->
-    <?php if ($r == "error") {
-        header("location: menu.php");
+    <?php
+    if (isset($_GET['confirm'])) {
+        $utils->confirmTicket();
 
-        exit();
+    } else if (isset($_GET['cancel'])) {
+        $utils->cancelTicket();
     }
+
+
 
     ?>
     <div class="container">
@@ -56,7 +76,6 @@ require "PHP/Utils.php";
             <!--  ticket-->
             <div class="tab-pane active">
                 <div class="container w-75">
-
                     <!--informacion del cliente-->
                     <h3 class="section-title mt-5">Información de cliente</h3>
                     <?php $utils->imprimirDatosUsuario(); ?>
@@ -67,10 +86,15 @@ require "PHP/Utils.php";
                 </div>
 
             </div>
-            <form class="text-center wow fadeInUp mt-5 mb-4">
+            <form action="ticket.php" class="text-center wow fadeInUp mt-5 mb-4" method="get">
 
-                <a id="confirm" href="menu.php?" class="btn btn-primary rounded-3 py-sm-2 px-sm-2">Confirmar</a>
-                <a id="delete" href="menu.php" class="btn btn-primary rounded-3 py-sm-2 px-sm-2">Cancelar</a>
+
+
+                <input type="submit" id="confirm" id="confirm" name="confirm" class=" btn btn-primary rounded-3 py-sm-2
+                    px-sm-2" value="Confirmar" />
+
+                <input type="submit" id="cancel" name="cancel" class="btn btn-danger rounded-3 py-sm-2  px-sm-2"
+                    value="Cancelar" />
 
             </form>
         </div>

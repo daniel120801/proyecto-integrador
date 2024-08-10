@@ -161,18 +161,19 @@ $resultado = $bd->exec_instruction($sql);
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
-                        <a href="index.html" class="nav-item nav-link">INICIO</a>
-                        <a href="about.html" class="nav-item nav-link">NOSOTROS</a>
-                        <a href="service.html" class="nav-item nav-link">SERVICIOS</a>
-                        <a href="menu.html" class="nav-item nav-link">MENÚ</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                            <div class="dropdown-menu m-0">
 
+                        <a href="index.php" class="nav-item nav-link active ">Inicio</a>
 
-                            </div>
+                        <a href="registro.php" class="nav-item nav-link">Servicios</a>
+
+                        <a href="menu.php" class="nav-item nav-link">Menú</a>
+
+                        <a href="contact.php" class="nav-item nav-link">Comentarios</a>
+
+                        <div class="nav-item nav-link">
+                            <a href="session.php"
+                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] : "Iniciar sesión") ?></a>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link active">CERRAR SESION</a>
                     </div>
 
                 </div>
