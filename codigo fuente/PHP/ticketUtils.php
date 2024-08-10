@@ -8,11 +8,12 @@ class ticketUtils
     public function getUser()
     {
 
+        global $Sid_pedido;
 
-        if (!isset($_SESSION['id_pedido'])) {
+        if (!isset($_SESSION[$Sid_pedido])) {
             return "error";
         }
-        $this->idPedido = $_SESSION['id_pedido'];
+        $this->idPedido = $_SESSION[$Sid_pedido];
 
 
         $bd = new BD_PDO();
@@ -127,7 +128,7 @@ class ticketUtils
     function confirmTicket()
     {
         $bd = new BD_PDO();
-        $bd->exec_instruction("UPDATE pedido SET `estado_pedido`='en espera' WHERE PK_pedido=" . $_SESSION['id_pedido'] . "");
+        $bd->exec_instruction("UPDATE pedido SET `estado_pedido`='en espera' WHERE PK_pedido=" . $this->idPedido . "");
         $_SESSION['id_pedido'] = null;
         echo "<script type='text/javascript'>
         alert('Pedido realizado.');
@@ -139,7 +140,7 @@ class ticketUtils
     function cancelTicket()
     {
         $bd = new BD_PDO();
-        $bd->exec_instruction("UPDATE pedido SET `estado_pedido`='cancelado' WHERE PK_pedido = " . $_SESSION['id_pedido'] . "");
+        $bd->exec_instruction("UPDATE pedido SET `estado_pedido`='cancelado' WHERE PK_pedido = " . $this->idPedido . "");
         $_SESSION['id_pedido'] = null;
         echo "<script type='text/javascript'>
         alert('Pedido cancelado');
