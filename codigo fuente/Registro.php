@@ -1,10 +1,9 @@
 <?php
-require "PHP/SessionVars.php";
+require "PHP/SessionUtils.php";
 
 session_start();
-
-if (!isset($_SESSION[$StipoUsr]) || !$_SESSION[$StipoUsr] === "admin") {
-    header("location: session.php?route=registro");
+if (!isset($_SESSION[$StipoUsr]) || $_SESSION[$StipoUsr] == "visitante") {
+    redirectLogin('registro.php');
 
     exit();
 }
@@ -102,13 +101,11 @@ if (isset($_POST['btnactualizar'])) {
 
     $update_query .= " WHERE PK_producto = '$id'";
     $obj->exec_instruction($update_query);
-} 
-elseif (isset($_GET['idmodificar'])) {
+} elseif (isset($_GET['idmodificar'])) {
     $id = $_GET['idmodificar'];
     $datos_modificar = $obj->exec_instruction("Select * from producto where PK_producto = '$id'");
     $categoria = $obj->ListarCategorias("Select * from categoria", $datos_modificar[0][5]);
-} 
-else {
+} else {
     $categoria = $obj->ListarCategorias("Select * from categoria", -1);
 }
 
@@ -132,12 +129,12 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
                     <span class="fa fa-bars"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto py-0 pe-4">                    
-                    <a href="registro.php" class="nav-item nav-link">Service</a>
-                    <a href="menu.php" class="nav-item nav-link ">Menu</a>
-                    <a href="contact.html" class="nav-item nav-link">Contacto</a>
+                    <div class="navbar-nav ms-auto py-0 pe-4">
+                        <a href="registro.php" class="nav-item nav-link">Service</a>
+                        <a href="menu.php" class="nav-item nav-link ">Menu</a>
+                        <a href="contact.html" class="nav-item nav-link">Contacto</a>
 
-                </div>
+                    </div>
             </nav>
 
             <div class="container-xxl py-5 bg-dark hero-header mb-5">
@@ -180,7 +177,8 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
                                         </option>
                                         <option value="disponible" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == 'disponible' ? 'selected' : ''; ?>>Disponible
                                         </option>
-                                        <option value="No disponible" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == 'No disponible' ? 'selected' : ''; ?>>No disponible
+                                        <option value="No disponible" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == 'No disponible' ? 'selected' : ''; ?>>No
+                                            disponible
                                         </option>
                                     </select>
                                 </div>

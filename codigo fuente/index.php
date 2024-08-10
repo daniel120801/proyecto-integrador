@@ -1,5 +1,5 @@
 <?php
-require 'PHP/SessionVars.php';
+require 'PHP/SessionUtils.php';
 session_start();
 
 

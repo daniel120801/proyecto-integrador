@@ -1,7 +1,7 @@
 <?php
 require "PHP/Utils.php";
 require "PHP/conection.php";
-require "PHP/SessionVars.php";
+require "PHP/SessionUtils.php";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -28,8 +28,9 @@ if (isset($_POST['login'])) {
         $_SESSION[$StipoUsr] = $r[0]['tipo_Usuario'];
 
 
-        if (isset($_GET["route"])) {
-            header("location: " . $_GET["route"] . ".php");
+        if (isset($_POST["route"]) && ($_SESSION[$StipoUsr] != "visitante" || $_POST["route"] != 'registro.php')) {
+
+            header("location: " . $_POST["route"] . "");
 
         } else {
             header("location: index.php");
@@ -55,8 +56,9 @@ if (isset($_POST['login'])) {
         $_SESSION[$Snombre] = $nombre . " " . $apellido;
         $_SESSION[$StipoUsr] = "visitante";
 
-        if (isset($_GET["route"])) {
-            header("location: " . $_GET["route"] . ".php");
+        if (isset($_POST["route"]) && $_POST["route"] != 'registro.php') {
+
+            header("location: " . $_POST["route"] . "");
 
         } else {
             header("location: index.php");
@@ -131,14 +133,17 @@ if (isset($_POST['login'])) {
                         <label for="password">Contraseña:</label>
                         <input type="password" class="form-control" name="password" id="password" required>
                     </div>
+                    <input type="hidden" name="route" id="route"
+                        value="<?php echo (isset($_POST['route']) ? $_POST['route'] : 'index.php'); ?>">
                     <button type="submit" id="login" name="login" class="btn btn-primary w-50">Iniciar Sesión</button>
+
                 </form>
             </div>
         </div>
         <!-- Inicio Sesión End -->
 
         <!-- Crear Cuenta -->
-        <div id="tab-2" class="tab-pane fade">
+        <div id=" tab-2" class="tab-pane fade">
             <div class="w-50">
                 <form action="session.php" method="post">
                     <div class="form-group mb-3">
@@ -160,7 +165,10 @@ if (isset($_POST['login'])) {
                         <input type="password" class="form-control" name="confirm_password" id="confirm_password"
                             required>
                     </div>
-                    <button type="submit" id="create" name="create" class="btn btn-primary w-50">Crear Cuenta</button>
+                    <input type="hidden" name="route" id="route"
+                        value="<?php echo (isset($_POST['route']) ? $_POST['route'] : 'index.php'); ?>">
+                    <button type="submit" id="create" name="create" class="btn btn-primary w-50">Crear
+                        Cuenta</button>
 
                 </form>
             </div>
@@ -173,16 +181,15 @@ if (isset($_POST['login'])) {
     <!-- Footer End -->
     <script>
         // Selecciona los campos de entrada
-        var passwordInput = document.getElementById('c_password');
+        var passwordInput = document.getElementById('c_password'); // Se elimina el espacio en blanco
         var confirmPasswordInput = document.getElementById('confirm_password');
 
         // Función para verificar que las contraseñas coincidan
         function validatePasswords() {
             if (passwordInput.value !== confirmPasswordInput.value) {
                 confirmPasswordInput.setCustomValidity('Las contraseñas no coinciden.');
-
             } else {
-                confirmPasswordInput.setCustomValidity('');  // Restaura el mensaje por defecto si es válido
+                confirmPasswordInput.setCustomValidity(''); // Restaura el mensaje por defecto si es válido
             }
         }
 
@@ -190,20 +197,18 @@ if (isset($_POST['login'])) {
         passwordInput.addEventListener('input', validatePasswords);
         confirmPasswordInput.addEventListener('input', validatePasswords);
 
-        // Añade un event listener para el evento 'invalid' en el campo de confirmación de contraseña
+        // Opcional: Añade un event listener para el evento 'invalid' en el campo de confirmación de contraseña
         confirmPasswordInput.addEventListener('invalid', function (event) {
-            // event.preventDefault();  // Previene el mensaje de error por defecto
             if (!event.target.validity.valid) {
                 event.target.setCustomValidity('Las contraseñas no coinciden.');
             } else {
-                event.target.setCustomValidity('');  // Restaura el mensaje por defecto si es válido
+                event.target.setCustomValidity(''); // Restaura el mensaje por defecto si es válido
             }
         });
-
-
     </script>
+
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src=" https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
