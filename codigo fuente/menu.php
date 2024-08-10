@@ -1,3 +1,12 @@
+<?
+require "PHP/SessionVars.php";
+session_start();
+if (!isset($_SESSION[$Sid])) {
+    header("location:session.php?route=menu");
+}
+$id = $_SESSION[$Sid];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -89,6 +98,7 @@
     }
     if (isset($_GET['insertar_id'])) {
         $bd->exec_instruction("CALL agregar_producto(" . $_GET['insertar_id'] . ",1)");
+        
     } else if (isset($_GET['eliminar'])) {
         $bd->exec_instruction("DELETE FROM detalle_pedido   WHERE PK_detpedido = " . $_GET['eliminar'] . "");
     }
@@ -96,12 +106,12 @@
     if (isset($_GET['txtbuscarque'])) {
         $textobuscar = $_GET['txtbuscarque'];
     }
+
     if (isset($_GET['idpremodificar'])) {
         $modificar = $bd->exec_instruction("SELECT dp.*, producto.nombre AS nombre 
             FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto 
              WHERE PK_detpedido = " . $_GET['idpremodificar'] . " ");
     }
-
     ?>
 
     <div class="container-xxl bg-white p-0">
@@ -163,7 +173,7 @@
                                     <p class="card-text flex-grow-1 mb-1"><?php echo $row['descripcion']; ?></p>
                                     <p class="card-text text-primary mb-1"><strong>$<?php echo $row['precio']; ?></strong></p>
                                 </div>
-                                <div class="card-footer d-flex align-items-center p-2"> 
+                                <div class="card-footer d-flex align-items-center p-2">
                                     <a href="menu.php?id=<?php echo $row['PK_producto']; ?>"
                                         class="btn btn-success btn-sm">Agregar</a>
                                 </div>
@@ -284,7 +294,7 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = 1 ";
+                                    $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto  WHERE FK_pedido = 1 ";
 
                                     $result = $bd->exec_instruction($sql);
                                     foreach ($result as $row) { ?>
