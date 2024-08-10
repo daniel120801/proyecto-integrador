@@ -1,3 +1,12 @@
+<?
+require "PHP/SessionVars.php";
+session_start();
+if (!isset($_SESSION[$Sid])) {
+    header("location:session.php?route=menu");
+}
+$id = $_SESSION[$Sid];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -91,6 +100,7 @@
     }
     if (isset($_GET['insertar_id'])) {
         $bd->exec_instruction("CALL agregar_producto(" . $_GET['insertar_id'] . ",1)");
+
     } else if (isset($_GET['eliminar'])) {
         $bd->exec_instruction("DELETE FROM detalle_pedido   WHERE PK_detpedido = " . $_GET['eliminar'] . "");
     }
@@ -98,12 +108,12 @@
     if (isset($_GET['txtbuscarque'])) {
         $textobuscar = $_GET['txtbuscarque'];
     }
+
     if (isset($_GET['idpremodificar'])) {
         $modificar = $bd->exec_instruction("SELECT dp.*, producto.nombre AS nombre 
             FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto 
              WHERE PK_detpedido = " . $_GET['idpremodificar'] . " ");
     }
-
     ?>
 
     <div class="container-xxl bg-white p-0">
@@ -119,6 +129,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
+
                         <a href="index.php" class="nav-item nav-link active ">Inicio</a>
 
                         <a href="registro.php" class="nav-item nav-link">Servicios</a>
@@ -131,6 +142,7 @@
                             <a href="session.php"
                                 class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] : "Iniciar sesión") ?></a>
                         </div>
+
 
                     </div>
                 </div>
@@ -159,31 +171,30 @@
                     $result = $bd->exec_instruction($sql);
                     ?>
                     <div class="col-12 mb-3">
-                        <h2>Resultados relacionados</h2>
+                        <h2 class="text-center">Resultados relacionados</h2>
+                    </div>
+                    <div class="col-8 mx-auto">
+                        <div class="row">
+                            <?php
+                            foreach ($result as $row) {
+                                ?>
+                                <div class="row-md-5 mb-2">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <?php echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                            ?>
+                        </div>
                     </div>
                     <?php
-                    foreach ($result as $row) {
-                        ?>
-                        <div class="col-12 mb-3">
-                            <div class="card flex-row h-100 shadow-sm p-2" style="height: 120px;">
-                                <img src="<?php echo $row['direccion_imagen']; ?>" class="card-img-left"
-                                    style="width: 100px; height: 100px; object-fit: cover;" alt="<?php echo $row['nombre']; ?>">
-                                <div class="card-body d-flex flex-column p-2" style="font-size: 0.9rem;">
-                                    <h6 class="card-title mb-1"><?php echo $row['nombre']; ?></h6>
-                                    <p class="card-text flex-grow-1 mb-1"><?php echo $row['descripcion']; ?></p>
-                                    <p class="card-text text-primary mb-1"><strong>$<?php echo $row['precio']; ?></strong></p>
-                                </div>
-                                <div class="card-footer d-flex align-items-center p-2">
-                                    <a href="menu.php?id=<?php echo $row['PK_producto']; ?>"
-                                        class="btn btn-success btn-sm">Agregar</a>
-                                </div>
-                            </div>
-                        </div>
-                        <?php
-                    }
                 }
                 ?>
             </div>
+
             <br>
 
             <!-- Categorias Start -->
@@ -294,7 +305,9 @@
                                 </thead>
                                 <tbody>
                                     <?php
+
                                     $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = 1 ";
+
 
                                     $result = $bd->exec_instruction($sql);
                                     foreach ($result as $row) { ?>
@@ -313,7 +326,7 @@
                         </div>
                     </div>
                     <!-- Productos Agregados End -->
-                    <a class="btn btn-primary text-center">Ver Ticket</a>
+                    <a class="d-flex justify-content-center btn btn-primary text-center">Ver Ticket</a>
                 </div>
             </div>
             <!-- Tab Content End -->
