@@ -3,16 +3,17 @@
 require 'conection.php';
 class ticketUtils
 {
-    public $idPedido = -1;
+    public $idPedido = 1;
     public $pedido;
     public function getUser()
     {
 
-        if (!isset($_POST['id_pedido'])) {
 
+        if (!isset($_SESSION['id_pedido'])) {
             return "error";
         }
-        $this->idPedido = $_POST['id_pedido'];
+        $this->idPedido = $_SESSION['id_pedido'];
+
 
         $bd = new BD_PDO();
 
@@ -122,5 +123,29 @@ class ticketUtils
         return $rt;
 
     }
+
+    function confirmTicket()
+    {
+        $bd = new BD_PDO();
+        $bd->exec_instruction("UPDATE pedido SET `estado_pedido`='en espera' WHERE PK_pedido=" . $_SESSION['id_pedido'] . "");
+        $_SESSION['id_pedido'] = null;
+        echo "<script type='text/javascript'>
+        alert('Pedido realizado.');
+        window.location.href = 'menu.php';  // Redirige a otra página
+    </script>";
+        return;
+
+    }
+    function cancelTicket()
+    {
+        $bd = new BD_PDO();
+        $bd->exec_instruction("UPDATE pedido SET `estado_pedido`='cancelado' WHERE PK_pedido = " . $_SESSION['id_pedido'] . "");
+        $_SESSION['id_pedido'] = null;
+        echo "<script type='text/javascript'>
+        alert('Pedido cancelado');
+        window.location.href = 'menu.php';  // Redirige a otra página
+    </script>";
+    }
+
 
 }

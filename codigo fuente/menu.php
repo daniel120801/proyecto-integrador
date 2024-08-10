@@ -65,6 +65,8 @@
     <?php
     //error_reporting(1);
     require 'PHP/conection.php';
+    require 'PHP/SessionVars.php';
+    session_start();
     $bd = new BD_PDO();
 
     function ImprimirProductoTabla($img, $nombre, $descripcion, $id, $precio): string
@@ -117,11 +119,19 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
-                        <a href="index.html" class="nav-item nav-link">Inicio</a>
-                        <a href="about.html" class="nav-item nav-link">Nosotros</a>
-                        <a href="service.html" class="nav-item nav-link">Servicios</a>
-                        <a href="menu.html" class="nav-item nav-link active">Menú</a>
-                        <a href="contact.html" class="nav-item nav-link">Contacto</a>
+                        <a href="index.php" class="nav-item nav-link active ">Inicio</a>
+
+                        <a href="registro.php" class="nav-item nav-link">Servicios</a>
+
+                        <a href="menu.php" class="nav-item nav-link">Menú</a>
+
+                        <a href="contact.php" class="nav-item nav-link">Comentarios</a>
+
+                        <div class="nav-item nav-link">
+                            <a href="session.php"
+                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] : "Iniciar sesión") ?></a>
+                        </div>
+
                     </div>
                 </div>
             </nav>
