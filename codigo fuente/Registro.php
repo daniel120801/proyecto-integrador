@@ -132,8 +132,11 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
                     <div class="navbar-nav ms-auto py-0 pe-4">
                         <a href="registro.php" class="nav-item nav-link">Service</a>
                         <a href="menu.php" class="nav-item nav-link ">Menu</a>
-                        <a href="contact.html" class="nav-item nav-link">Contacto</a>
-
+                        <a href="contact.php" class="nav-item nav-link">Comentarios</a>
+                        <div class="nav-item nav-link">
+                            <a href="session.php"
+                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] : "Iniciar sesión") ?></a>
+                        </div>
                     </div>
             </nav>
 
