@@ -98,7 +98,7 @@ $id = $_SESSION[$Sid];
     }
     if (isset($_GET['insertar_id'])) {
         $bd->exec_instruction("CALL agregar_producto(" . $_GET['insertar_id'] . ",1)");
-        
+
     } else if (isset($_GET['eliminar'])) {
         $bd->exec_instruction("DELETE FROM detalle_pedido   WHERE PK_detpedido = " . $_GET['eliminar'] . "");
     }
@@ -159,31 +159,30 @@ $id = $_SESSION[$Sid];
                     $result = $bd->exec_instruction($sql);
                     ?>
                     <div class="col-12 mb-3">
-                        <h2>Resultados relacionados</h2>
+                        <h2 class="text-center">Resultados relacionados</h2>
+                    </div>
+                    <div class="col-8 mx-auto">
+                        <div class="row">
+                            <?php
+                            foreach ($result as $row) {
+                                ?>
+                                <div class="row-md-5 mb-2">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <?php echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                            ?>
+                        </div>
                     </div>
                     <?php
-                    foreach ($result as $row) {
-                        ?>
-                        <div class="col-12 mb-3">
-                            <div class="card flex-row h-100 shadow-sm p-2" style="height: 120px;">
-                                <img src="<?php echo $row['direccion_imagen']; ?>" class="card-img-left"
-                                    style="width: 100px; height: 100px; object-fit: cover;" alt="<?php echo $row['nombre']; ?>">
-                                <div class="card-body d-flex flex-column p-2" style="font-size: 0.9rem;">
-                                    <h6 class="card-title mb-1"><?php echo $row['nombre']; ?></h6>
-                                    <p class="card-text flex-grow-1 mb-1"><?php echo $row['descripcion']; ?></p>
-                                    <p class="card-text text-primary mb-1"><strong>$<?php echo $row['precio']; ?></strong></p>
-                                </div>
-                                <div class="card-footer d-flex align-items-center p-2">
-                                    <a href="menu.php?id=<?php echo $row['PK_producto']; ?>"
-                                        class="btn btn-success btn-sm">Agregar</a>
-                                </div>
-                            </div>
-                        </div>
-                        <?php
-                    }
                 }
                 ?>
             </div>
+
             <br>
 
             <!-- Categorias Start -->
