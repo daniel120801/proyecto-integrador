@@ -3,6 +3,7 @@ $Scorreo = "correo";
 $Spwd = "pwd";
 $Snombre = "nombre";
 $Sid = "id";
+$Sid_pedido = "id_pedido";
 $StipoUsr = "tipo_Usuario";
 
 
