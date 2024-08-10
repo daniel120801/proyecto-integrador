@@ -2,7 +2,7 @@
 require "PHP/SessionUtils.php";
 
 session_start();
-if (!isset($_SESSION[$StipoUsr]) || $_SESSION[$StipoUsr] == "visitante") {
+if (!isset($_SESSION[$StipoUsr]) || $_SESSION[$StipoUsr] != "admin") {
     redirectLogin('registro.php');
 
     exit();
