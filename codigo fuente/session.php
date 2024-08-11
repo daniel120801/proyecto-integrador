@@ -93,7 +93,6 @@ if (isset($_POST['login'])) {
         </div>
     </div>
     <!-- Navbar & Hero End -->
-
     <!-- Tab Start -->
     <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
         <div class="position-relative d-inline-block w-100">
@@ -123,7 +122,7 @@ if (isset($_POST['login'])) {
     <div class="tab-content">
         <!-- Inicio Sesión -->
         <div id="tab-1" class="w-100 tab-pane fade show active">
-            <div class="w-50 text-center">
+            <div class="w-50 mx-auto">
                 <form action="session.php" method="post">
                     <div class="form-group mb-3">
                         <label for="correo">Correo Electrónico:</label>
@@ -136,15 +135,14 @@ if (isset($_POST['login'])) {
                     <input type="hidden" name="route" id="route"
                         value="<?php echo (isset($_POST['route']) ? $_POST['route'] : 'index.php'); ?>">
                     <button type="submit" id="login" name="login" class="btn btn-primary w-50">Iniciar Sesión</button>
-
                 </form>
             </div>
         </div>
         <!-- Inicio Sesión End -->
 
         <!-- Crear Cuenta -->
-        <div id=" tab-2" class="tab-pane fade">
-            <div class="w-50">
+        <div id="tab-2" class="w-100 tab-pane fade">
+            <div class="w-50 mx-auto">
                 <form action="session.php" method="post">
                     <div class="form-group mb-3">
                         <label for="nombre">Nombre:</label>
@@ -159,22 +157,23 @@ if (isset($_POST['login'])) {
                         <input type="email" class="form-control" name="correo" id="correo" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="password">Contraseña:</label>
+                        <label for="c_password">Contraseña:</label>
                         <input type="password" class="form-control" name="c_password" id="c_password" required>
-                        <label for="password">Confirme contraseña:</label>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="confirm_password">Confirme contraseña:</label>
                         <input type="password" class="form-control" name="confirm_password" id="confirm_password"
                             required>
                     </div>
                     <input type="hidden" name="route" id="route"
                         value="<?php echo (isset($_POST['route']) ? $_POST['route'] : 'index.php'); ?>">
-                    <button type="submit" id="create" name="create" class="btn btn-primary w-50">Crear
-                        Cuenta</button>
-
+                    <button type="submit" id="create" name="create" class="btn btn-primary w-50">Crear Cuenta</button>
                 </form>
             </div>
         </div>
         <!-- Crear Cuenta End -->
     </div>
+
 
     <!-- Footer Start -->
     <?php echo getFooter(); ?>
