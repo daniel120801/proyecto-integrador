@@ -6,6 +6,8 @@
 -- Tiempo de generación: 11-08-2024 a las 01:47:34
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
+CREATE DATABASE db_sushi;
+USE db_sushi;
 
 CREATE DATABASE db_sushi;
 USE db_sushi;

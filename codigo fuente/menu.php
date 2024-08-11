@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Restoran - Bootstrap Restaurant Template</title>
+    <title>Sushi-to</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="img/icono.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,6 +21,7 @@
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    
 
     <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
@@ -31,9 +32,9 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/tabla.css">
+    <link href="css/original.css" rel="stylesheet">
 
+   
 </head>
 
 <body>
@@ -70,8 +71,21 @@
             </div>';
     }
 
-    if (isset($_GET['insertar_id'])) {
+    if (isset($_POST['Enlace'])) {
 
+        $metodoPago = $_POST['metodoPago'];
+        $metodoEntrega = $_POST['tipopedido'];
+        $direccion = $_POST['Direccion'];
+
+
+        $sql = "UPDATE `pedido` SET `tipo_pedido`='$metodoEntrega',`direccion`='$direccion',`metodo_pago`='$metodoPago' WHERE PK_pedido= " . $_SESSION[$Sid_pedido] . "";
+        $bd->exec_instruction($sql);
+        header("Location: ticket.php");
+
+        return;
+    }
+
+    if (isset($_GET['insertar_id'])) {
 
         if (!isset($_SESSION[$Sid_pedido])) {
 
@@ -81,34 +95,9 @@
 
             $_SESSION[$Sid_pedido] = $ultima_compra[0][0];
         }
-
-
-
         //obj->Ejecutar_Instruccion("Insert into detalle_venta(Id_venta,Id_producto,Cantidad,Precio) values('$idventa','$idproducto','$cantidad','$precio')");
     
-
-
-
-
-
         $bd->exec_instruction("CALL agregar_producto(" . $_GET['insertar_id'] . "," . $_SESSION[$Sid_pedido] . ")");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     } else if (isset($_GET['eliminar'])) {
         $bd->exec_instruction("DELETE FROM detalle_pedido   WHERE PK_detpedido = " . $_GET['eliminar'] . "");
@@ -123,14 +112,16 @@
             FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto 
              WHERE PK_detpedido = " . $_GET['idpremodificar'] . " ");
     }
+
     ?>
+    
 
     <div class="container-xxl bg-white p-0">
         <!-- Navbar & Hero Start -->
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
-                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Restoran</h1>
+                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sushi-to</h1>
                     <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -139,11 +130,11 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
 
-                        <a href="index.php" class="nav-item nav-link active ">Inicio</a>
+                        <a href="index.php" class="nav-item nav-link">Inicio</a>
 
                         <a href="registro.php" class="nav-item nav-link">Servicios</a>
 
-                        <a href="menu.php" class="nav-item nav-link">Menú</a>
+                        <a href="menu.php" class="nav-item nav-link active">Menú</a>
 
                         <a href="contact.php" class="nav-item nav-link">Comentarios</a>
 
@@ -151,13 +142,10 @@
                             <a href="session.php"
                                 class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] : "Iniciar sesión") ?></a>
                         </div>
-
-
                     </div>
                 </div>
             </nav>
-
-            <div class="container-xxl py-5 bg-dark hero-header mb-5">
+            <div class="container-xxl py-5 bg-dark hero-header mb-5" >
                 <div class="container text-center my-5 pt-5 pb-4">
                     <h1 class="display-3 text-white mb-3 animated slideInDown">Menú Comidas</h1>
                 </div>
@@ -302,7 +290,6 @@
                 <div id="tab-4" class="tab-pane fade">
                     <!-- Productos Agregados -->
                     <?php
-
                     $result = [];
                     if (isset($_SESSION[$Sid_pedido])) {
                         $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = " . $_SESSION[$Sid_pedido] . " ";
@@ -311,8 +298,6 @@
                         $result = $bd->exec_instruction($sql);
                     }
                     if (count($result) > 0) {
-
-
                         ?>
                         <div class="container my-5">
 
@@ -349,101 +334,150 @@
                                 </table>
 
                             </div>
-                            <form action="ticket.php" method="post">
-                                <input type="submit" value="Ver Ticket">
-                            </form>
+                            <div class="container mt-5">
+                                <form action="menu.php" method="post" class="p-3">
+                                    <div class="form-group ">
+                                        <label for="metodoPago">Método de Pago:</label>
+                                        <select id="metodoPago" name="metodoPago" class="form-control">
+                                            <option value="tarjeta">Tarjeta</option>
+                                            <option value="efectivo">Efectivo</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <label for="tipopedido">Método de Entrega:</label>
+                                        <select id="tipopedido" name="tipopedido" class="form-control"
+                                            onchange="this.form.submit()">
+                                            <option value="Domicilio" <?php if (isset($_POST['tipopedido']) && $_POST['tipopedido'] == 'Domicilio')
+                                                echo 'selected'; ?>>Domicilio</option>
+                                            <option value="Sucursal" <?php if (isset($_POST['tipopedido']) && $_POST['tipopedido'] == 'Sucursal')
+                                                echo 'selected'; ?>>Sucursal</option>
+                                        </select>
+                                    </div>
 
-                        </div>
-                        <!-- Productos Agregados End -->
-                    <?php } else { ?>
-                        <h4 class="text-center">Vacio</h4>
-                    <?php } ?>
-                </div>
-            </div>
-            <!-- Tab Content End -->
+                                    <?php
+                                    // Mostrar el campo de dirección solo si el método de entrega es "Domicilio"
+                                    if (isset($_POST['tipopedido']) && $_POST['tipopedido'] == 'Domicilio') {
+                                        echo '<div class="form-group mt-3">';
+                                        echo '<label for="Direccion">Dirección:</label>';
+                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control" required>';
+                                        echo '</div>';
+                                    }else if (isset($_POST['tipopedido']) && $_POST['tipopedido'] == 'Sucursal') {
+                                        echo '<div class="form-group mt-3">';
+                                        echo '<label for="Direccion">Dirección:</label>';
+                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control" value="Calle Ejemplo 123, Ciudad" readonly>';
+                                        echo '</div>';
+                                    }
+                                    ?>
 
-
-            <!-- Footer Start -->
-            <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-                <div class="container py-5">
-                    <div class="row g-5">
-                        <div class="col-lg-3 col-md-6">
-                            <h4 class="text-white mb-3">Company</h4>
-                            <a class="btn btn-link" href="">About Us</a>
-                            <a class="btn btn-link" href="">Contact Us</a>
-                            <a class="btn btn-link" href="">Reservation</a>
-                            <a class="btn btn-link" href="">Privacy Policy</a>
-                            <a class="btn btn-link" href="">Terms & Condition</a>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <h4 class="text-white mb-3">Contact</h4>
-                            <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                            <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                            <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                            <div class="d-flex pt-2">
-                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-outline-light btn-social" href=""><i
-                                        class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                                <a class="btn btn-outline-light btn-social" href=""><i
-                                        class="fab fa-linkedin-in"></i></a>
+                                    <div class="form-group mt-3">
+                                        <input id="Enlace" name="Enlace" type="submit" class="btn btn-primary mb-3"
+                                            value="Ver Ticket">
+                                    </div>
+                                </form>
                             </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <h4 class="text-white mb-3">Opening</h4>
-                            <h5 class="text-light fw-normal">Monday - Saturday</h5>
-                            <p>09AM - 09PM</p>
-                            <h5 class="text-light fw-normal">Sunday</h5>
-                            <p>10AM - 08PM</p>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <h4 class="text-white mb-3">Newsletter</h4>
-                            <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                            <div class="position-relative mx-auto" style="max-width: 400px;">
-                                <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text"
-                                    placeholder="Your email">
-                                <button type="button"
-                                    class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+
+                            <!-- Productos Agregados End -->
+                        <?php } else { ?>
+                            <h4 class="text-center">Vacio</h4>
+                        <?php } ?>
+                    </div>
+                </div>
+                <!-- Tab Content End -->
+
+                <!-- Footer Start -->
+                <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn " data-wow-delay="0.1s ">
+                    <div class="container py-5 ">
+                        <div class="row g-5 ">
+                            <div class="col-lg-3 col-md-6 ">
+                                <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
+                                    Compañia</h4>
+                                <a class="btn btn-link " href=" ">Nosotros</a>
+                                <a class="btn btn-link " href=" ">Contactanos</a>
+                                <a class="btn btn-link " href=" ">Reservaciones</a>
+                                <a class="btn btn-link " href=" ">Politica de Privacidad</a>
+                                <a class="btn btn-link " href=" ">Terminos y condiciones</a>
+                            </div>
+                            <div class="col-lg-3 col-md-6 ">
+                                <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
+                                    Contacto</h4>
+                                <p class="mb-2 "><i class="fa fa-map-marker-alt me-3 "></i>Av.16 de Septiembre,
+                                    Piedras Negras,
+                                    MX</p>
+                                <p class="mb-2 "><i class="fa fa-phone-alt me-3 "></i>+52 878 123 9277</p>
+                                <p class="mb-2 "><i class="fa fa-envelope me-3 "></i>info@example.com</p>
+                                <div class="d-flex pt-2 ">
+                                    <a class="btn btn-outline-light btn-social " href=" "><i
+                                            class="fab fa-twitter "></i></a>
+                                    <a class="btn btn-outline-light btn-social " href=" "><i
+                                            class="fab fa-facebook-f "></i></a>
+                                    <a class="btn btn-outline-light btn-social " href=" "><i
+                                            class="fab fa-youtube "></i></a>
+                                    <a class="btn btn-outline-light btn-social " href=" "><i
+                                            class="fab fa-linkedin-in "></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 ">
+                                <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
+                                    Horario</h4>
+                                <h5 class="text-light fw-normal ">Lunes - Sabado</h5>
+                                <p>09AM - 09PM</p>
+                                <h5 class="text-light fw-normal ">Domingo</h5>
+                                <p>10AM - 08PM</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 ">
+                                <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
+                                    PROMOCIONES</h4>
+                                <p>Para cupones, descuentos, ofertas y de mas. REGISTRATE!.</p>
+                                <div class="position-relative mx-auto " style="max-width: 400px; ">
+                                    <input class="form-control border-primary w-100 py-3 ps-4 pe-5 " type="text "
+                                        placeholder="Correo Electronico ">
+                                    <button type="button "
+                                        class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2 ">REGISTRATE</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="container">
-                    <div class="copyright">
-                        <div class="row">
-                            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                                &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
+                    <div class="container ">
+                        <div class="copyright ">
+                            <div class="row ">
+                                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0 ">
+                                    &copy; <a class="border-bottom " href="#
+                            ">Diseño por nosotros</a>, Todos los Derechos Reservados.
 
-                                Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                            </div>
-                            <div class="col-md-6 text-center text-md-end">
-                                <div class="footer-menu">
-                                    <a href="">Home</a>
-                                    <a href="">Cookies</a>
-                                    <a href="">Help</a>
-                                    <a href="">FQAs</a>
+                                    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal ". Thank you for your support. ***/-->
+                                    Designed By <a class="border-bottom " href="https://htmlcodex.com ">HTML
+                                        Codex</a><br><br>
+                                    Distributed By <a class="border-bottom " href="https://themewagon.com "
+                                        target="_blank ">ThemeWagon</a>
+                                </div>
+                                <div class="col-md-6 text-center text-md-end ">
+                                    <div class="footer-menu ">
+                                        <a href=" ">Inicio</a>
+                                        <a href=" ">Cookies</a>
+                                        <a href=" ">Ayuda</a>
+                                        <a href=" ">FQAs</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Footer End -->
             </div>
-            <!-- Footer End -->
-        </div>
 
-        <!-- JavaScript Libraries -->
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="lib/wow/wow.min.js"></script>
-        <script src="lib/easing/easing.min.js"></script>
-        <script src="lib/waypoints/waypoints.min.js"></script>
-        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-        <script src="lib/tempusdominus/js/moment.min.js"></script>
-        <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-        <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+            <!-- JavaScript Libraries -->
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="lib/wow/wow.min.js"></script>
+            <script src="lib/easing/easing.min.js"></script>
+            <script src="lib/waypoints/waypoints.min.js"></script>
+            <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+            <script src="lib/tempusdominus/js/moment.min.js"></script>
+            <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+            <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-        <!-- Template Javascript -->
-        <script src="js/main.js"></script>
+            <!-- Template Javascript -->
+            <script src="js/main.js"></script>
 </body>
 
 </html>

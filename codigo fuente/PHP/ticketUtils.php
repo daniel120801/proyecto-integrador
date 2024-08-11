@@ -16,6 +16,7 @@ class ticketUtils
         $this->idPedido = $_SESSION[$Sid_pedido];
 
 
+
         $bd = new BD_PDO();
 
         $this->pedido = $bd->exec_instruction("SELECT 
