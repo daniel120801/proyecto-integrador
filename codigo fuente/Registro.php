@@ -14,13 +14,13 @@ if (!isset($_SESSION[$StipoUsr]) || $_SESSION[$StipoUsr] != "admin") {
 
 <head>
     <meta charset="utf-8">
-    <title>Sushi-to - Bootstrap Restaurant Template</title>
+    <title>Sushi-to</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="img/icono.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,9 +43,6 @@ if (!isset($_SESSION[$StipoUsr]) || $_SESSION[$StipoUsr] != "admin") {
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
-
-
 
 </head>
 <?php
@@ -348,9 +345,11 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
     </div>
     <!-- Footer End -->
 
+
     <!-- Back to Top -->
     <a href="# " class="btn btn-lg btn-primary btn-lg-square back-to-top "><i class="bi bi-arrow-up "></i></a>
     </div>
 
 </body>
+
 </html>

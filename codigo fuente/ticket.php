@@ -9,6 +9,7 @@ session_start();
 <html lang="es">
 
 <head>
+<link href="img/icono.png" rel="icon">
     <?php echo printHead("compra"); ?>
 </head>
 
@@ -24,6 +25,8 @@ session_start();
 
     ?>
     <!-- Navbar & Hero Start -->
+    
+
     <div class="container-xxl position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
             <a href="" class="navbar-brand p-0">
@@ -35,7 +38,7 @@ session_start();
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0 ">
 
-                    <a href="index.php" class="nav-item nav-link active ">Inicio</a>
+                    <a href="index.php" class="nav-item nav-link ">Inicio</a>
 
                     <a href="registro.php" class="nav-item nav-link">Servicios</a>
 
