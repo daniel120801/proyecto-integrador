@@ -1,11 +1,9 @@
 <?php
-require "PHP/SessionVars.php";
+require "PHP/SessionUtils.php";
 
 session_start();
-var_dump($_SESSION);
-
-if (!isset($_SESSION[$StipoUsr]) || !$_SESSION[$StipoUsr] === "admin") {
-    header("location: session.php?route=registro");
+if (!isset($_SESSION[$StipoUsr]) || $_SESSION[$StipoUsr] != "admin") {
+    redirectLogin('registro.php');
 
     exit();
 }
@@ -56,7 +54,6 @@ require 'PHP/conection.php';
 $obj = new BD_PDO();
 
 if (isset($_POST['btnregistrar'])) {
-    var_dump($_FILES);
     $nombre = $_POST['txtnombre'];
     $PKcategoria = $_POST['txtPKcategoria'];
     $estado = $_POST['txtestado'];
@@ -124,13 +121,20 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
         <!-- Navbar & Hero Start -->
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
-                <a href="" class="navbar-brand p-0">
+                <a href="index.php" class="navbar-brand p-0">
                     <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sushi-to</h1>
                     <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
                 </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto py-0 pe-4">
+                        <a href="registro.php" class="nav-item nav-link">Service</a>
+                        <a href="menu.php" class="nav-item nav-link ">Menu</a>
+                        <a href="contact.html" class="nav-item nav-link">Contacto</a>
+
+                    </div>
             </nav>
 
             <div class="container-xxl py-5 bg-dark hero-header mb-5">
@@ -169,11 +173,12 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
                                 <div class="mb-3">
                                     <label for="txtestado" class="form-label">Estado</label>
                                     <select class="form-select" name="txtestado" id="txtestado">
-                                        <option value="1" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == '1' ? 'selected' : ''; ?>>--- vacio ---
+                                        <option value="1">--- vacio ---
                                         </option>
-                                        <option value="2" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == '2' ? 'selected' : ''; ?>>Disponible
+                                        <option value="disponible" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == 'disponible' ? 'selected' : ''; ?>>Disponible
                                         </option>
-                                        <option value="3" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == '3' ? 'selected' : ''; ?>>No disponible
+                                        <option value="No disponible" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == 'No disponible' ? 'selected' : ''; ?>>No
+                                            disponible
                                         </option>
                                     </select>
                                 </div>
