@@ -2,7 +2,10 @@
 $Scorreo = "correo";
 $Spwd = "pwd";
 $Snombre = "nombre";
+
+$Sapellido = "apellido";
 $Sid = "id";
+$Sdomicilio = "domicilio";
 $Sid_pedido = "id_pedido";
 $StipoUsr = "tipo_Usuario";
 

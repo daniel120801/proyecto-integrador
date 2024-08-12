@@ -21,7 +21,7 @@
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-    
+
 
     <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
@@ -34,7 +34,7 @@
     <!-- Template Stylesheet -->
     <link href="css/original.css" rel="stylesheet">
 
-   
+
 </head>
 
 <body>
@@ -51,6 +51,26 @@
     $bd = new BD_PDO();
 
     function ImprimirProductoTabla($img, $nombre, $descripcion, $id, $precio): string
+    {
+        return '
+            <div class="col-lg-6">
+                <div class="d-flex align-items-center">
+                    <img class="flex-shrink-0 img-fluid rounded" src="' . htmlspecialchars($img) . '" alt="" style="width: 80px;">
+                    <div class="w-100 d-flex flex-column text-start ps-4">
+                        <h5 class="d-flex justify-content-between border-bottom pb-2">
+                            <span>' . htmlspecialchars($nombre) . '</span>
+                            <span class="text-primary">$' . htmlspecialchars($precio) . '</span>
+                        <form method="get" class="mt-2">
+                            <input type="hidden" name="insertar_id" value="' . htmlspecialchars($id) . '">
+                            <input class="btn btn-success" type="submit" value="Agregar">
+                        </form>
+                        </h5>
+                        <small class="fst-italic">' . htmlspecialchars($descripcion) . '</small>
+                    </div>
+                </div>
+            </div>';
+    }
+    function Buscar($img, $nombre, $descripcion, $id, $precio): string
     {
         return '
             <div class="col-lg-6">
@@ -89,7 +109,7 @@
 
         if (!isset($_SESSION[$Sid_pedido])) {
 
-            $bd->exec_instruction("Insert into pedido(FK_usuario,fecha) values('$id',Now())");
+            $bd->exec_instruction("Insert into pedido(FK_usuario,estado_pedido,fecha) values('$id','cancelado',Now())");
 
             $ultima_compra = $bd->exec_instruction("SELECT PK_pedido FROM pedido where FK_usuario = '$id' ORDER by PK_pedido DESC");
 
@@ -114,13 +134,13 @@
     }
 
     ?>
-    
+
 
     <div class="container-xxl bg-white p-0">
         <!-- Navbar & Hero Start -->
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
-                <a href="" class="navbar-brand p-0">
+                <a href="index.php" class="navbar-brand p-0">
                     <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sushi-to</h1>
                     <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
@@ -132,20 +152,18 @@
 
                         <a href="index.php" class="nav-item nav-link">Inicio</a>
 
-                        <a href="registro.php" class="nav-item nav-link">Servicios</a>
-
                         <a href="menu.php" class="nav-item nav-link active">Menú</a>
 
                         <a href="contact.php" class="nav-item nav-link">Comentarios</a>
 
                         <div class="nav-item nav-link">
                             <a href="session.php"
-                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] : "Iniciar sesión") ?></a>
+                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre]. ' '. $_SESSION[$Sapellido]: "Iniciar sesión") ?></a>
                         </div>
                     </div>
                 </div>
             </nav>
-            <div class="container-xxl py-5 bg-dark hero-header mb-5" >
+            <div class="container-xxl py-5 bg-dark hero-header mb-5">
                 <div class="container text-center my-5 pt-5 pb-4">
                     <h1 class="display-3 text-white mb-3 animated slideInDown">Menú Comidas</h1>
                 </div>
@@ -167,18 +185,16 @@
                     $sql = "SELECT * FROM producto WHERE nombre LIKE '%" . $textobuscar . "%' AND estado = 'disponible'";
                     $result = $bd->exec_instruction($sql);
                     ?>
-                    <div class="col-12 mb-3">
+                    <div class="col-10 mb-4 ">
                         <h2 class="text-center">Resultados relacionados</h2>
-                    </div>
-                    <div class="col-8 mx-auto">
-                        <div class="row">
+                        <div class="row justify-content-center">
                             <?php
                             foreach ($result as $row) {
                                 ?>
-                                <div class="row-md-5 mb-2">
+                                <div class="col-5 mb-3">
                                     <div class="card h-100">
                                         <div class="card-body">
-                                            <?php echo ImprimirProductoTabla($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]); ?>
+                                            <?php echo Buscar($row["direccion_imagen"], $row["nombre"], $row["descripcion"], $row["PK_producto"], $row["precio"]); ?>
                                         </div>
                                     </div>
                                 </div>
@@ -288,13 +304,12 @@
 
                 <!-- Carrito -->
                 <div id="tab-4" class="tab-pane fade">
+
                     <!-- Productos Agregados -->
                     <?php
                     $result = [];
                     if (isset($_SESSION[$Sid_pedido])) {
                         $sql = "SELECT  dp.*, producto.nombre AS nombre FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto WHERE FK_pedido = " . $_SESSION[$Sid_pedido] . " ";
-
-
                         $result = $bd->exec_instruction($sql);
                     }
                     if (count($result) > 0) {
@@ -359,12 +374,17 @@
                                     if (isset($_POST['tipopedido']) && $_POST['tipopedido'] == 'Domicilio') {
                                         echo '<div class="form-group mt-3">';
                                         echo '<label for="Direccion">Dirección:</label>';
-                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control" required>';
+                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control" value="'.$_SESSION[$Sdomicilio].'" required>';
                                         echo '</div>';
-                                    }else if (isset($_POST['tipopedido']) && $_POST['tipopedido'] == 'Sucursal') {
+                                    } else if (isset($_POST['tipopedido']) && $_POST['tipopedido'] == 'Sucursal') {
                                         echo '<div class="form-group mt-3">';
                                         echo '<label for="Direccion">Dirección:</label>';
                                         echo '<input type="text" id="Direccion" name="Direccion" class="form-control" value="Calle Ejemplo 123, Ciudad" readonly>';
+                                        echo '</div>';
+                                    } else {
+                                        echo '<div class="form-group mt-3">';
+                                        echo '<label for="Direccion">Dirección:</label>';
+                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control"value="'.$_SESSION[$Sdomicilio].'"  required>';
                                         echo '</div>';
                                     }
                                     ?>
@@ -385,99 +405,97 @@
                 <!-- Tab Content End -->
 
                 <!-- Footer Start -->
-                <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn " data-wow-delay="0.1s ">
-                    <div class="container py-5 ">
-                        <div class="row g-5 ">
-                            <div class="col-lg-3 col-md-6 ">
-                                <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
-                                    Compañia</h4>
-                                <a class="btn btn-link " href=" ">Nosotros</a>
-                                <a class="btn btn-link " href=" ">Contactanos</a>
-                                <a class="btn btn-link " href=" ">Reservaciones</a>
-                                <a class="btn btn-link " href=" ">Politica de Privacidad</a>
-                                <a class="btn btn-link " href=" ">Terminos y condiciones</a>
+                <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="container py-5">
+                        <div class="row g-5">
+                            <div class="col-lg-3 col-md-6">
+                                <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Compañía
+                                </h4>
+                                <a class="btn btn-link" href="#">Nosotros</a>
+                                <a class="btn btn-link" href="#">Contáctanos</a>
+                                <a class="btn btn-link" href="#">Reservaciones</a>
+                                <a class="btn btn-link" href="#">Política de Privacidad</a>
+                                <a class="btn btn-link" href="#">Términos y Condiciones</a>
                             </div>
-                            <div class="col-lg-3 col-md-6 ">
-                                <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
-                                    Contacto</h4>
-                                <p class="mb-2 "><i class="fa fa-map-marker-alt me-3 "></i>Av.16 de Septiembre,
-                                    Piedras Negras,
-                                    MX</p>
-                                <p class="mb-2 "><i class="fa fa-phone-alt me-3 "></i>+52 878 123 9277</p>
-                                <p class="mb-2 "><i class="fa fa-envelope me-3 "></i>info@example.com</p>
-                                <div class="d-flex pt-2 ">
-                                    <a class="btn btn-outline-light btn-social " href=" "><i
-                                            class="fab fa-twitter "></i></a>
-                                    <a class="btn btn-outline-light btn-social " href=" "><i
-                                            class="fab fa-facebook-f "></i></a>
-                                    <a class="btn btn-outline-light btn-social " href=" "><i
-                                            class="fab fa-youtube "></i></a>
-                                    <a class="btn btn-outline-light btn-social " href=" "><i
-                                            class="fab fa-linkedin-in "></i></a>
+                            <div class="col-lg-3 col-md-6">
+                                <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Contacto
+                                </h4>
+                                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Av. 16 de Septiembre, Piedras
+                                    Negras, MX</p>
+                                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+52 878 123 9277</p>
+                                <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                                <div class="d-flex pt-2">
+                                    <a class="btn btn-outline-light btn-social" href="#"><i
+                                            class="fab fa-twitter"></i></a>
+                                    <a class="btn btn-outline-light btn-social" href="#"><i
+                                            class="fab fa-facebook-f"></i></a>
+                                    <a class="btn btn-outline-light btn-social" href="#"><i
+                                            class="fab fa-youtube"></i></a>
+                                    <a class="btn btn-outline-light btn-social" href="#"><i
+                                            class="fab fa-linkedin-in"></i></a>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-6 ">
-                                <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
-                                    Horario</h4>
-                                <h5 class="text-light fw-normal ">Lunes - Sabado</h5>
+                            <div class="col-lg-3 col-md-6">
+                                <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Horario
+                                </h4>
+                                <h5 class="text-light fw-normal">Lunes - Sábado</h5>
                                 <p>09AM - 09PM</p>
-                                <h5 class="text-light fw-normal ">Domingo</h5>
+                                <h5 class="text-light fw-normal">Domingo</h5>
                                 <p>10AM - 08PM</p>
                             </div>
-                            <div class="col-lg-3 col-md-6 ">
-                                <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
-                                    PROMOCIONES</h4>
-                                <p>Para cupones, descuentos, ofertas y de mas. REGISTRATE!.</p>
-                                <div class="position-relative mx-auto " style="max-width: 400px; ">
-                                    <input class="form-control border-primary w-100 py-3 ps-4 pe-5 " type="text "
-                                        placeholder="Correo Electronico ">
-                                    <button type="button "
-                                        class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2 ">REGISTRATE</button>
+                            <div class="col-lg-3 col-md-6">
+                                <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">
+                                    Promociones</h4>
+                                <p>Para cupones, descuentos, ofertas y más. ¡REGÍSTRATE!</p>
+                                <div class="position-relative mx-auto" style="max-width: 400px;">
+                                    <input class="form-control border-primary w-100 py-3 ps-4 pe-5" type="text"
+                                        placeholder="Correo Electrónico">
+                                    <button type="button"
+                                        class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">REGÍSTRATE</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="container ">
-                        <div class="copyright ">
-                            <div class="row ">
-                                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0 ">
-                                    &copy; <a class="border-bottom " href="#
-                            ">Diseño por nosotros</a>, Todos los Derechos Reservados.
-
-                                    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal ". Thank you for your support. ***/-->
-                                    Designed By <a class="border-bottom " href="https://htmlcodex.com ">HTML
+                    <div class="container">
+                        <div class="copyright">
+                            <div class="row">
+                                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                                    &copy; <a class="border-bottom" href="#">Diseño por nosotros</a>, Todos los Derechos
+                                    Reservados.
+                                    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                                    Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML
                                         Codex</a><br><br>
-                                    Distributed By <a class="border-bottom " href="https://themewagon.com "
-                                        target="_blank ">ThemeWagon</a>
+                                    Distributed By <a class="border-bottom" href="https://themewagon.com"
+                                        target="_blank">ThemeWagon</a>
                                 </div>
-                                <div class="col-md-6 text-center text-md-end ">
-                                    <div class="footer-menu ">
-                                        <a href=" ">Inicio</a>
-                                        <a href=" ">Cookies</a>
-                                        <a href=" ">Ayuda</a>
-                                        <a href=" ">FQAs</a>
+                                <div class="col-md-6 text-center text-md-end">
+                                    <div class="footer-menu">
+                                        <a href="#">Inicio</a>
+                                        <a href="registro.php">Registro</a>
+                                        <a href="#">Cookies</a>
+                                        <a href="#">Ayuda</a>
+                                        <a href="#">FQAs</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Footer End -->
-            </div>
+                <!-- Footer End -->
 
-            <!-- JavaScript Libraries -->
-            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="lib/wow/wow.min.js"></script>
-            <script src="lib/easing/easing.min.js"></script>
-            <script src="lib/waypoints/waypoints.min.js"></script>
-            <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-            <script src="lib/tempusdominus/js/moment.min.js"></script>
-            <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-            <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+                <!-- JavaScript Libraries -->
+                <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="lib/wow/wow.min.js"></script>
+                <script src="lib/easing/easing.min.js"></script>
+                <script src="lib/waypoints/waypoints.min.js"></script>
+                <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+                <script src="lib/tempusdominus/js/moment.min.js"></script>
+                <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+                <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-            <!-- Template Javascript -->
-            <script src="js/main.js"></script>
+                <!-- Template Javascript -->
+                <script src="js/main.js"></script>
 </body>
 
 </html>

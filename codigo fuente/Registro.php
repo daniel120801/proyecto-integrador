@@ -1,5 +1,6 @@
 <?php
 require "PHP/SessionUtils.php";
+require 'PHP/Utils.php';
 
 session_start();
 if (!isset($_SESSION[$StipoUsr]) || $_SESSION[$StipoUsr] != "admin") {
@@ -42,7 +43,7 @@ if (!isset($_SESSION[$StipoUsr]) || $_SESSION[$StipoUsr] != "admin") {
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/original.css" rel="stylesheet">
 
 </head>
 <?php
@@ -98,6 +99,7 @@ if (isset($_POST['btnactualizar'])) {
 
     $update_query .= " WHERE PK_producto = '$id'";
     $obj->exec_instruction($update_query);
+    alert('producto actualizado');
 } elseif (isset($_GET['idmodificar'])) {
     $id = $_GET['idmodificar'];
     $datos_modificar = $obj->exec_instruction("Select * from producto where PK_producto = '$id'");
@@ -114,7 +116,6 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
 <body>
 
     <div class="container-xxl bg-white p-0">
-
         <!-- Navbar & Hero Start -->
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
@@ -127,12 +128,11 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
-                        <a href="registro.php" class="nav-item nav-link active">Resgitro</a>
                         <a href="menu.php" class="nav-item nav-link ">Menu</a>
-                        <a href="contact.php" class="nav-item nav-link">Comentarios</a>
+                        <a href="usuarios.php" class="nav-item nav-link ">Gestion de Usuarios</a>
                         <div class="nav-item nav-link">
                             <a href="session.php"
-                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] : "Iniciar sesión") ?></a>
+                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre]. ' '. $_SESSION[$Sapellido]: "Iniciar sesión") ?></a>
                         </div>
                     </div>
             </nav>
@@ -144,13 +144,10 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
             </div>
         </div>
         <!-- Navbar & Hero End -->
-
-
+         
         <!-- Product Registration Start -->
-        <div class="container ">
-
-            <h5 class="section-title ff-secondary text-start text-primary fw-normal">Registro de Productos
-            </h5>
+        <div id="tab-1" class=" w-100 tab-pane fade show active">
+            <h5 class="section-title ff-secondary text-start text-primary fw-normal">Registro de Productos</h5>
             <div class="row ">
                 <div class="col-6">
                     <h1 class="mb-4">Registrar un nuevo producto</h1>
@@ -175,7 +172,8 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
                                     <select class="form-select" name="txtestado" id="txtestado">
                                         <option value="1">--- vacio ---
                                         </option>
-                                        <option value="disponible" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == 'disponible' ? 'selected' : ''; ?>>Disponible
+                                        <option value="disponible" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == 'disponible' ? 'selected' : ''; ?>>
+                                            Disponible
                                         </option>
                                         <option value="No disponible" <?php echo isset($datos_modificar[0]['estado']) && $datos_modificar[0]['estado'] == 'No disponible' ? 'selected' : ''; ?>>No
                                             disponible
@@ -230,7 +228,8 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
                         <div id="productList" class=" row product-list">
                             <?php
                             foreach ($result as $producto) {
-                                echo '  <div class=" col-6 card mb-6">
+                                echo '  
+                                    <div class=" col-6 card mb-6">
                                         <div class="">
                                             <div class="d-flex justify-content-center">
                                                 <img src="' . $producto['direccion_imagen'] . '"
@@ -259,7 +258,7 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
                                                 </div>
                                             </div>
                                         </div>
-                                     </div>';
+                                    </div>';
                             }
                             ?>
                         </div>
@@ -269,88 +268,90 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Product Registration End -->
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn " data-wow-delay="0.1s ">
-        <div class="container py-5 ">
-            <div class="row g-5 ">
-                <div class="col-lg-3 col-md-6 ">
-                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
-                        Compañia</h4>
-                    <a class="btn btn-link " href=" ">Nosotros</a>
-                    <a class="btn btn-link " href=" ">Contactanos</a>
-                    <a class="btn btn-link " href=" ">Reservaciones</a>
-                    <a class="btn btn-link " href=" ">Politica de Privacidad</a>
-                    <a class="btn btn-link " href=" ">Terminos y condiciones</a>
-                </div>
-                <div class="col-lg-3 col-md-6 ">
-                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
-                        Contacto</h4>
-                    <p class="mb-2 "><i class="fa fa-map-marker-alt me-3 "></i>Av.16 de Septiembre,
-                        Piedras Negras,
-                        MX</p>
-                    <p class="mb-2 "><i class="fa fa-phone-alt me-3 "></i>+52 878 123 9277</p>
-                    <p class="mb-2 "><i class="fa fa-envelope me-3 "></i>info@example.com</p>
-                    <div class="d-flex pt-2 ">
-                        <a class="btn btn-outline-light btn-social " href=" "><i class="fab fa-twitter "></i></a>
-                        <a class="btn btn-outline-light btn-social " href=" "><i class="fab fa-facebook-f "></i></a>
-                        <a class="btn btn-outline-light btn-social " href=" "><i class="fab fa-youtube "></i></a>
-                        <a class="btn btn-outline-light btn-social " href=" "><i class="fab fa-linkedin-in "></i></a>
+        <!-- Product Registration End -->
+
+        <!-- Footer Start -->
+        <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn " data-wow-delay="0.1s ">
+            <div class="container py-5 ">
+                <div class="row g-5 ">
+                    <div class="col-lg-3 col-md-6 ">
+                        <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
+                            Compañia</h4>
+                        <a class="btn btn-link " href=" ">Nosotros</a>
+                        <a class="btn btn-link " href=" ">Contactanos</a>
+                        <a class="btn btn-link " href=" ">Reservaciones</a>
+                        <a class="btn btn-link " href=" ">Politica de Privacidad</a>
+                        <a class="btn btn-link " href=" ">Terminos y condiciones</a>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 ">
-                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
-                        Horario</h4>
-                    <h5 class="text-light fw-normal ">Lunes - Sabado</h5>
-                    <p>09AM - 09PM</p>
-                    <h5 class="text-light fw-normal ">Domingo</h5>
-                    <p>10AM - 08PM</p>
-                </div>
-                <div class="col-lg-3 col-md-6 ">
-                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
-                        PROMOCIONES</h4>
-                    <p>Para cupones, descuentos, ofertas y de mas. REGISTRATE!.</p>
-                    <div class="position-relative mx-auto " style="max-width: 400px; ">
-                        <input class="form-control border-primary w-100 py-3 ps-4 pe-5 " type="text "
-                            placeholder="Correo Electronico ">
-                        <button type="button "
-                            class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2 ">REGISTRATE</button>
+                    <div class="col-lg-3 col-md-6 ">
+                        <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
+                            Contacto</h4>
+                        <p class="mb-2 "><i class="fa fa-map-marker-alt me-3 "></i>Av.16 de Septiembre,
+                            Piedras Negras,
+                            MX</p>
+                        <p class="mb-2 "><i class="fa fa-phone-alt me-3 "></i>+52 878 123 9277</p>
+                        <p class="mb-2 "><i class="fa fa-envelope me-3 "></i>info@example.com</p>
+                        <div class="d-flex pt-2 ">
+                            <a class="btn btn-outline-light btn-social " href=" "><i class="fab fa-twitter "></i></a>
+                            <a class="btn btn-outline-light btn-social " href=" "><i class="fab fa-facebook-f "></i></a>
+                            <a class="btn btn-outline-light btn-social " href=" "><i class="fab fa-youtube "></i></a>
+                            <a class="btn btn-outline-light btn-social " href=" "><i
+                                    class="fab fa-linkedin-in "></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 ">
+                        <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
+                            Horario</h4>
+                        <h5 class="text-light fw-normal ">Lunes - Sabado</h5>
+                        <p>09AM - 09PM</p>
+                        <h5 class="text-light fw-normal ">Domingo</h5>
+                        <p>10AM - 08PM</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6 ">
+                        <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
+                            PROMOCIONES</h4>
+                        <p>Para cupones, descuentos, ofertas y de mas. REGISTRATE!.</p>
+                        <div class="position-relative mx-auto " style="max-width: 400px; ">
+                            <input class="form-control border-primary w-100 py-3 ps-4 pe-5 " type="text "
+                                placeholder="Correo Electronico ">
+                            <button type="button "
+                                class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2 ">REGISTRATE</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="container ">
-            <div class="copyright ">
-                <div class="row ">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0 ">
-                        &copy; <a class="border-bottom " href="#
+            <div class="container ">
+                <div class="copyright ">
+                    <div class="row ">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0 ">
+                            &copy; <a class="border-bottom " href="#
                             ">Diseño por nosotros</a>, Todos los Derechos Reservados.
 
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal ". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom " href="https://htmlcodex.com ">HTML
-                            Codex</a><br><br>
-                        Distributed By <a class="border-bottom " href="https://themewagon.com "
-                            target="_blank ">ThemeWagon</a>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end ">
-                        <div class="footer-menu ">
-                            <a href=" ">Inicio</a>
-                            <a href=" ">Cookies</a>
-                            <a href=" ">Ayuda</a>
-                            <a href=" ">FQAs</a>
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal ". Thank you for your support. ***/-->
+                            Designed By <a class="border-bottom " href="https://htmlcodex.com ">HTML
+                                Codex</a><br><br>
+                            Distributed By <a class="border-bottom " href="https://themewagon.com "
+                                target="_blank ">ThemeWagon</a>
+                        </div>
+                        <div class="col-md-6 text-center text-md-end ">
+                            <div class="footer-menu ">
+                                <a href=" ">Inicio</a>
+                                <a href="registro.php">Registro</a>
+                                <a href=" ">Cookies</a>
+                                <a href=" ">Ayuda</a>
+                                <a href=" ">FQAs</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Footer End -->
+        <!-- Footer End -->
 
 
-    <!-- Back to Top -->
-    <a href="# " class="btn btn-lg btn-primary btn-lg-square back-to-top "><i class="bi bi-arrow-up "></i></a>
+        <!-- Back to Top -->
+        <a href="# " class="btn btn-lg btn-primary btn-lg-square back-to-top "><i class="bi bi-arrow-up "></i></a>
     </div>
 
 </body>
