@@ -9,6 +9,7 @@ session_start();
 <html lang="es">
 
 <head>
+<link href="img/icono.png" rel="icon">
     <?php echo printHead("compra"); ?>
 </head>
 
@@ -24,20 +25,20 @@ session_start();
 
     ?>
     <!-- Navbar & Hero Start -->
+    
+
     <div class="container-xxl position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
-            <a href="" class="navbar-brand p-0">
-                <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sushi-to</h1>
-            </a>
+            <a href="index.php" class="navbar-brand p-0">
+                    <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sushi-to</h1>
+                </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0 ">
 
-                    <a href="index.php" class="nav-item nav-link active ">Inicio</a>
-
-                    <a href="registro.php" class="nav-item nav-link">Servicios</a>
+                    <a href="index.php" class="nav-item nav-link ">Inicio</a>
 
                     <a href="menu.php" class="nav-item nav-link">Menú</a>
 
