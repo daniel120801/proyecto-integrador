@@ -109,7 +109,7 @@
 
         if (!isset($_SESSION[$Sid_pedido])) {
 
-            $bd->exec_instruction("Insert into pedido(FK_usuario,fecha) values('$id',Now())");
+            $bd->exec_instruction("Insert into pedido(FK_usuario,estado_pedido,fecha) values('$id','cancelado',Now())");
 
             $ultima_compra = $bd->exec_instruction("SELECT PK_pedido FROM pedido where FK_usuario = '$id' ORDER by PK_pedido DESC");
 
@@ -184,13 +184,13 @@
                 if (!empty($textobuscar)) {
                     $sql = "SELECT * FROM producto WHERE nombre LIKE '%" . $textobuscar . "%' AND estado = 'disponible'";
                     $result = $bd->exec_instruction($sql);
-                    ?> 
+                    ?>
                     <div class="col-10 mb-4 ">
-                    <h2 class="text-center">Resultados relacionados</h2>
+                        <h2 class="text-center">Resultados relacionados</h2>
                         <div class="row justify-content-center">
                             <?php
                             foreach ($result as $row) {
-                                ?>  
+                                ?>
                                 <div class="col-5 mb-3">
                                     <div class="card h-100">
                                         <div class="card-body">
@@ -374,18 +374,17 @@
                                     if (isset($_POST['tipopedido']) && $_POST['tipopedido'] == 'Domicilio') {
                                         echo '<div class="form-group mt-3">';
                                         echo '<label for="Direccion">Dirección:</label>';
-                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control" required>';
+                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control" value="'.$_SESSION[$Sdomicilio].'" required>';
                                         echo '</div>';
                                     } else if (isset($_POST['tipopedido']) && $_POST['tipopedido'] == 'Sucursal') {
                                         echo '<div class="form-group mt-3">';
                                         echo '<label for="Direccion">Dirección:</label>';
                                         echo '<input type="text" id="Direccion" name="Direccion" class="form-control" value="Calle Ejemplo 123, Ciudad" readonly>';
                                         echo '</div>';
-                                    }
-                                    else{
-                                         echo '<div class="form-group mt-3">';
+                                    } else {
+                                        echo '<div class="form-group mt-3">';
                                         echo '<label for="Direccion">Dirección:</label>';
-                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control" required>';
+                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control"value="'.$_SESSION[$Sdomicilio].'"  required>';
                                         echo '</div>';
                                     }
                                     ?>
@@ -498,4 +497,5 @@
                 <!-- Template Javascript -->
                 <script src="js/main.js"></script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <?php
 require "PHP/SessionUtils.php";
+require 'PHP/Utils.php';
 
 session_start();
 if (!isset($_SESSION[$StipoUsr]) || $_SESSION[$StipoUsr] != "admin") {
@@ -98,6 +99,7 @@ if (isset($_POST['btnactualizar'])) {
 
     $update_query .= " WHERE PK_producto = '$id'";
     $obj->exec_instruction($update_query);
+    alert('producto actualizado');
 } elseif (isset($_GET['idmodificar'])) {
     $id = $_GET['idmodificar'];
     $datos_modificar = $obj->exec_instruction("Select * from producto where PK_producto = '$id'");

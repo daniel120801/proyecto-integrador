@@ -30,6 +30,10 @@ if (isset($_GET['mod_pwd'])) {
     $direccion = $_GET['direccion'];
     $sql = "UPDATE `usuarios` SET `nombre`='$nombre',`apellido`='$apellido',`direccion`='$direccion' WHERE  PK_id = $id";
     $bd->exec_instruction($sql);
+
+    $_SESSION[$Sdomicilio] = $direccion;
+    $_SESSION[$Snombre] = $nombre . " " . $apellido;
+
 }
 
 ?>
@@ -79,8 +83,6 @@ if (isset($_GET['mod_pwd'])) {
                 $SQLpedidos = "SELECT * FROM pedido WHERE FK_usuario = $id";
                 $pedidos = $bd->exec_instruction($SQLpedidos);
                 if (count($pedidos) > 0) {
-
-
 
                     ?>
                     <div class="table-responsive">

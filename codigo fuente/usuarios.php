@@ -40,6 +40,7 @@
     <?php
     require "PHP/SessionUtils.php";
     require 'PHP/conection.php';
+    require 'PHP/Utils.php';
     session_start();
 
     if (!isset($_SESSION[$Sid])) {
@@ -57,18 +58,18 @@
 
         $bd->exec_instruction("INSERT INTO `usuarios`(`nombre`, `apellido`, `Correo`, `contrasena`, `tipo_Usuario`) VALUES ('$nombre','$apellido','$correo','$pwd', '$acceso')");
 
-        $result = $bd->exec_instruction("SELECT PK_id, nombre, apellido, Correo, tipo_Usuario FROM usuarios ORDER BY PK_id DESC");
-    } else {
-        $result = $bd->exec_instruction("SELECT PK_id, nombre, apellido, Correo, tipo_Usuario FROM usuarios ORDER BY PK_id DESC");
-    }
+      } 
 
-    if (isset($_POST['eliminar'])) {
-        $bd->exec_instruction("DELETE FROM usuarios WHERE PK_id= " . $_POST['eliminar'] . "");
+    if (isset($_GET['eliminar'])) {
+      
+        $bd->exec_instruction("UPDATE `usuarios` SET `estado`='inactivo' WHERE PK_id= " . $_GET['eliminar'] . "");
+        alert('usuario eliminado');
     }
 
     if (isset($_GET['txtbuscarque'])) {
         $textobuscar = $_GET['txtbuscarque'];   
     }
+    $result = $bd->exec_instruction("SELECT PK_id, nombre, apellido, Correo, tipo_Usuario FROM usuarios WHERE estado = 'activa' ORDER BY PK_id DESC");
     ?>
 
     <div class="container-xxl bg-white p-0">
