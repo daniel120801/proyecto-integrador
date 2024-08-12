@@ -73,14 +73,14 @@
     function Buscar($img, $nombre, $descripcion, $id, $precio): string
     {
         return '
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <div class="d-flex align-items-center">
                     <img class="flex-shrink-0 img-fluid rounded" src="' . htmlspecialchars($img) . '" alt="" style="width: 80px;">
-                    <div class="w-100 d-flex flex-column text-start ps-4">
+                    <div class="w-100 d-flex flex-column text-start ps-3">
                         <h5 class="d-flex justify-content-between border-bottom pb-2">
                             <span>' . htmlspecialchars($nombre) . '</span>
-                            <span class="text-primary">$' . htmlspecialchars($precio) . '</span>
-                        <form method="get" class="mt-2">
+                            <span class="text-primary ms-3">$' . htmlspecialchars($precio) . '</span>
+                        <form method="get" class="mt-5">
                             <input type="hidden" name="insertar_id" value="' . htmlspecialchars($id) . '">
                             <input class="btn btn-success" type="submit" value="Agregar">
                         </form>
