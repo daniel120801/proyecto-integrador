@@ -101,7 +101,7 @@ if (isset($_POST['login'])) {
                 <li class="nav-item">
                     <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill"
                         href="#tab-1">
-                        <i class="fa fa-coffee fa-2x text-primary"></i>
+                        <i class="fa fa fa-2x text-primary"></i>
                         <div class="ps-3">
                             <h6 class="mt-n1 mb-0">Iniciar Sesión</h6>
                         </div>
@@ -109,7 +109,7 @@ if (isset($_POST['login'])) {
                 </li>
                 <li class="nav-item">
                     <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
-                        <i class="fa fa-hamburger fa-2x text-primary"></i>
+                        <i class="fa fa  fa-2x text-primary"></i>
                         <div class="ps-3">
                             <h6 class="mt-n1 mb-0">Crear Cuenta</h6>
                         </div>

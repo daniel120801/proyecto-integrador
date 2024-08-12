@@ -288,33 +288,62 @@ $resultado = $bd->exec_instruction($sql);
                         <a class="btn btn-link" href="">Nosotros</a>
                         <a class="btn btn-link" href="">Contacto</a>
                     </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Contacto</h4>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Piedras Negras ,Coahuila</p>
-                        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>878 123 9277</p>
-                        <p class="mb-2"><i class="fa fa-envelope me-3"></i>dandilbr4343@gmail.com</p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <div class="col-lg-3 col-md-6 ">
+                        <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
+                            Contacto</h4>
+                        <p class="mb-2 "><i class="fa fa-map-marker-alt me-3 "></i>Av.16 de Septiembre #123 Fraccionamiento. Las FLores
+                        Piedras Negras, Coahuila</p>
+                        <p class="mb-2 "><i class="fa fa-phone-alt me-3 "></i>+52 878 123 9277</p>
+                        <p class="mb-2 "><i class="fa fa-envelope me-3 "></i>Sushi-to@company.org</p>
+                        <div class="d-flex pt-2 ">
+                            <a class="btn btn-outline-light btn-social " href=" "><i class="fab fa-twitter "></i></a>
+                            <a class="btn btn-outline-light btn-social " href=" "><i class="fab fa-facebook-f "></i></a>
+                            <a class="btn btn-outline-light btn-social " href=" "><i class="fab fa-youtube "></i></a>
+                            <a class="btn btn-outline-light btn-social " href=" "><i
+                                    class="fab fa-linkedin-in "></i></a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Horario</h4>
-                        <h5 class="text-light fw-normal">Lunes - Sabado</h5>
-                        <p>09AM - 09PM</p>
-                        <h5 class="text-light fw-normal">Sunday</h5>
-                        <p>10AM - 08PM</p>
+                    <div class="col-lg-3 col-md-6 ">
+                        <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
+                            Horario</h4>
+                        <h5 class="text-light fw-normal ">Lunes - Sabado</h5>
+                        <p>9:00AM - 9:00PM</p>
+                        <h5 class="text-light fw-normal ">Domingo</h5>
+                        <p>10:00AM - 8:00PM</p>
                     </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Promociones</h4>
-                        <p>¿Quieres saber de nuestras promociones registra tu correo</p>
-                        <div class="position-relative mx-auto" style="max-width: 400px;">
-                            <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text"
-                                placeholder="Tu correo">
-                            <button type="button"
-                                class="btn btn-primary py-2 px-4 position-absolute top-0 end-0 mt-2 me-2">Enviar</button>
+                    <div class=<div class="col-lg-3 col-md-6 ">
+                        <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 ">
+                            PROMOCIONES</h4>
+                        <p>Para cupones, descuentos, ofertas y de mas. REGISTRATE!.</p>
+                        <div class="position-relative mx-auto " style="max-width: 400px; ">
+                            <input class="form-control border-primary w-100 py-3 ps-4 pe-5 " type="text "
+                                placeholder="Correo Electronico ">
+                            <button type="button "
+                                class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2 ">REGISTRATE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container ">
+                <div class="copyright ">
+                    <div class="row ">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0 ">
+                            &copy; <a class="border-bottom " href="#
+                            ">Diseño por nosotros</a>, Todos los Derechos Reservados.
+
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal ". Thank you for your support. ***/-->
+                            Designed By <a class="border-bottom " href="https://htmlcodex.com ">HTML
+                                Codex</a><br><br>
+                            Distributed By <a class="border-bottom " href="https://themewagon.com "
+                                target="_blank ">ThemeWagon</a>
+                        </div>
+                        <div class="col-md-6 text-center text-md-end ">
+                            <div class="footer-menu ">
+                                <a href=" ">Inicio</a>
+                                <a href=" ">Cookies</a>
+                                <a href=" ">Ayuda</a>
+                                <a href=" ">FQAs</a>
+                            </div>
                         </div>
                     </div>
                 </div>
