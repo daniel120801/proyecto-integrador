@@ -194,7 +194,7 @@ $resultado = $bd->exec_instruction($sql);
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h5 class="section-title ff-secondary text-center text-primary fw-normal">Dinos, tu experiencia.</h5>
-                <h1 class="mb-5">Hola <?php echo $_SESSION[$Snombre] ?>, Dejanos un comentario.</h1>
+                <h1 class="mb-5">Hola <?php echo $_SESSION[$Snombre].' '. $_SESSION[$Sapellido]?>, Dejanos un comentario.</h1>
             </div>
             <div class="row g-4 contact-form-wrapper">
                 <div class="col-12 contact-form">

@@ -158,7 +158,7 @@
 
                         <div class="nav-item nav-link">
                             <a href="session.php"
-                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] : "Iniciar sesión") ?></a>
+                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre]. ' '. $_SESSION[$Sapellido]: "Iniciar sesión") ?></a>
                         </div>
                     </div>
                 </div>

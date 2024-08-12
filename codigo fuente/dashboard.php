@@ -32,7 +32,9 @@ if (isset($_GET['mod_pwd'])) {
     $bd->exec_instruction($sql);
 
     $_SESSION[$Sdomicilio] = $direccion;
-    $_SESSION[$Snombre] = $nombre . " " . $apellido;
+    $_SESSION[$Snombre] = $nombre;
+
+    $_SESSION[$Sapellido] = $apellido;
 
 }
 
@@ -70,7 +72,7 @@ if (isset($_GET['mod_pwd'])) {
             <div class="container text-center my-5 pt-5 pb-4">
                 <h1 class="display-3 text-white mb-3 animated slideInDown">Dashboard</h1>
                 <h4 class="display-8  text-primary mt-3 animated slideInDown">Hola
-                    <?php echo $_SESSION[$Snombre] ?>
+                    <?php echo $_SESSION[$Snombre]. ' '. $_SESSION[$Sapellido] ?>
                 </h4>
             </div>
 
@@ -138,12 +140,12 @@ if (isset($_GET['mod_pwd'])) {
                         <div class="form-group mb-3">
                             <label for="nombre">Nombre:</label>
                             <input type="text" class="form-control" name="nombre" id="nombre"
-                                value=" <?php echo explode(" ", $_SESSION[$Snombre])[0]; ?>" required>
+                                value=" <?php echo  $_SESSION[$Snombre]; ?>" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="apellido">Apellido:</label>
                             <input type="text" class="form-control" name="apellido" id="apellido"
-                                value=" <?php echo explode(" ", $_SESSION[$Snombre])[1]; ?>" required>
+                                value=" <?php echo$_SESSION[$Sapellido]; ?>" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="direccion">Direccion de entrega(opcional):</label>

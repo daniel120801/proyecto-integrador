@@ -43,7 +43,8 @@ if (isset($_POST['login']) || isset($_POST['create'])) {
             $_SESSION[$Scorreo] = $correo;
             $_SESSION[$Sid] = $r[0]['PK_id'];
             $_SESSION[$Sdomicilio] = $r[0]['direccion'];
-            $_SESSION[$Snombre] = $r[0]['nombre'] . " " . $r[0]['apellido'];
+            $_SESSION[$Snombre] = $r[0]['nombre'];
+            $_SESSION[$Sapellido] = $r[0]['apellido'];
             $_SESSION[$StipoUsr] = $r[0]['tipo_Usuario'];
 
 
@@ -74,7 +75,10 @@ if (isset($_POST['login']) || isset($_POST['create'])) {
             $_SESSION[$Scorreo] = $correo;
             $_SESSION[$Sid] = $id;
             $_SESSION[$Sdomicilio] = $direccion;
-            $_SESSION[$Snombre] = $nombre . " " . $apellido;
+            $_SESSION[$Snombre] = $nombre;
+
+            $_SESSION[$Sapellido] = $apellido;
+
             $_SESSION[$StipoUsr] = "visitante";
 
             if (isset($_POST["route"]) && $_POST["route"] != 'registro.php') {
