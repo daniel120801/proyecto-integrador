@@ -95,6 +95,7 @@ function getFooter()
                         <div class="col-md-6 text-center text-md-end">
                             <div class="footer-menu">
                                 <a href="">Inicio</a>
+                                <a href="registro.php">Registro</a>
                                 <a href="">Cookies</a>
                                 <a href="">Help</a>
                                 <a href="">FQAs</a>
