@@ -2,72 +2,94 @@
 require "PHP/Utils.php";
 require "PHP/conection.php";
 require "PHP/SessionUtils.php";
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <?php echo printHead("Inicio de Sesión"); ?>
+
 </head>
 <?php
-
 session_start();
-session_unset();
+if (isset($_SESSION[$Scorreo]) && !isset($_GET['nologin'])) {
+    header('location: dashboard.php');
+    exit();
+} else if (isset($_GET['nologin'])) {
+    session_unset();
+    header('location: index.php');
+}
+
 $bd = new BD_PDO();
-if (isset($_POST['login'])) {
-
-    $correo = $_POST['correo'];
-    $pwd = $_POST['password'];
-
-    $r = $bd->exec_instruction("SELECT * FROM usuarios WHERE Correo = '$correo' AND contrasena = '$pwd'");
-    if (count($r) > 0) {
-
-        $_SESSION[$Scorreo] = $correo;
-        $_SESSION[$Sid] = $r[0]['PK_id'];
-        $_SESSION[$Snombre] = $r[0]['nombre'] . " " . $r[0]['apellido'];
-        $_SESSION[$StipoUsr] = $r[0]['tipo_Usuario'];
 
 
-        if (isset($_POST["route"]) && ($_SESSION[$StipoUsr] != "visitante" || $_POST["route"] != 'registro.php')) {
 
-            header("location: " . $_POST["route"] . "");
+if (isset($_POST['login']) || isset($_POST['create'])) {
 
-        } else {
-            header("location: index.php");
-
-        }
-
-    }
+    session_unset();
 
 
-} else if (isset($_POST['create'])) {
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
-    $correo = $_POST['correo'];
-    $pwd = $_POST['c_password'];
+    if (isset($_POST['login'])) {
 
-    $bd->exec_instruction("INSERT INTO `usuarios`( `nombre`, `apellido`, `Correo`, `contrasena`) VALUES ('$nombre','$apellido','$correo','$pwd')");
-    $ids = $bd->exec_instruction("SELECT PK_id FROM usuarios ORDER BY PK_id DESC");
-    var_dump($ids);
-    if (count($ids) > 0) {
-        $id = $ids[0][0];
-        $_SESSION[$Scorreo] = $correo;
-        $_SESSION[$Sid] = $id;
-        $_SESSION[$Snombre] = $nombre . " " . $apellido;
-        $_SESSION[$StipoUsr] = "visitante";
+        $correo = $_POST['correo'];
+        $pwd = $_POST['password'];
 
-        if (isset($_POST["route"]) && $_POST["route"] != 'registro.php') {
+        $r = $bd->exec_instruction("SELECT * FROM usuarios WHERE Correo = '$correo' AND contrasena = '$pwd'");
+        if (count($r) > 0) {
 
-            header("location: " . $_POST["route"] . "");
+            $_SESSION[$Scorreo] = $correo;
+            $_SESSION[$Sid] = $r[0]['PK_id'];
+            $_SESSION[$Sdomicilio] = $r[0]['direccion'];
+            $_SESSION[$Snombre] = $r[0]['nombre'] . " " . $r[0]['apellido'];
+            $_SESSION[$StipoUsr] = $r[0]['tipo_Usuario'];
 
-        } else {
-            header("location: index.php");
+
+            if (isset($_POST["route"]) && ($_SESSION[$StipoUsr] != "visitante" || $_POST["route"] != 'registro.php')) {
+
+                header("location: " . $_POST["route"] . "");
+
+            } else {
+                header("location: index.php");
+
+            }
 
         }
 
+
+    } else if (isset($_POST['create'])) {
+        $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
+        $direccion = $_POST['direccion'];
+        $correo = $_POST['correo'];
+        $pwd = $_POST['c_password'];
+
+        $bd->exec_instruction("INSERT INTO `usuarios`( `nombre`, `apellido`,`direccion`, `Correo`, `contrasena`) VALUES ('$nombre','$apellido','$direccion','$correo','$pwd')");
+        $ids = $bd->exec_instruction("SELECT PK_id FROM usuarios ORDER BY PK_id DESC");
+        var_dump($ids);
+        if (count($ids) > 0) {
+            $id = $ids[0][0];
+            $_SESSION[$Scorreo] = $correo;
+            $_SESSION[$Sid] = $id;
+            $_SESSION[$Sdomicilio] = $direccion;
+            $_SESSION[$Snombre] = $nombre . " " . $apellido;
+            $_SESSION[$StipoUsr] = "visitante";
+
+            if (isset($_POST["route"]) && $_POST["route"] != 'registro.php') {
+
+                header("location: " . $_POST["route"] . "");
+
+            } else {
+                header("location: index.php");
+
+            }
+
+        }
+
+
     }
-
-
 }
 ?>
 
@@ -77,7 +99,7 @@ if (isset($_POST['login'])) {
     <!-- Navbar & Hero Start -->
     <div class="container-xxl position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
-            <a href="" class="navbar-brand p-0">
+            <a href="index.php" class="navbar-brand p-0">
                 <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sushi-to</h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -151,6 +173,11 @@ if (isset($_POST['login'])) {
                     <div class="form-group mb-3">
                         <label for="apellido">Apellido:</label>
                         <input type="text" class="form-control" name="apellido" id="apellido" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="direccion">Direccion de entrega(opcional):</label>
+                        <input type="text" class="form-control" name="direccion" id="direccion"
+                            placeholder="no asignado">
                     </div>
                     <div class="form-group mb-3">
                         <label for="correo">Correo Electrónico:</label>

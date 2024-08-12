@@ -139,7 +139,7 @@ session_start();
                             <div class="p-4">
                                 <i class="fa fa-3x fa-cart-plus text-primary mb-4"></i>
                                 <h5>Ordena en Línea</h5>
-                                <p>¡Disfruta de la auténtica experiencia de sushi de Sushi Maru desde la comodidad de tu
+                                <p>¡Disfruta de la auténtica experiencia de sushi de Sushi To desde la comodidad de tu
                                     hogar!</p>
                             </div>
                         </div>
@@ -188,7 +188,7 @@ session_start();
                         <h5 class="section-title ff-secondary text-start text-primary fw-normal">Sobre Nosotros</h5>
                         <h1 class="mb-4">Bienvenidos a <i class="fa fa-utensils text-primary me-2"></i>Sushi-to!</h1>
                         <p class="mb-4">En el corazón de la ciudad, donde la tradición se encuentra con la modernidad,
-                            nació Sushi Maru con un sueño simple pero ambicioso:
+                            nació Sushi To con un sueño simple pero ambicioso:
                             ofrecer una experiencia auténtica de sushi que capture la esencia de Japón en cada bocado.
                         </p>
                         <p class="mb-4">Nos comprometemos a utilizar solo los ingredientes más frescos y de la más alta
