@@ -132,7 +132,7 @@ $result = $obj->exec_instruction("Select * from producto where Nombre like '%$te
                         <a href="usuarios.php" class="nav-item nav-link ">Gestion de Usuarios</a>
                         <div class="nav-item nav-link">
                             <a href="session.php"
-                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] : "Iniciar sesión") ?></a>
+                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre]. ' '. $_SESSION[$Sapellido]: "Iniciar sesión") ?></a>
                         </div>
                     </div>
             </nav>
