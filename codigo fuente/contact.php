@@ -9,7 +9,7 @@ if (!isset($_SESSION[$Sid])) {
 $id = $_SESSION[$Sid];
 $bd = new BD_PDO();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     if (isset($_POST['submitComment'])) {
         // Insertar el comentario en la base de datos
         $comentario = $_POST['comment'];
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $bd->exec_instruction($sql);
     }
-}
+
 
 // Mostrar los comentarios
 $sql = "SELECT PK_resenas, FK_usuarios, calificacion, comentario, fecha FROM resenas ORDER BY fecha DESC";
@@ -161,21 +161,15 @@ $resultado = $bd->exec_instruction($sql);
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
-                        <a href="index.html" class="nav-item nav-link">INICIO</a>
-                        <a href="about.html" class="nav-item nav-link">NOSOTROS</a>
-                        <a href="service.html" class="nav-item nav-link">SERVICIOS</a>
-                        <a href="menu.html" class="nav-item nav-link">MENÚ</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                            <div class="dropdown-menu m-0">
+                        <a href="index.php" class="nav-item nav-link">Inicio</a>
+                        <a href="menu.php" class="nav-item nav-link">Menú</a>
 
-
-                            </div>
+                        <div class="nav-item nav-link">
+                            <a href="session.php"
+                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] . ' ' . $_SESSION[$Sapellido] : "Iniciar sesión") ?></a>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link active">CERRAR SESION</a>
-                    </div>
 
-                </div>
+                    </div>
             </nav>
 
             <div class="container-xxl py-5 bg-dark hero-header mb-5">
@@ -194,7 +188,8 @@ $resultado = $bd->exec_instruction($sql);
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h5 class="section-title ff-secondary text-center text-primary fw-normal">Dinos, tu experiencia.</h5>
-                <h1 class="mb-5">Hola <?php echo $_SESSION[$Snombre].' '. $_SESSION[$Sapellido]?>, Dejanos un comentario.</h1>
+                <h1 class="mb-5">Hola <?php echo $_SESSION[$Snombre] . ' ' . $_SESSION[$Sapellido] ?>, Dejanos un
+                    comentario.</h1>
             </div>
             <div class="row g-4 contact-form-wrapper">
                 <div class="col-12 contact-form">
