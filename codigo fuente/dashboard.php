@@ -152,7 +152,8 @@ if (isset($_GET['mod_pwd'])) {
                             <input type="text" class="form-control" name="direccion" id="direccion"
                                 value=" <?php echo $_SESSION[$Sdomicilio]; ?>" placeholder="no asignado">
                         </div>
-                        <button type="submit" id="mod_data" name="mod_data" class="btn btn-primary w-50">Modificar
+
+                        <button type="submit" id="mod_data" name="mod_data" class="btn btn-primary w-100">Modificar
                             cuenta</button>
 
                     </form>
@@ -168,7 +169,7 @@ if (isset($_GET['mod_pwd'])) {
                             <input type="password" class="form-control" name="confirm_password" id="confirm_password"
                                 required>
                         </div>
-                        <button type="submit" id="mod_pwd" name="mod_pwd" class="btn btn-primary w-50">Modificar
+                        <button type="submit" id="mod_pwd" name="mod_pwd" class="btn btn-primary  w-100">Modificar
                             contraseña</button>
                     </form>
                 </div>

@@ -9,7 +9,7 @@ if (!isset($_SESSION[$Sid])) {
 $id = $_SESSION[$Sid];
 $bd = new BD_PDO();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     if (isset($_POST['submitComment'])) {
         // Insertar el comentario en la base de datos
         $comentario = $_POST['comment'];
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $bd->exec_instruction($sql);
     }
-}
+
 
 // Mostrar los comentarios
 $sql = "SELECT PK_resenas, FK_usuarios, calificacion, comentario, fecha FROM resenas ORDER BY fecha DESC";
