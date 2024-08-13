@@ -103,7 +103,8 @@ if (isset($_POST['btnactualizar'])) {
 } elseif (isset($_GET['idmodificar'])) {
     $id = $_GET['idmodificar'];
     $datos_modificar = $obj->exec_instruction("Select * from producto where PK_producto = '$id'");
-    $categoria = $obj->ListarCategorias("Select * from categoria", $datos_modificar[0][5]);
+    
+    $categoria = $obj->ListarCategorias("Select * from categoria", $datos_modificar[0][6]);
 } else {
     $categoria = $obj->ListarCategorias("Select * from categoria", -1);
 }
