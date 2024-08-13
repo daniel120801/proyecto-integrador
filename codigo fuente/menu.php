@@ -123,7 +123,7 @@
         var_dump($_POST);
 
         if ($nueva_cantidad > 0) {
-            $sql = "UPDATE detalle_pedido SET cantidad = '$nueva_cantidad' WHERE PK_detpedido = " . $_SESSION[$Sid_pedido] . " AND FK_pedido " . $_POST['actualizar_cantidad'] . "";
+            $sql = "UPDATE detalle_pedido SET cantidad = '$nueva_cantidad' WHERE PK_detpedido = " . $_POST['PK_detpedido'] . "";
             $bd->exec_instruction($sql);
         }
 
@@ -331,15 +331,19 @@
                                         <?php
                                         foreach ($result as $row) { ?>
                                             <tr>
-                                                <td><?php echo htmlspecialchars($row['nombre']); ?></td><td>
-                                            <form action="menu.php" method="post">
-                                                <input id="cantidad" type="number" name="cantidad" class="form-control"
-                                                value="<?php echo htmlspecialchars($row[3]); ?>" min="1">
-                                                <input id="PK_detpedido" type="hidden" value="<?php echo htmlspecialchars($row[0]); ?>">
+                                                <td><?php echo htmlspecialchars($row['nombre']); ?></td>
+                                                <td>
+                                                    <form action="menu.php" method="post">
+                                                        <input id="cantidad" type="number" name="cantidad" class="form-control"
+                                                            value="<?php echo htmlspecialchars($row[3]); ?>" min="1">
+                                                        <input id="PK_detpedido" name="PK_detpedido" type="hidden"
+                                                            value="<?php echo htmlspecialchars($row[0]); ?>">
                                                 </td>
-                                                <td><?php echo htmlspecialchars($row[0]); ?></td><td>
-                                                <button id="actualizar_cantidad" type="submit" name="actualizar_cantidad" class="btn btn-primary me-3">actualizar</button>
-                                            </form>
+                                                <td><?php echo htmlspecialchars($row[0]); ?></td>
+                                                <td>
+                                                    <button id="actualizar_cantidad" type="submit" name="actualizar_cantidad"
+                                                        class="btn btn-primary me-3">actualizar</button>
+                                                    </form>
                                                     <a href="menu.php?eliminar=<?php echo htmlspecialchars($row[0]); ?>"
                                                         class="btn btn-danger">Eliminar</a>
                                                 </td>
@@ -422,7 +426,8 @@
                             <div class="col-lg-3 col-md-6">
                                 <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Contacto
                                 </h4>
-                                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Seccion 1, Residencial del Lago, Piedras
+                                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Seccion 1, Residencial del
+                                    Lago, Piedras
                                     Negras, MX</p>
                                 <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+52 878 123 9277</p>
                                 <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
