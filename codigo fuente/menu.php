@@ -33,8 +33,6 @@
 
     <!-- Template Stylesheet -->
     <link href="css/original.css" rel="stylesheet">
-
-
 </head>
 
 <body>
@@ -119,18 +117,22 @@
     
         $bd->exec_instruction("CALL agregar_producto(" . $_GET['insertar_id'] . "," . $_SESSION[$Sid_pedido] . ")");
 
+    }
+    if (isset($_POST['actualizar_cantidad'])) {
+        $nueva_cantidad = intval($_POST['cantidad']);
+        var_dump($_POST);
+
+        if ($nueva_cantidad > 0) {
+            $sql = "UPDATE detalle_pedido SET cantidad = '$nueva_cantidad' WHERE PK_detpedido = " . $_SESSION[$Sid_pedido] . " AND FK_pedido " . $_POST['actualizar_cantidad'] . "";
+            $bd->exec_instruction($sql);
+        }
+
     } else if (isset($_GET['eliminar'])) {
         $bd->exec_instruction("DELETE FROM detalle_pedido   WHERE PK_detpedido = " . $_GET['eliminar'] . "");
     }
 
     if (isset($_GET['txtbuscarque'])) {
         $textobuscar = $_GET['txtbuscarque'];
-    }
-
-    if (isset($_GET['idpremodificar'])) {
-        $modificar = $bd->exec_instruction("SELECT dp.*, producto.nombre AS nombre 
-            FROM detalle_pedido dp JOIN producto on dp.FK_producto = producto.PK_producto 
-             WHERE PK_detpedido = " . $_GET['idpremodificar'] . " ");
     }
 
     ?>
@@ -158,7 +160,7 @@
 
                         <div class="nav-item nav-link">
                             <a href="session.php"
-                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre]. ' '. $_SESSION[$Sapellido]: "Iniciar sesión") ?></a>
+                                class="btn btn-primary"><?php echo (isset($_SESSION[$Snombre]) ? $_SESSION[$Snombre] . ' ' . $_SESSION[$Sapellido] : "Iniciar sesión") ?></a>
                         </div>
                     </div>
                 </div>
@@ -315,9 +317,7 @@
                     if (count($result) > 0) {
                         ?>
                         <div class="container my-5">
-
                             <div class="table-responsive">
-
                                 <table class="table table-bordered table-hover">
                                     <thead class="table-dark">
                                         <tr>
@@ -329,26 +329,28 @@
                                     </thead>
                                     <tbody>
                                         <?php
-
-
                                         foreach ($result as $row) { ?>
                                             <tr>
-                                                <td><?php echo htmlspecialchars($row['nombre']); ?></td>
-                                                <td><?php echo htmlspecialchars($row[3]); ?></td>
-                                                <td><?php echo htmlspecialchars($row[4]); ?></td>
-                                                <td>
+                                                <td><?php echo htmlspecialchars($row['nombre']); ?></td><td>
+                                            <form action="menu.php" method="post">
+                                                <input id="cantidad" type="number" name="cantidad" class="form-control"
+                                                value="<?php echo htmlspecialchars($row[3]); ?>" min="1">
+                                                <input id="PK_detpedido" type="hidden" value="<?php echo htmlspecialchars($row[0]); ?>">
+                                                </td>
+                                                <td><?php echo htmlspecialchars($row[0]); ?></td><td>
+                                                <button id="actualizar_cantidad" type="submit" name="actualizar_cantidad" class="btn btn-primary me-3">actualizar</button>
+                                            </form>
                                                     <a href="menu.php?eliminar=<?php echo htmlspecialchars($row[0]); ?>"
                                                         class="btn btn-danger">Eliminar</a>
                                                 </td>
                                             </tr>
-
                                         <?php }
                                         ?>
-
                                     </tbody>
                                 </table>
 
                             </div>
+
                             <div class="container mt-5">
                                 <form action="menu.php" method="post" class="p-3">
                                     <div class="form-group ">
@@ -374,17 +376,17 @@
                                     if (isset($_POST['tipopedido']) && $_POST['tipopedido'] == 'Domicilio') {
                                         echo '<div class="form-group mt-3">';
                                         echo '<label for="Direccion">Dirección:</label>';
-                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control" value="'.$_SESSION[$Sdomicilio].'" required>';
+                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control" value="' . $_SESSION[$Sdomicilio] . '" required>';
                                         echo '</div>';
                                     } else if (isset($_POST['tipopedido']) && $_POST['tipopedido'] == 'Sucursal') {
                                         echo '<div class="form-group mt-3">';
                                         echo '<label for="Direccion">Dirección:</label>';
-                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control" value="Calle Ejemplo 123, Ciudad" readonly>';
+                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control" value="Seccion 1, Residencial del Lago, Piedras Negras, MX" readonly>';
                                         echo '</div>';
                                     } else {
                                         echo '<div class="form-group mt-3">';
                                         echo '<label for="Direccion">Dirección:</label>';
-                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control"value="'.$_SESSION[$Sdomicilio].'"  required>';
+                                        echo '<input type="text" id="Direccion" name="Direccion" class="form-control"value="' . $_SESSION[$Sdomicilio] . '"  required>';
                                         echo '</div>';
                                     }
                                     ?>
@@ -420,7 +422,7 @@
                             <div class="col-lg-3 col-md-6">
                                 <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Contacto
                                 </h4>
-                                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Av. 16 de Septiembre, Piedras
+                                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Seccion 1, Residencial del Lago, Piedras
                                     Negras, MX</p>
                                 <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+52 878 123 9277</p>
                                 <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
