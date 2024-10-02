@@ -120,7 +120,6 @@
     }
     if (isset($_POST['actualizar_cantidad'])) {
         $nueva_cantidad = intval($_POST['cantidad']);
-        var_dump($_POST);
 
         if ($nueva_cantidad > 0) {
             $sql = "UPDATE detalle_pedido SET cantidad = '$nueva_cantidad' WHERE PK_detpedido = " . $_POST['PK_detpedido'] . "";
