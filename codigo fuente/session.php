@@ -1,86 +1,107 @@
 <?php
 require "PHP/Utils.php";
 require "PHP/conection.php";
-require "PHP/SessionVars.php";
+require "PHP/SessionUtils.php";
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <?php echo printHead("Inicio de Sesión"); ?>
+
 </head>
 <?php
-
 session_start();
-session_unset();
-$bd = new BD_PDO();
-if (isset($_POST['login'])) {
-
-    $correo = $_POST['correo'];
-    $pwd = $_POST['password'];
-
-    $r = $bd->exec_instruction("SELECT * FROM usuarios WHERE Correo = '$correo' AND contrasena = '$pwd'");
-    if (count($r) > 0) {
-
-        $_SESSION[$Scorreo] = $correo;
-        $_SESSION[$Sid] = $r[0]['PK_id'];
-        $_SESSION[$Snombre] = $r[0]['nombre'] . " " . $r[0]['apellido'];
-        $_SESSION[$StipoUsr] = $r[0]['tipo_Usuario'];
-
-
-        if (isset($_GET["route"])) {
-            header("location: " . $_GET["route"] . ".php");
-
-        } else {
-            header("location: index.php");
-
-        }
-
-    }
-
-
-} else if (isset($_POST['create'])) {
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
-    $correo = $_POST['correo'];
-    $pwd = $_POST['c_password'];
-
-    $bd->exec_instruction("INSERT INTO `usuarios`( `nombre`, `apellido`, `Correo`, `contrasena`) VALUES ('$nombre','$apellido','$correo','$pwd')");
-    $ids = $bd->exec_instruction("SELECT PK_id FROM usuarios ORDER BY PK_id DESC");
-    var_dump($ids);
-    if (count($ids) > 0) {
-        $id = $ids[0][0];
-        $_SESSION[$Scorreo] = $correo;
-        $_SESSION[$Sid] = $id;
-        $_SESSION[$Snombre] = $nombre . " " . $apellido;
-        $_SESSION[$StipoUsr] = "visitante";
-
-        if (isset($_GET["route"])) {
-            header("location: " . $_GET["route"] . ".php");
-
-        } else {
-            header("location: index.php");
-
-        }
-
-    }
-
-
+if (isset($_SESSION[$Scorreo]) && !isset($_GET['nologin'])) {
+    header('location: dashboard.php');
+    exit();
+} else if (isset($_GET['nologin'])) {
+    session_unset();
+    header('location: index.php');
 }
 
+$bd = new BD_PDO();
 
 
 
+if (isset($_POST['login']) || isset($_POST['create'])) {
 
+    session_unset();
+
+
+    if (isset($_POST['login'])) {
+
+        $correo = $_POST['correo'];
+        $pwd = $_POST['password'];
+
+        $r = $bd->exec_instruction("SELECT * FROM usuarios WHERE Correo = '$correo' AND contrasena = '$pwd'");
+        if (count($r) > 0) {
+
+            $_SESSION[$Scorreo] = $correo;
+            $_SESSION[$Sid] = $r[0]['PK_id'];
+            $_SESSION[$Sdomicilio] = $r[0]['direccion'];
+            $_SESSION[$Snombre] = $r[0]['nombre'];
+            $_SESSION[$Sapellido] = $r[0]['apellido'];
+            $_SESSION[$StipoUsr] = $r[0]['tipo_Usuario'];
+
+
+            if (isset($_POST["route"]) && ($_SESSION[$StipoUsr] != "visitante" || $_POST["route"] != 'registro.php')) {
+
+                header("location: " . $_POST["route"] . "");
+
+            } else {
+                header("location: index.php");
+
+            }
+
+        }
+
+
+    } else if (isset($_POST['create'])) {
+        $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
+        $direccion = $_POST['direccion'];
+        $correo = $_POST['correo'];
+        $pwd = $_POST['c_password'];
+
+        $bd->exec_instruction("INSERT INTO `usuarios`( `nombre`, `apellido`,`direccion`, `Correo`, `contrasena`) VALUES ('$nombre','$apellido','$direccion','$correo','$pwd')");
+        $ids = $bd->exec_instruction("SELECT PK_id FROM usuarios ORDER BY PK_id DESC");
+        var_dump($ids);
+        if (count($ids) > 0) {
+            $id = $ids[0][0];
+            $_SESSION[$Scorreo] = $correo;
+            $_SESSION[$Sid] = $id;
+            $_SESSION[$Sdomicilio] = $direccion;
+            $_SESSION[$Snombre] = $nombre;
+
+            $_SESSION[$Sapellido] = $apellido;
+
+            $_SESSION[$StipoUsr] = "visitante";
+
+            if (isset($_POST["route"]) && $_POST["route"] != 'registro.php') {
+
+                header("location: " . $_POST["route"] . "");
+
+            } else {
+                header("location: index.php");
+
+            }
+
+        }
+
+
+    }
+}
 ?>
 
 <body>
-
-
     <!-- Navbar & Hero Start -->
     <div class="container-xxl position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
-            <a href="" class="navbar-brand p-0">
+            <a href="index.php" class="navbar-brand p-0">
                 <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Sushi-to</h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -96,7 +117,6 @@ if (isset($_POST['login'])) {
         </div>
     </div>
     <!-- Navbar & Hero End -->
-
     <!-- Tab Start -->
     <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
         <div class="position-relative d-inline-block w-100">
@@ -126,7 +146,7 @@ if (isset($_POST['login'])) {
     <div class="tab-content">
         <!-- Inicio Sesión -->
         <div id="tab-1" class="w-100 tab-pane fade show active">
-            <div class="w-50 text-center">
+            <div class="w-50 mx-auto">
                 <form action="session.php" method="post">
                     <div class="form-group mb-3">
                         <label for="correo">Correo Electrónico:</label>
@@ -136,6 +156,8 @@ if (isset($_POST['login'])) {
                         <label for="password">Contraseña:</label>
                         <input type="password" class="form-control" name="password" id="password" required>
                     </div>
+                    <input type="hidden" name="route" id="route"
+                        value="<?php echo (isset($_POST['route']) ? $_POST['route'] : 'index.php'); ?>">
                     <button type="submit" id="login" name="login" class="btn btn-primary w-50">Iniciar Sesión</button>
                 </form>
             </div>
@@ -143,8 +165,8 @@ if (isset($_POST['login'])) {
         <!-- Inicio Sesión End -->
 
         <!-- Crear Cuenta -->
-        <div id="tab-2" class="tab-pane fade">
-            <div class="w-50">
+        <div id="tab-2" class="w-100 tab-pane fade">
+            <div class="w-50 mx-auto">
                 <form action="session.php" method="post">
                     <div class="form-group mb-3">
                         <label for="nombre">Nombre:</label>
@@ -155,39 +177,47 @@ if (isset($_POST['login'])) {
                         <input type="text" class="form-control" name="apellido" id="apellido" required>
                     </div>
                     <div class="form-group mb-3">
+                        <label for="direccion">Direccion de entrega(opcional):</label>
+                        <input type="text" class="form-control" name="direccion" id="direccion"
+                            placeholder="no asignado">
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="correo">Correo Electrónico:</label>
                         <input type="email" class="form-control" name="correo" id="correo" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="password">Contraseña:</label>
+                        <label for="c_password">Contraseña:</label>
                         <input type="password" class="form-control" name="c_password" id="c_password" required>
-                        <label for="password">Confirme contraseña:</label>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="confirm_password">Confirme contraseña:</label>
                         <input type="password" class="form-control" name="confirm_password" id="confirm_password"
                             required>
                     </div>
+                    <input type="hidden" name="route" id="route"
+                        value="<?php echo (isset($_POST['route']) ? $_POST['route'] : 'index.php'); ?>">
                     <button type="submit" id="create" name="create" class="btn btn-primary w-50">Crear Cuenta</button>
-
                 </form>
             </div>
         </div>
         <!-- Crear Cuenta End -->
     </div>
 
+
     <!-- Footer Start -->
     <?php echo getFooter(); ?>
     <!-- Footer End -->
     <script>
         // Selecciona los campos de entrada
-        var passwordInput = document.getElementById('c_password');
+        var passwordInput = document.getElementById('c_password'); // Se elimina el espacio en blanco
         var confirmPasswordInput = document.getElementById('confirm_password');
 
         // Función para verificar que las contraseñas coincidan
         function validatePasswords() {
             if (passwordInput.value !== confirmPasswordInput.value) {
                 confirmPasswordInput.setCustomValidity('Las contraseñas no coinciden.');
-
             } else {
-                confirmPasswordInput.setCustomValidity('');  // Restaura el mensaje por defecto si es válido
+                confirmPasswordInput.setCustomValidity(''); // Restaura el mensaje por defecto si es válido
             }
         }
 
@@ -195,20 +225,18 @@ if (isset($_POST['login'])) {
         passwordInput.addEventListener('input', validatePasswords);
         confirmPasswordInput.addEventListener('input', validatePasswords);
 
-        // Añade un event listener para el evento 'invalid' en el campo de confirmación de contraseña
+        // Opcional: Añade un event listener para el evento 'invalid' en el campo de confirmación de contraseña
         confirmPasswordInput.addEventListener('invalid', function (event) {
-            // event.preventDefault();  // Previene el mensaje de error por defecto
             if (!event.target.validity.valid) {
                 event.target.setCustomValidity('Las contraseñas no coinciden.');
             } else {
-                event.target.setCustomValidity('');  // Restaura el mensaje por defecto si es válido
+                event.target.setCustomValidity(''); // Restaura el mensaje por defecto si es válido
             }
         });
-
-
     </script>
+
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src=" https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
