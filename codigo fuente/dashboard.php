@@ -72,7 +72,7 @@ if (isset($_GET['mod_pwd'])) {
             <div class="container text-center my-5 pt-5 pb-4">
                 <h1 class="display-3 text-white mb-3 animated slideInDown">Dashboard</h1>
                 <h4 class="display-8  text-primary mt-3 animated slideInDown">Hola
-                    <?php echo $_SESSION[$Snombre]. ' '. $_SESSION[$Sapellido] ?>
+                    <?php echo $_SESSION[$Snombre] . ' ' . $_SESSION[$Sapellido] ?>
                 </h4>
             </div>
 
@@ -88,7 +88,7 @@ if (isset($_GET['mod_pwd'])) {
 
                     ?>
                     <div class="table-responsive">
-                        <table class="table table-bordered table-primary">
+                        <table class="table table-borderer table-secondary">
                             <thead>
                                 <tr>
                                     <th scope="col">Fecha</th>
@@ -140,19 +140,20 @@ if (isset($_GET['mod_pwd'])) {
                         <div class="form-group mb-3">
                             <label for="nombre">Nombre:</label>
                             <input type="text" class="form-control" name="nombre" id="nombre"
-                                value=" <?php echo  $_SESSION[$Snombre]; ?>" required>
+                                value=" <?php echo $_SESSION[$Snombre]; ?>" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="apellido">Apellido:</label>
                             <input type="text" class="form-control" name="apellido" id="apellido"
-                                value=" <?php echo$_SESSION[$Sapellido]; ?>" required>
+                                value=" <?php echo $_SESSION[$Sapellido]; ?>" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="direccion">Direccion de entrega(opcional):</label>
                             <input type="text" class="form-control" name="direccion" id="direccion"
                                 value=" <?php echo $_SESSION[$Sdomicilio]; ?>" placeholder="no asignado">
                         </div>
-                        <button type="submit" id="mod_data" name="mod_data" class="btn btn-primary w-50">Modificar
+
+                        <button type="submit" id="mod_data" name="mod_data" class="btn btn-primary w-100">Modificar
                             cuenta</button>
 
                     </form>
@@ -168,7 +169,7 @@ if (isset($_GET['mod_pwd'])) {
                             <input type="password" class="form-control" name="confirm_password" id="confirm_password"
                                 required>
                         </div>
-                        <button type="submit" id="mod_pwd" name="mod_pwd" class="btn btn-primary w-50">Modificar
+                        <button type="submit" id="mod_pwd" name="mod_pwd" class="btn btn-primary  w-100">Modificar
                             contraseña</button>
                     </form>
                 </div>
